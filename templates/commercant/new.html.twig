@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New CommercioCommercant{% endblock %}
+
+{% block body %}
+    <h1>Create new CommercioCommercant</h1>
+
+    {{ include('commercant/_form.html.twig') }}
+
+    <a href="{{ path('app_commercant_index') }}">back to list</a>
+{% endblock %}

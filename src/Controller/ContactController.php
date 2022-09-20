@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/')]
+#[Route(path: '/contact')]
 class ContactController extends AbstractController
 {
     public function __construct(
@@ -19,18 +19,7 @@ class ContactController extends AbstractController
     ) {
     }
 
-    #[Route(path: '/', name: 'home', methods: ['GET'])]
-    public function index(): Response
-    {
-        return $this->render(
-            '@CapCommercio/default/index.html.twig',
-            [
-
-            ]
-        );
-    }
-
-    #[Route(path: '/contact', name: 'contact', methods: ['GET'])]
+    #[Route(path: '/', name: 'contact', methods: ['GET'])]
     public function contact(): Response
     {
         $contacts = $this->contactRepository->findAll();
@@ -38,7 +27,7 @@ class ContactController extends AbstractController
         return $this->render(
             '@CapCommercio/default/contact.html.twig',
             [
-                'contacts' => $contacts
+                'contacts' => $contacts,
             ]
         );
     }
@@ -51,7 +40,7 @@ class ContactController extends AbstractController
         return $this->render(
             '@CapCommercio/default/setting.html.twig',
             [
-                'settings' => $settings
+                'settings' => $settings,
             ]
         );
     }
@@ -64,7 +53,7 @@ class ContactController extends AbstractController
         return $this->render(
             '@CapCommercio/default/administrator.html.twig',
             [
-                'administrators' => $administrators
+                'administrators' => $administrators,
             ]
         );
     }

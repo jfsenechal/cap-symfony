@@ -24,7 +24,7 @@ class OrderController extends AbstractController
         $payementsOrderCommercant = $this->paymentCommercantOrderRepository->findAllOrdered();
 
         return $this->render(
-            '@CapCommercio/default/order.html.twig',
+            '@CapCommercio/order/index.html.twig',
             [
                 'payementsOrder' => $payementsOrder,
             ]

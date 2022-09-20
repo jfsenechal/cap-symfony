@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit CommercioCommercant{% endblock %}
+
+{% block body %}
+    <h1>Edit CommercioCommercant</h1>
+
+    {{ include('commercant/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_commercant_index') }}">back to list</a>
+
+    {{ include('commercant/_delete_form.html.twig') }}
+{% endblock %}

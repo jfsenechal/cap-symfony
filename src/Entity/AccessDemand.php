@@ -58,7 +58,7 @@ class AccessDemand
     private $modifyDate = 'now()';
 
     /**
-     * @var \RightAccess
+     * @var RightAccess
      *
      * @ORM\ManyToOne(targetEntity="RightAccess")
      * @ORM\JoinColumns({

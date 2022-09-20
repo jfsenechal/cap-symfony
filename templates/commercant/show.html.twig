@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block body %} <div class="card">
+        <h3 class="card-header">{{ commercant.legalEntity }}</h3>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ commercant.id }}</td>
+            </tr>
+            <tr>
+                <th>Uuid</th>
+                <td>{{ commercant.uuid }}</td>
+            </tr>
+            <tr>
+                <th>ProfileMediaPath</th>
+                <td>{{ commercant.profileMediaPath }}</td>
+            </tr>
+            <tr>
+                <th>MediaPath</th>
+                <td>{{ commercant.mediaPath }}</td>
+            </tr>
+            <tr>
+                <th>CanReceiveTender</th>
+                <td>{{ commercant.canReceiveTender ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>FacebookId</th>
+                <td>{{ commercant.facebookId }}</td>
+            </tr>
+            <tr>
+                <th>OpenSunday</th>
+                <td>{{ commercant.openSunday ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>CommercialWordTitle</th>
+                <td>{{ commercant.commercialWordTitle }}</td>
+            </tr>
+            <tr>
+                <th>CommercialWordMediaPath</th>
+                <td>{{ commercant.commercialWordMediaPath }}</td>
+            </tr>
+            <tr>
+                <th>LegalEntity</th>
+                <td>{{ commercant.legalEntity }}</td>
+            </tr>
+            <tr>
+                <th>VatNumber</th>
+                <td>{{ commercant.vatNumber }}</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>{{ commercant.phone }}</td>
+            </tr>
+            <tr>
+                <th>IsMember</th>
+                <td>{{ commercant.isMember ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>AffiliationDate</th>
+                <td>{{ commercant.affiliationDate ? commercant.affiliationDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Archived</th>
+                <td>{{ commercant.archived ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>InsertDate</th>
+                <td>{{ commercant.insertDate ? commercant.insertDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ModifyDate</th>
+                <td>{{ commercant.modifyDate ? commercant.modifyDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>StripeUserRef</th>
+                <td>{{ commercant.stripeUserRef }}</td>
+            </tr>
+            <tr>
+                <th>CommercialWordVideoPath</th>
+                <td>{{ commercant.commercialWordVideoPath }}</td>
+            </tr>
+            <tr>
+                <th>CommercialWordDescription</th>
+                <td>{{ commercant.commercialWordDescription }}</td>
+            </tr>
+            <tr>
+                <th>LegalEmail</th>
+                <td>{{ commercant.legalEmail }}</td>
+            </tr>
+            <tr>
+                <th>LegalPhone</th>
+                <td>{{ commercant.legalPhone }}</td>
+            </tr>
+            <tr>
+                <th>LegalFirstname</th>
+                <td>{{ commercant.legalFirstname }}</td>
+            </tr>
+            <tr>
+                <th>LegalLastname</th>
+                <td>{{ commercant.legalLastname }}</td>
+            </tr>
+            <tr>
+                <th>CanReceiveNews</th>
+                <td>{{ commercant.canReceiveNews ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>LegalEmail2</th>
+                <td>{{ commercant.legalEmail2 }}</td>
+            </tr>
+            <tr>
+                <th>FacebookLink</th>
+                <td>{{ commercant.facebookLink }}</td>
+            </tr>
+            <tr>
+                <th>TwitterLink</th>
+                <td>{{ commercant.twitterLink }}</td>
+            </tr>
+            <tr>
+                <th>LinkedinLink</th>
+                <td>{{ commercant.linkedinLink }}</td>
+            </tr>
+        </tbody>
+    </table>
+        </div>
+</div>
+    {{ include('@CapCommercio/commercant/_delete_form.html.twig') }}
+{% endblock %}
