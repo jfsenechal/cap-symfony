@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">{{ administrators|length }} administrator</h3>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>Nom</th>
+                    <th>Date</th>
+                </tr>
+                {% for administrator in administrators %}
+                    <tr>
+                        <td>
+                            {{ administrator.firstname }}
+                            {{ administrator.lastname }}
+                        </td>
+                        <td>{{ administrator.insertDate|date('d-m-Y') }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

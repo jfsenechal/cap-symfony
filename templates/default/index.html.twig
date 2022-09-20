@@ -1,0 +1,27 @@
+{% extends '@CapCommercio::base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">Menu</h3>
+
+        <div class="card-body">
+
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <a href="{{ path('contact') }}">Contact</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{{ path('setting') }}">Setting</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{{ path('administrator') }}">Administrator</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{{ path('order_all') }}">Orders</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}

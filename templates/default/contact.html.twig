@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">{{ contacts|length }} Contact</h3>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>Nom</th>
+                    <th>Date</th>
+                    <th>Message</th>
+                </tr>
+                {% for contact in contacts %}
+                    <tr>
+                        <td>
+                            {{ contact.firstname }}
+                            {{ contact.lastname }}
+                        </td>
+                        <td>{{ contact.insertDate|date('d-m-Y') }}</td>
+                        <td>{{ contact.message|u.truncate(80) }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

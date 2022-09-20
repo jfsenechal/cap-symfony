@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">Orders</h3>
+
+        <div class="card-body">
+            1 "Temporaire"
+            2 "En cours"
+            3 "Traité"
+            4 "Archivé"
+            5 "Error"
+            <table class="table table-bordered">
+                <tr>
+                    <th>Nom</th>
+                    <th>Compagny</th>
+                    <th>Date</th>
+                    <th>Montant TVAC</th>
+                    <th>Pdf</th>
+                    <th>Statut</th>
+                </tr>
+                {% for order in payementsOrder %}
+                    <tr>
+                        <td>
+                            {{ order.orderCommercant.firstname }} {{ order.orderCommercant.lastname }}
+                        </td>
+                        <td>
+                            {{ order.orderCommercant.companyName }}
+                        </td>
+                        <td>{{ order.insertDate|format_date('full') }}</td>
+                        <td>{{ order.pdfPath }}</td>
+                        <td>{{ order.priceVat|format_currency('euro') }}</td>
+                        <td>
+                            {{ order.orderStatus.name }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+

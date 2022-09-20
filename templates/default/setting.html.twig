@@ -1,0 +1,33 @@
+{% extends '@CapCommercio::base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">Setting</h3>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>paramKey</th>
+                    <th>paramValue</th>
+                    <th>label</th>
+                    <th>description</th>
+                </tr>
+                {% for setting in settings %}
+                    <tr>
+                        <td>
+                            {{ setting.paramKey }}
+                        </td>
+                        <td>
+                            {{ setting.paramValue }}
+                        </td>
+                        <td>{{ setting.label }}</td>
+                        <td>{{ setting.description }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
