@@ -8,11 +8,13 @@ use Cap\Commercio\Repository\PaymentOrderCommercantRepository;
 use Cap\Commercio\Repository\PaymentOrderAddressRepository;
 use Cap\Commercio\Repository\PaymentOrderLineRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/order')]
+#[IsGranted(data: 'ROLE_CAP')]
 class OrderController extends AbstractController
 {
     public function __construct(

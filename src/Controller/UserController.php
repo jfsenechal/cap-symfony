@@ -6,11 +6,13 @@ use Cap\Commercio\Repository\AdministratorRepository;
 use Cap\Commercio\Repository\ContactRepository;
 use Cap\Commercio\Repository\RightAccessRepository;
 use Cap\Commercio\Repository\SettingRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/user')]
+#[IsGranted(data: 'ROLE_CAP')]
 class UserController extends AbstractController
 {
     public function __construct(

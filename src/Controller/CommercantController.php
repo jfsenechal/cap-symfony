@@ -6,12 +6,14 @@ use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Form\CommercioCommercantType;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/commercant')]
+#[IsGranted(data: 'ROLE_CAP')]
 class CommercantController extends AbstractController
 {
     public function __construct(private CommercioCommercantRepository $commercantRepository)
