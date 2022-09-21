@@ -57,7 +57,7 @@ class OrderController extends AbstractController
         $orderCommercant = $paymentOrder->getOrderCommercant();
         $lines = $this->paymentOrderLineRepository->findByOrder($paymentOrder);
         $addresses = $this->paymentOrderAddressRepository->findByOrder($paymentOrder);
-        $bill = $this->paymentBillRepository->findByOrder($paymentOrder);
+        $bills = $this->paymentBillRepository->findByOrder($paymentOrder);
 
         return $this->render(
             '@CapCommercio/order/show.html.twig',
@@ -66,7 +66,7 @@ class OrderController extends AbstractController
                 'orderCommercant' => $orderCommercant,
                 'lines' => $lines,
                 'addresses' => $addresses,
-                'bill' => $bill,
+                'bills' => $bills,
             ]
         );
     }

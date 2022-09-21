@@ -12,22 +12,55 @@
                     <td>{{ order.orderCommercant.companyName }}</td>
                 </tr>
             </table>
+
             <h4>Commerçant</h4>
-            {{ dump(orderCommercant) }}
+            {{ orderCommercant.companyName }}
 
             <h4>Lignes</h4>
             {% for line in lines %}
-                {{ dump(line) }}
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Order</th>
+                        <td>{{ line.order.orderNumber }}</td>
+                    </tr>
+                    <tr>
+                        <th>Label</th>
+                        <td>{{ line.label }}</td>
+                    </tr>
+                    <tr>
+                        <th>Price</th>
+                        <td>{{ line.totalPriceEvat|format_currency('euro') }}</td>
+                    </tr>
+                </table>
             {% endfor %}
 
             <h4>Addresses</h4>
             {% for address in addresses %}
-                {{ dump(address) }}
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Rue</th>
+                        <td>{{ address.city }} {{ address.street1 }}</td>
+                    </tr>
+                </table>
             {% endfor %}
 
             <h4>Bill</h4>
-
-            {{ dump(bill) }}
+            {% for bill in bills %}
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Order</th>
+                        <td>{{ bill.order.orderNumber }} </td>
+                    </tr>
+                    <tr>
+                        <th>Price</th>
+                        <td>{{ bill.priceVat }} </td>
+                    </tr>
+                    <tr>
+                        <th>Pdf</th>
+                        <td>{{ bill.pdfPath }} </td>
+                    </tr>
+                </table>
+            {% endfor %}
 
 
             <a href="{{ path('cap_order_delete', {'id': order.id}) }}" class="btn btn-danger">
