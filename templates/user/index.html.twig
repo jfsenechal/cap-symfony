@@ -1,0 +1,27 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">{{ users|length }} Users</h3>
+
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Email</th>
+                    <th>Date</th>
+                </tr>
+                {% for user in users %}
+                    <tr>
+                        <td>
+                            {{ user.email }}
+                        </td>
+                        <td>
+                            {{ user.modifyDate|format_date('full') }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
