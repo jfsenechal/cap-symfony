@@ -6,8 +6,16 @@ use Cap\Commercio\Security\Md5VerySecureHasher;
 use Symfony\Config\SecurityConfig;
 
 return static function (SecurityConfig $security) {
+
+    /* $security->passwordHasher(RightAccess::class, [
+         'algorithm' => 'md5',
+         'encode_as_base64' => false,
+         'iterations' => 1,
+     ]);*/
+
     $security->passwordHasher('cap_hasher')
         ->id(Md5VerySecureHasher::class);
+
     $security->provider('cap_user_provider', [
         'entity' => [
             'class' => RightAccess::class,
