@@ -6,6 +6,7 @@
 
         <div class="card-body">
 
+            {% include '@CapCommercio/order/_actions.html.twig' %}
             <table class="table table-bordered">
                 <tr>
                     <th>Commercant</th>
@@ -63,9 +64,8 @@
             {% endfor %}
 
 
-            <a href="{{ path('cap_order_delete', {'id': order.id}) }}" class="btn btn-danger">
-                Delete
-            </a>
+            {% include '@CapCommercio/order/_delete_form.html.twig' %}
+
         </div>
     </div>
 {% endblock %}
