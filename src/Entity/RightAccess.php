@@ -3,6 +3,10 @@
 namespace Cap\Commercio\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * RightAccess
@@ -10,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="right_access", uniqueConstraints={@ORM\UniqueConstraint(name="right_access_email_key", columns={"email"})})
  * @ORM\Entity
  */
-class RightAccess
+class RightAccess implements UserInterface, PasswordHasherAwareInterface,PasswordAuthenticatedUserInterface, Stringable
 {
     /**
      * @var int
@@ -70,6 +74,29 @@ class RightAccess
      * @ORM\Column(name="first_time", type="boolean", nullable=false)
      */
     private $firstTime = false;
+
+    private array $roles = ['ROLE_CAP'];
+
+    public function __toString(): string
+    {
+        return $this->email;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
+    }
 
     public function getId(): ?string
     {
@@ -160,5 +187,8 @@ class RightAccess
         return $this;
     }
 
-
+    public function getPasswordHasherName(): ?string
+    {
+        return 'cap_hasher';
+    }
 }

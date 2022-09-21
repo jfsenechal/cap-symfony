@@ -22,5 +22,6 @@ class CapCommercioBundle extends AbstractBundle
     {
         $container->import('../config/packages/twig.php');
         $container->import('../config/packages/doctrine.php');
+        $container->import('../config/packages/security.php');
     }
 }
