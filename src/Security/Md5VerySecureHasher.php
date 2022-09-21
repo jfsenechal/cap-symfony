@@ -4,6 +4,7 @@ namespace Cap\Commercio\Security;
 
 use Symfony\Component\PasswordHasher\Hasher\CheckPasswordLengthTrait;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
+use Symfony\Component\PasswordHasher\Exception\InvalidPasswordException;
 
 class Md5VerySecureHasher implements PasswordHasherInterface
 {
@@ -11,6 +12,10 @@ class Md5VerySecureHasher implements PasswordHasherInterface
 
     public function hash(string $plainPassword): string
     {
+        if ($this->isPasswordTooLong($plainPassword)) {
+            throw new InvalidPasswordException();
+        }
+
         return md5($plainPassword);
     }
 
@@ -20,7 +25,11 @@ class Md5VerySecureHasher implements PasswordHasherInterface
             return false;
         }
 
-        return true;
+        if ($hashedPassword === $this->hash($plainPassword)) {
+            return true;
+        }
+
+        return false;
     }
 
     public function needsRehash(string $hashedPassword): bool
