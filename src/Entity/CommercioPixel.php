@@ -51,7 +51,7 @@ class CommercioPixel
     private $modifyDate = 'now()';
 
     /**
-     * @var \CommercioCommercant
+     * @var CommercioCommercant
      *
      * @ORM\ManyToOne(targetEntity="CommercioCommercant")
      * @ORM\JoinColumns({
@@ -61,7 +61,7 @@ class CommercioPixel
     private $commercioCommercant;
 
     /**
-     * @var \CommercioPixelType
+     * @var CommercioPixelType
      *
      * @ORM\ManyToOne(targetEntity="CommercioPixelType")
      * @ORM\JoinColumns({

@@ -93,7 +93,7 @@ class PaymentBill
     private $archived = false;
 
     /**
-     * @var \PaymentOrder
+     * @var PaymentOrder
      *
      * @ORM\ManyToOne(targetEntity="PaymentOrder")
      * @ORM\JoinColumns({

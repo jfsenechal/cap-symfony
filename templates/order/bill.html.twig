@@ -1,7 +1,6 @@
 {% extends '@CapCommercio/base.html.twig' %}
 
 {% block body %}
-
     <div class="card">
         <h3 class="card-header">Orders</h3>
 
@@ -13,34 +12,27 @@
             5 "Error"
             <table class="table table-bordered">
                 <tr>
+                    <th>Numero</th>
                     <th>Nom</th>
-                    <th>Compagny</th>
                     <th>Date</th>
                     <th>Montant TVAC</th>
                     <th>Pdf</th>
-                    <th>Statut</th>
                 </tr>
-                {% for order in payementsOrder %}
+                {% for bill in bills %}
                     <tr>
                         <td>
-                            <a href="{{ path('cap_order_show', {'id': order.id}) }}">
-                                {{ order.orderCommercant.firstname }} {{ order.orderCommercant.lastname }}
-                            </a>
+                            {{ bill.billNumber }}
                         </td>
                         <td>
-                            {{ order.orderCommercant.companyName }}
+                            {{ bill.order.orderCommercant.companyName }}
                         </td>
-                        <td>{{ order.insertDate|format_date('full') }}</td>
-                        <td>{{ order.priceVat|format_currency('euro') }}</td>
-                        <td>{{ order.pdfPath }}</td>
-                        <td>
-                            {{ order.orderStatus.name }}
-                        </td>
+                        <td>{{ bill.insertDate|format_date('full') }}</td>
+                        <td>{{ bill.priceVat|format_currency('euro') }}</td>
+                        <td>{{ bill.pdfPath }}</td>
                     </tr>
                 {% endfor %}
             </table>
         </div>
     </div>
-
 {% endblock %}
 

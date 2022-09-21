@@ -65,7 +65,7 @@ class CommercioCommercantGallery
     private $alt = '';
 
     /**
-     * @var \CommercioCommercant
+     * @var CommercioCommercant
      *
      * @ORM\ManyToOne(targetEntity="CommercioCommercant")
      * @ORM\JoinColumns({

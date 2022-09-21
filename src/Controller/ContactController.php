@@ -19,7 +19,7 @@ class ContactController extends AbstractController
     ) {
     }
 
-    #[Route(path: '/', name: 'contact', methods: ['GET'])]
+    #[Route(path: '/', name: 'cap_contact', methods: ['GET'])]
     public function contact(): Response
     {
         $contacts = $this->contactRepository->findAll();
@@ -32,7 +32,7 @@ class ContactController extends AbstractController
         );
     }
 
-    #[Route(path: '/setting', name: 'setting', methods: ['GET'])]
+    #[Route(path: '/setting', name: 'cap_setting', methods: ['GET'])]
     public function setting(): Response
     {
         $settings = $this->settingRepository->findAll();
@@ -45,7 +45,7 @@ class ContactController extends AbstractController
         );
     }
 
-    #[Route(path: '/administrator', name: 'administrator', methods: ['GET'])]
+    #[Route(path: '/administrator', name: 'cap_administrator', methods: ['GET'])]
     public function administrator(): Response
     {
         $administrators = $this->administratorRepository->findAll();

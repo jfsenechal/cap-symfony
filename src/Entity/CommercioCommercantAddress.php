@@ -44,7 +44,7 @@ class CommercioCommercantAddress
     private $modifyDate = 'now()';
 
     /**
-     * @var \AddressAddress
+     * @var AddressAddress
      *
      * @ORM\ManyToOne(targetEntity="AddressAddress")
      * @ORM\JoinColumns({
@@ -54,7 +54,7 @@ class CommercioCommercantAddress
     private $address;
 
     /**
-     * @var \CommercioCommercant
+     * @var CommercioCommercant
      *
      * @ORM\ManyToOne(targetEntity="CommercioCommercant")
      * @ORM\JoinColumns({

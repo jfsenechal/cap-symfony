@@ -86,7 +86,7 @@ class PaymentOrderLines
     private $modifyDate = 'now()';
 
     /**
-     * @var \PaymentOrder
+     * @var PaymentOrder
      *
      * @ORM\ManyToOne(targetEntity="PaymentOrder")
      * @ORM\JoinColumns({
