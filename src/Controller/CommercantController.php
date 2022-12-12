@@ -31,7 +31,7 @@ class CommercantController extends AbstractController
             $data = $form->getData();
             $commercants = $this->commercantRepository->search($data['name'], $data['isMember']);
         } else {
-            $commercants = $this->commercantRepository->findAll();
+            $commercants = $this->commercantRepository->findAllOrdered();
         }
 
         return $this->render('@CapCommercio/commercant/index.html.twig', [
