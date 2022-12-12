@@ -23,7 +23,7 @@
                             <a href="{{ path('cap_contact_show', {'id': contact.id}) }}">{{ contact.firstname }} {{ contact.lastname }}</a>
                         </td>
                         <td>{{ contact.insertDate|date('d-m-Y') }}</td>
-                        <td>{{ contact.message|u.truncate(80) }}</td>
+                        <td>{{ contact.message|u.truncate(60) }}</td>
                     </tr>
                 {% endfor %}
             </table>
