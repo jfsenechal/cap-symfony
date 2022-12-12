@@ -5,6 +5,7 @@ namespace Cap\Commercio\Repository;
 use Cap\Commercio\Doctrine\OrmCrudTrait;
 use Cap\Commercio\Entity\Contact;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -22,4 +23,19 @@ class ContactRepository extends ServiceEntityRepository
         parent::__construct($registry, Contact::class);
     }
 
+    /**
+     * @return array|Contact[]
+     */
+    public function findAllOrdered(): array
+    {
+        return $this->createQb()
+            ->getQuery()
+            ->getResult();
+    }
+
+    private function createQb(): QueryBuilder
+    {
+        return $this->createQueryBuilder('contact')
+            ->orderBy('contact.insertDate', 'DESC');
+    }
 }

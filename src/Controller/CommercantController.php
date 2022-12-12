@@ -3,8 +3,8 @@
 namespace Cap\Commercio\Controller;
 
 use Cap\Commercio\Entity\CommercioCommercant;
-use Cap\Commercio\Form\CommercioCommercantType;
-use Cap\Commercio\Form\SearchCommercantType;
+use Cap\Commercio\Form\CommercantType;
+use Cap\Commercio\Form\CommercantSearchType;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -24,7 +24,7 @@ class CommercantController extends AbstractController
     #[Route('/', name: 'cap_commercant_index', methods: ['GET','POST'])]
     public function index(Request $request): Response
     {
-        $form = $this->createForm(SearchCommercantType::class);
+        $form = $this->createForm(CommercantSearchType::class);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -44,7 +44,7 @@ class CommercantController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $commercioCommercant = new CommercioCommercant();
-        $form = $this->createForm(CommercioCommercantType::class, $commercioCommercant);
+        $form = $this->createForm(CommercantType::class, $commercioCommercant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -54,7 +54,7 @@ class CommercantController extends AbstractController
             return $this->redirectToRoute('cap_commercant_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('commercant/new.html.twig', [
+        return $this->render('@CapCommercio/commercant/new.html.twig', [
             'commercio_commercant' => $commercioCommercant,
             'form' => $form,
         ]);
@@ -74,7 +74,7 @@ class CommercantController extends AbstractController
         CommercioCommercant $commercioCommercant,
         EntityManagerInterface $entityManager
     ): Response {
-        $form = $this->createForm(CommercioCommercantType::class, $commercioCommercant);
+        $form = $this->createForm(CommercantType::class, $commercioCommercant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -83,7 +83,7 @@ class CommercantController extends AbstractController
             return $this->redirectToRoute('cap_commercant_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('commercant/edit.html.twig', [
+        return $this->render('@CapCommercio/commercant/edit.html.twig', [
             'commercio_commercant' => $commercioCommercant,
             'form' => $form,
         ]);

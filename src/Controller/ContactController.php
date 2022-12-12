@@ -2,9 +2,9 @@
 
 namespace Cap\Commercio\Controller;
 
-use Cap\Commercio\Repository\AdministratorRepository;
+use Cap\Commercio\Entity\ContactParams;
+use Cap\Commercio\Repository\ContactParamsRepository;
 use Cap\Commercio\Repository\ContactRepository;
-use Cap\Commercio\Repository\SettingRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,47 +16,36 @@ class ContactController extends AbstractController
 {
     public function __construct(
         private ContactRepository $contactRepository,
-        private SettingRepository $settingRepository,
-        private AdministratorRepository $administratorRepository
+        private ContactParamsRepository $contactParamsRepository
     ) {
     }
 
     #[Route(path: '/', name: 'cap_contact', methods: ['GET'])]
     public function contact(): Response
     {
-        $contacts = $this->contactRepository->findAll();
+        $contacts = $this->contactRepository->findAllOrdered();
 
         return $this->render(
-            '@CapCommercio/default/contact.html.twig',
+            '@CapCommercio/contact/index.html.twig',
             [
                 'contacts' => $contacts,
             ]
         );
     }
 
-    #[Route(path: '/setting', name: 'cap_setting', methods: ['GET'])]
-    public function setting(): Response
+    #[Route(path: '/show/{id}', name: 'cap_contact_show', methods: ['GET'])]
+    public function show(int $id): Response
     {
-        $settings = $this->settingRepository->findAll();
+        $contact = $this->contactRepository->find($id);
+        $params = $this->contactParamsRepository->findByContact($contact);
 
         return $this->render(
-            '@CapCommercio/default/setting.html.twig',
+            '@CapCommercio/contact/show.html.twig',
             [
-                'settings' => $settings,
+                'contact' => $contact,
+                'params' => $params,
             ]
         );
     }
 
-    #[Route(path: '/administrator', name: 'cap_administrator', methods: ['GET'])]
-    public function administrator(): Response
-    {
-        $administrators = $this->administratorRepository->findAll();
-
-        return $this->render(
-            '@CapCommercio/default/administrator.html.twig',
-            [
-                'administrators' => $administrators,
-            ]
-        );
-    }
 }

@@ -2,8 +2,6 @@
 
 namespace Cap\Commercio\Controller;
 
-use Cap\Commercio\Repository\AdministratorRepository;
-use Cap\Commercio\Repository\ContactRepository;
 use Cap\Commercio\Repository\SettingRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,9 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends AbstractController
 {
     public function __construct(
-        private ContactRepository $contactRepository,
         private SettingRepository $settingRepository,
-        private AdministratorRepository $administratorRepository
     ) {
     }
 
@@ -28,6 +24,19 @@ class DefaultController extends AbstractController
             '@CapCommercio/default/index.html.twig',
             [
 
+            ]
+        );
+    }
+
+    #[Route(path: '/setting', name: 'cap_setting', methods: ['GET'])]
+    public function setting(): Response
+    {
+        $settings = $this->settingRepository->findAll();
+
+        return $this->render(
+            '@CapCommercio/default/setting.html.twig',
+            [
+                'settings' => $settings,
             ]
         );
     }

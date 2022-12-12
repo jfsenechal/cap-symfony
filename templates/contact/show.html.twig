@@ -1,0 +1,39 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">Détail du contact {{ contact.firstname }} {{ contact.lastname }}</h3>
+
+        <div class="card-body">
+            <table class="table table-bordered mb-3">
+                <tr>
+                    <th>Date</th>
+                    <td>{{ contact.insertDate|date('d-m-Y') }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ contact.email }}</td>
+                </tr>
+                <tr>
+                    <th>Téléphone</th>
+                    <td>{{ contact.phone }}</td>
+                </tr>
+            </table>
+
+            {{ contact.message|nl2br }}
+
+            <h4 class="text-success mt-2">Paramètres du contact</h4>
+            <table class="table table-bordered mb-3">
+                {% for param in params %}
+                    <tr>
+                        <th>{{ param.paramKey }}</th>
+                        <td>{{ param.paramValue }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+        </div>
+    </div>
+
+{% endblock %}

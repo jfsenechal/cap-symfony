@@ -35,6 +35,16 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a href="{{ path('cap_commercant_index') }}" class="nav-link">
+                        <i class="fas fa-search"></i> Les commerçants
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('cap_user_index') }}" class="nav-link">
+                        <i class="fas fa-list"></i> Les utilisateurs
+                    </a>
+                </li>
                 {% block menu_top %}
 
                 {% endblock %}
@@ -47,8 +57,8 @@
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a href="{{ path('cap_home') }}" class="nav-link"><i
-                                    class="fas fa-user"></i>
+                        <a href="{{ path('cap_home') }}" class="nav-link">
+                            <i class="fas fa-user"></i>
                             Compte</a>
                     </li>
                 {% endif %}
