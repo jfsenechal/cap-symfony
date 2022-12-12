@@ -54,7 +54,7 @@ class CommercioCommercantRepository extends ServiceEntityRepository
     private function createQb(): QueryBuilder
     {
         return $this->createQueryBuilder('commercant')
-            ->orderBy('commercant.legalFirstname', 'ASC');
+            ->orderBy('commercant.legalEntity', 'ASC');
     }
 
 }
