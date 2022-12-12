@@ -26,10 +26,8 @@
                 <tr>
                     <th>Id</th>
                     <th>LegalEntity</th>
-                    <th>VatNumber</th>
                     <th>IsMember</th>
                     <th>AffiliationDate</th>
-                    <th>ModifyDate</th>
                     <th>LegalPhone</th>
                     <th>LegalFirstname</th>
                     <th>LegalLastname</th>
@@ -44,10 +42,8 @@
                                 {{ commercant.legalEntity }}
                             </a>
                         </td>
-                        <td>{{ commercant.vatNumber }}</td>
                         <td>{{ commercant.isMember ? 'Yes' : 'No' }}</td>
                         <td>{{ commercant.affiliationDate ? commercant.affiliationDate|format_date('short') : '' }}</td>
-                        <td>{{ commercant.modifyDate ? commercant.modifyDate|format_date('short') : '' }}</td>
                         <td>{{ commercant.legalPhone }}</td>
                         <td>{{ commercant.legalFirstname }}</td>
                         <td>{{ commercant.legalLastname }}</td>
