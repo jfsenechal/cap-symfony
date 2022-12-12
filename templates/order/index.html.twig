@@ -3,21 +3,31 @@
 {% block body %}
 
     <div class="card">
-        <h3 class="card-header">Orders</h3>
+        <h3 class="card-header">{{ payementsOrder|length }} commandes</h3>
 
         <div class="card-body">
-            1 "Temporaire"
-            2 "En cours"
-            3 "Traité"
-            4 "Archivé"
-            5 "Error"
-            <table class="table table-bordered">
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            <div class="row g-3">
+                <div class="col">
+                    {{ form_row(form.name) }}
+                </div>
+                <div class="col">
+                    {{ form_row(form.statut) }}
+                </div>
+            </div>
+            <button type="submit" name="search" class="btn btn-primary">
+                <i class="fa fa-search"></i> Rechercher
+            </button>
+            {{ form_end(form) }}
+
+            <table class="table table-bordered mt-3">
                 <tr>
                     <th>Nom</th>
                     <th>Compagny</th>
                     <th>Date</th>
                     <th>Montant TVAC</th>
-                    <th>Pdf</th>
                     <th>Statut</th>
                 </tr>
                 {% for order in payementsOrder %}
@@ -32,7 +42,6 @@
                         </td>
                         <td>{{ order.insertDate|format_date('full') }}</td>
                         <td>{{ order.priceVat|format_currency('euro') }}</td>
-                        <td>{{ order.pdfPath }}</td>
                         <td>
                             {{ order.orderStatus.name }}
                         </td>

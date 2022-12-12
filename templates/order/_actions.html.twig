@@ -1,4 +1,11 @@
 <div class="row gy-2 gx-1 align-items-center d-print-none mb-3">
+    {% if order.pdfPath %}
+        <div class="col-auto">
+            <a href="/{{ order.pdfPath }}" class="btn btn-primary" role='button'>
+                <i class="fas fa-download"></i>
+                Télécharger le pdf</a>
+        </div>
+    {% endif %}
     <div class="col-auto"><a href="{{ path('cap_order_all') }}" class="btn btn-primary" role='button'><i
                     class="fas fa-list"></i>
             Retour à la Liste</a>
@@ -9,4 +16,4 @@
         </button>
     </div>
 </div>
-<br/><br/>
+

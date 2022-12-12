@@ -3,6 +3,7 @@
 namespace Cap\Commercio\Controller;
 
 use Cap\Commercio\Entity\PaymentOrder;
+use Cap\Commercio\Form\OrderSearchType;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderAddressRepository;
 use Cap\Commercio\Repository\PaymentOrderCommercantRepository;
@@ -28,15 +29,25 @@ class OrderController extends AbstractController
     }
 
     #[Route(path: '/', name: 'cap_order_all', methods: ['GET'])]
-    public function order(): Response
+    public function order(Request $request): Response
     {
-        $payementsOrder = $this->paymentOrderRepository->findAllOrdered();
+        $form = $this->createForm(OrderSearchType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $payementsOrder = $this->paymentOrderRepository->search($data['name']);
+        } else {
+            $payementsOrder = $this->paymentOrderRepository->findAllOrdered();
+        }
+
         $payementsOrderCommercant = $this->paymentCommercantOrderRepository->findAllOrdered();
 
         return $this->render(
             '@CapCommercio/order/index.html.twig',
             [
                 'payementsOrder' => $payementsOrder,
+                'form' => $form,
             ]
         );
     }

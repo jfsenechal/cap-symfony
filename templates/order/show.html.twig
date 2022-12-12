@@ -2,22 +2,33 @@
 
 {% block body %}
     <div class="card">
-        <h3 class="card-header">{{ order.orderNumber }}</h3>
+        <h3 class="card-header">{{ order.orderNumber }} de {{ orderCommercant.companyName }}</h3>
 
         <div class="card-body">
 
             {% include '@CapCommercio/order/_actions.html.twig' %}
-            <table class="table table-bordered">
-                <tr>
-                    <th>Commercant</th>
-                    <td>{{ order.orderCommercant.companyName }}</td>
-                </tr>
-            </table>
 
-            <h4>Commerçant</h4>
-            {{ orderCommercant.companyName }}
+            <h4 class="text-success">Facture</h4>
+            {% for bill in bills %}
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Order</th>
+                        <td>{{ bill.order.orderNumber }} </td>
+                    </tr>
+                    <tr>
+                        <th>Montant</th>
+                        <td>{{ bill.priceVat|format_currency('eur') }} </td>
+                    </tr>
+                    <tr>
+                        <th>Pdf</th>
+                        <td>{{ bill.pdfPath }} </td>
+                    </tr>
+                </table>
+            {% else %}
+                <p>Aucune</p>
+            {% endfor %}
 
-            <h4>Lignes</h4>
+            <h4 class="text-success">Lignes</h4>
             {% for line in lines %}
                 <table class="table table-bordered">
                     <tr>
@@ -35,7 +46,7 @@
                 </table>
             {% endfor %}
 
-            <h4>Addresses</h4>
+            <h4 class="text-success">Adresses</h4>
             {% for address in addresses %}
                 <table class="table table-bordered">
                     <tr>
@@ -44,25 +55,6 @@
                     </tr>
                 </table>
             {% endfor %}
-
-            <h4>Bill</h4>
-            {% for bill in bills %}
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Order</th>
-                        <td>{{ bill.order.orderNumber }} </td>
-                    </tr>
-                    <tr>
-                        <th>Price</th>
-                        <td>{{ bill.priceVat }} </td>
-                    </tr>
-                    <tr>
-                        <th>Pdf</th>
-                        <td>{{ bill.pdfPath }} </td>
-                    </tr>
-                </table>
-            {% endfor %}
-
 
             {% include '@CapCommercio/order/_delete_form.html.twig' %}
 
