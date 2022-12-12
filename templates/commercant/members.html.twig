@@ -6,26 +6,7 @@
 
         <div class="card-body">
 
-            <table class="table table-bordered mt-3">
-                <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Date d'affiliation</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for commercant in commercants %}
-                    <tr>
-                        <td>
-                            <a href="{{ path('cap_commercant_show', {'id': commercant.id}) }}">
-                                {{ commercant.legalEntity }}
-                            </a>
-                        </td>
-                        <td>{{ commercant.affiliationDate ? commercant.affiliationDate|format_date('short') : '' }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            {% include '@CapCommercio/commercant/_list.html.twig' %}
 
         </div>
     </div>
