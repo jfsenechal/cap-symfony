@@ -21,7 +21,7 @@ class CommercantController extends AbstractController
     {
     }
 
-    #[Route('/', name: 'cap_commercant_index', methods: ['GET','POST'])]
+    #[Route('/', name: 'cap_commercant_index', methods: ['GET', 'POST'])]
     public function index(Request $request): Response
     {
         $form = $this->createForm(CommercantSearchType::class);
@@ -37,6 +37,16 @@ class CommercantController extends AbstractController
         return $this->render('@CapCommercio/commercant/index.html.twig', [
             'commercants' => $commercants,
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/membres', name: 'cap_commercant_membres', methods: ['GET', 'POST'])]
+    public function membres(Request $request): Response
+    {
+        $commercants = $this->commercantRepository->membres();
+
+        return $this->render('@CapCommercio/commercant/members.html.twig', [
+            'commercants' => $commercants,
         ]);
     }
 

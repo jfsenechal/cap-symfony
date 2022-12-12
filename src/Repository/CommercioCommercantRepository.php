@@ -36,6 +36,18 @@ class CommercioCommercantRepository extends ServiceEntityRepository
     /**
      * @return CommercioCommercant[]
      */
+    public function membres(): array
+    {
+        return $this->createQb()
+            ->andWhere('commercant.isMember = :member')
+            ->setParameter('member', 1)
+            ->orderBy('commercant.affiliationDate', 'DESC')
+            ->getQuery()->getResult();
+    }
+
+    /**
+     * @return CommercioCommercant[]
+     */
     public function search(?string $name, ?int $isMember = null): array
     {
         $qb = $this->createQb();
@@ -56,5 +68,6 @@ class CommercioCommercantRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('commercant')
             ->orderBy('commercant.legalEntity', 'ASC');
     }
+
 
 }
