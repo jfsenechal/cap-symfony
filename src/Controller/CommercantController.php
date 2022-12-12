@@ -3,8 +3,9 @@
 namespace Cap\Commercio\Controller;
 
 use Cap\Commercio\Entity\CommercioCommercant;
-use Cap\Commercio\Form\CommercantType;
 use Cap\Commercio\Form\CommercantSearchType;
+use Cap\Commercio\Form\CommercantType;
+use Cap\Commercio\Repository\CommercantGalleryRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -17,8 +18,10 @@ use Symfony\Component\Routing\Annotation\Route;
 #[IsGranted(data: 'ROLE_CAP')]
 class CommercantController extends AbstractController
 {
-    public function __construct(private CommercioCommercantRepository $commercantRepository)
-    {
+    public function __construct(
+        private CommercioCommercantRepository $commercantRepository,
+        private CommercantGalleryRepository $commercantGalleryRepository
+    ) {
     }
 
     #[Route('/', name: 'cap_commercant_index', methods: ['GET', 'POST'])]
@@ -41,7 +44,7 @@ class CommercantController extends AbstractController
     }
 
     #[Route('/membres', name: 'cap_commercant_membres', methods: ['GET', 'POST'])]
-    public function membres(Request $request): Response
+    public function membres(): Response
     {
         $commercants = $this->commercantRepository->membres();
 
@@ -73,8 +76,11 @@ class CommercantController extends AbstractController
     #[Route('/{id}', name: 'cap_commercant_show', methods: ['GET'])]
     public function show(CommercioCommercant $commercant): Response
     {
+        $gallery = $this->commercantGalleryRepository->findByCommercant($commercant);
+
         return $this->render('@CapCommercio/commercant/show.html.twig', [
             'commercant' => $commercant,
+            'gallery' => $gallery,
         ]);
     }
 

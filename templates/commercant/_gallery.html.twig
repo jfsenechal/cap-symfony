@@ -1,0 +1,28 @@
+{% if gallery|length > 0 %}
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true" style="width: 60%;">
+        <div class="carousel-indicators">
+            {% for img in gallery %}
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ loop.index0 }}"
+                        class="active"
+                        aria-current="true" aria-label="Slide {{ loop.index }}"></button>
+            {% endfor %}
+        </div>
+        <div class="carousel-inner">
+            {% for img in gallery %}
+                <div class="carousel-item {% if loop.index == 1 %}active{% endif %}">
+                    <img src="https://cap.marche.be/{{ img.mediaPath }}" class="d-block w-100" alt="...">
+                </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+{% endif %}
