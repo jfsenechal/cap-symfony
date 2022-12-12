@@ -4,6 +4,7 @@ namespace Cap\Commercio\Controller;
 
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Form\CommercioCommercantType;
+use Cap\Commercio\Form\SearchCommercantType;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -20,13 +21,22 @@ class CommercantController extends AbstractController
     {
     }
 
-    #[Route('/', name: 'cap_commercant_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    #[Route('/', name: 'cap_commercant_index', methods: ['GET','POST'])]
+    public function index(Request $request): Response
     {
-        $commercants = $this->commercantRepository->findAll();
+        $form = $this->createForm(SearchCommercantType::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $commercants = $this->commercantRepository->search($data['name'], $data['isMember']);
+        } else {
+            $commercants = $this->commercantRepository->findAll();
+        }
 
         return $this->render('@CapCommercio/commercant/index.html.twig', [
             'commercants' => $commercants,
+            'form' => $form,
         ]);
     }
 

@@ -46,8 +46,8 @@
 
         <form class="form-signin" method="post" action="{{ path('app_login') }}">
             <img class="mb-4 img-fluid" title="Adl"
-                 src=""
-                 alt="logo" width="72">
+                 src="{{ asset('/bundles/capcommercio/adl_logo.png') }}"
+                 alt="logo" width="160">
             <h1 class="h3 mb-3 font-weight-normal">Authentification</h1>
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>

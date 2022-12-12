@@ -4,5 +4,6 @@ use Symfony\Config\TwigConfig;
 
 return static function (TwigConfig $twig) {
     $twig
-        ->path('%kernel.project_dir%/src/Cap/Commercio/templates', 'CapCommercio');
+        ->path('%kernel.project_dir%/src/Cap/Commercio/templates', 'CapCommercio')
+        ->formThemes(['bootstrap_5_layout.html.twig']);
 };

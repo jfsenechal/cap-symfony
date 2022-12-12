@@ -5,6 +5,7 @@ namespace Cap\Commercio\Repository;
 use Cap\Commercio\Doctrine\OrmCrudTrait;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -25,12 +26,35 @@ class CommercioCommercantRepository extends ServiceEntityRepository
     /**
      * @return CommercioCommercant[]
      */
-    public function findAllOrdered():array
+    public function findAllOrdered(): array
     {
-      return  $this->createQueryBuilder('paymentOrder')
-            ->orderBy('paymentOrder.insertDate', 'DESC')
+        return $this->createQb()
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @return CommercioCommercant[]
+     */
+    public function search(?string $name, ?int $isMember = null): array
+    {
+        $qb = $this->createQb();
+        $qb->andWhere('commercant.legalEntity LIKE :name')
+            ->setParameter('name', '%'.$name.'%');
+
+        if ($isMember === 1 || $isMember === 0) {
+            $qb->andWhere('commercant.isMember = :member')
+                ->setParameter('member', $isMember);
+        }
+
+        return $qb->getQuery()->getResult();
+
+    }
+
+    private function createQb(): QueryBuilder
+    {
+        return $this->createQueryBuilder('commercant')
+            ->orderBy('commercant.legalFirstname', 'ASC');
     }
 
 }
