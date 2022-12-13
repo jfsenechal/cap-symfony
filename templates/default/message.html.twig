@@ -1,0 +1,67 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">{{ messages|length }} messages</h3>
+
+        <div class="card-body">
+            <table class="table table-bordered mt-3">
+                <tr>
+                    <th>Nom</th>
+                    <th>Date</th>
+                </tr>
+                {% for message in messages %}
+                    <tr>
+                        <td>{{ message.slug }}</td>
+                        <td>{{ message.created_at }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <h4>Senders</h4>
+            <table class="table table-bordered mt-3">
+                <tr>
+                    <th>Nom</th>
+                    <th>Sent</th>
+                </tr>
+                {% for sender in senders %}
+                    <tr>
+                        <td>{{ sender.address }}</td>
+                        <td>{{ sender.sent }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <h4>Domains</h4>
+            <table class="table table-bordered mt-3">
+                <tr>
+                    <th>Nom</th>
+                    <th>Date</th>
+                </tr>
+                {% for domain in domains %}
+                    <tr>
+                        <td>{{ domain.domain }}</td>
+                        <td>{{ domain.verified_at }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <h4>Accounts</h4>
+            <table class="table table-bordered mt-3">
+                <tr>
+                    <th>Nom</th>
+                    <th>Sent</th>
+                    <th>reputation</th>
+                </tr>
+                {% for account in accounts %}
+                    <tr>
+                        <td>{{ account.name }}</td>
+                        <td>{{ account.sent_total }}</td>
+                        <td>{{ account.reputation }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+    </div>
+{% endblock %}
+

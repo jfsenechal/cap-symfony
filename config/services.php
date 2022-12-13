@@ -4,6 +4,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
+    $parameters->set('MANDRILL_API','%env(MANDRILL_API)%');
 
     $services = $containerConfigurator->services();
 
