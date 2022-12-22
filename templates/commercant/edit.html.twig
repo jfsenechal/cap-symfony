@@ -3,11 +3,13 @@
 {% block title %}Edit CommercioCommercant{% endblock %}
 
 {% block body %}
-    <h1>Edit CommercioCommercant</h1>
 
-    {{ include('commercant/_form.html.twig', {'button_label': 'Update'}) }}
+    <div class="card">
+        <h3 class="card-header">{{ commercant.legalEntity }}</h3>
 
-    <a href="{{ path('app_commercant_index') }}">back to list</a>
+        <div class="card-body">
+            {{ include('@CapCommercio/commercant/_form.html.twig') }}
+        </div>
+    </div>
 
-    {{ include('commercant/_delete_form.html.twig') }}
 {% endblock %}

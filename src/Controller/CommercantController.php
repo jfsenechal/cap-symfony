@@ -68,7 +68,7 @@ class CommercantController extends AbstractController
         }
 
         return $this->render('@CapCommercio/commercant/new.html.twig', [
-            'commercio_commercant' => $commercioCommercant,
+            'commercant' => $commercioCommercant,
             'form' => $form,
         ]);
     }
@@ -100,7 +100,7 @@ class CommercantController extends AbstractController
         }
 
         return $this->render('@CapCommercio/commercant/edit.html.twig', [
-            'commercio_commercant' => $commercioCommercant,
+            'commercant' => $commercioCommercant,
             'form' => $form,
         ]);
     }
