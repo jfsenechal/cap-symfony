@@ -81,8 +81,8 @@ class MandrillController extends AbstractController
         $mandrillMail->addReceiver($email, "", $email);
         $mandrillMail->template = "commercio_recovery";
         $mandrillMail->subject = "Récupération de mot de passe."; //translator ?
-        $mandrillMail->senderName = 'jf@marche.be';
-        $mandrillMail->senderEmail = 'jf@marche.be';
+        $mandrillMail->senderName = 'Cap sur Marche';
+        $mandrillMail->senderEmail = 'info@capsurmarche.com';
         $mandrillMail->website = PREFIX.PREFIX_RESOURCES;
         try {
             $mandrillMail->sendMe();
