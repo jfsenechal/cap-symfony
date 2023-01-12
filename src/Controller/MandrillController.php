@@ -60,15 +60,15 @@ class MandrillController extends AbstractController
 
     private function testMandrill(): bool
     {
-        $email = 'jf@marche.be';
-        $api = $this->getParameter('MANDRILL_API');
-        $mandrillMail = new MandrillMail($api);
-
         define('PREFIX', 'https://cap.marche.be'); //url site
         define('PREFIX_RESOURCES', ''); // vide
         define('TEMPLATES_PATH', '/templates/');
         define('TEMPLATES_FOLDER_NAME', 'commercio');
         define('MANDRILL_SUBACCOUNT','commercio');
+        $email = 'jf@marche.be';
+        $api = $this->getParameter('MANDRILL_API');
+        $mandrillMail = new MandrillMail($api);
+
         $code = 1235;
         $recovery_path = "admin/renew/".$code;
 
