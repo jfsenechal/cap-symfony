@@ -70,7 +70,7 @@ class MandrillController extends AbstractController
         $mandrillMail = new MandrillMail($api);
 
         $code = 1235;
-        $recovery_path = "admin/renew/".$code;
+        $recovery_path = "/admin/renew/".$code;
 
         $templatePath = PREFIX.PREFIX_RESOURCES.TEMPLATES_PATH.TEMPLATES_FOLDER_NAME.'/';
 
