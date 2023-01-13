@@ -137,6 +137,7 @@ class CommercantController extends AbstractController
                     $this->addFlash('danger', 'Erreur lors de l\'envoie du mail: '.$e->getMessage());
                 }
             }
+            $this->addFlash('success', 'Le commerçant a été modifié');
 
             return $this->redirectToRoute(
                 'cap_commercant_show',
