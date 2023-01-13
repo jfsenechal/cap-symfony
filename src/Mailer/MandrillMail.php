@@ -98,7 +98,6 @@ class MandrillMail
 
         if ($this->sendable) {
 
-
             $template_content = array();
             $mandrill = new \Mandrill($this->mandrillApiKey);
             $message = array(
@@ -140,10 +139,10 @@ class MandrillMail
                 $ip_pool,
                 ''
             );
-            dump($res);
 
             if (isset($res[0]['reject_reason']) && $res[0]['reject_reason'] != null) {
                 $this->errors = $res[0]['reject_reason'];
+                throw new \Exception($this->errors);
             } else {
                 $result = true;
             }

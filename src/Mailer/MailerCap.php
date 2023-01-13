@@ -3,7 +3,6 @@
 namespace Cap\Commercio\Mailer;
 
 use Cap\Commercio\Entity\CommercioCommercant;
-use DateTime;
 use Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Mime\Email;
@@ -67,7 +66,6 @@ class MailerCap
         try {
             $mandrillMail->sendMe();
         } catch (Exception $exception) {
-            dump($exception);
             throw $exception;
         }
     }
