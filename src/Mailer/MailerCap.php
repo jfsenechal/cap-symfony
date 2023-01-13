@@ -26,6 +26,12 @@ class MailerCap
         $this->senderName = 'Cap sur Marche';
     }
 
+    /**
+     * @param CommercioCommercant $commercant
+     * @param string $env
+     * @return void
+     * @throws Exception
+     */
     public function sendAffiliationExpired(CommercioCommercant $commercant, string $env)
     {
         $dateTime = $commercant->getAffiliationDate();
