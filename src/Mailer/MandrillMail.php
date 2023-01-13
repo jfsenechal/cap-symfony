@@ -60,7 +60,6 @@ class MandrillMail
         if (!defined("MANDRILL_SUBACCOUNT")) {
             exit();
         }
-        dump(123);
         if (($this->data === false)) {
             exit();
         }
