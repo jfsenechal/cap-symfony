@@ -248,6 +248,8 @@ class CommercioCommercant
      */
     private $rightAccess;
 
+    public $sendMailExpired = false;
+
     public function getId(): ?string
     {
         return $this->id;

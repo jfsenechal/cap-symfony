@@ -3,8 +3,10 @@
 namespace Cap\Commercio\Controller;
 
 use Cap\Commercio\Entity\CommercioCommercant;
+use Cap\Commercio\Form\CheckMemberType;
 use Cap\Commercio\Form\CommercantSearchType;
 use Cap\Commercio\Form\CommercantType;
+use Cap\Commercio\Mailer\MailerCap;
 use Cap\Commercio\Repository\CommercantGalleryRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,7 +22,8 @@ class CommercantController extends AbstractController
 {
     public function __construct(
         private CommercioCommercantRepository $commercantRepository,
-        private CommercantGalleryRepository $commercantGalleryRepository
+        private CommercantGalleryRepository $commercantGalleryRepository,
+        private MailerCap $mailer
     ) {
     }
 
@@ -87,20 +90,60 @@ class CommercantController extends AbstractController
     #[Route('/{id}/edit', name: 'cap_commercant_edit', methods: ['GET', 'POST'])]
     public function edit(
         Request $request,
-        CommercioCommercant $commercioCommercant,
+        CommercioCommercant $commercant,
         EntityManagerInterface $entityManager
     ): Response {
-        $form = $this->createForm(CommercantType::class, $commercioCommercant);
+        $form = $this->createForm(CommercantType::class, $commercant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
+            $this->addFlash('success', 'La modification a été faite');
 
-            return $this->redirectToRoute('cap_commercant_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(
+                'cap_commercant_show',
+                ['id' => $commercant->getId()],
+                Response::HTTP_SEE_OTHER
+            );
+
         }
 
         return $this->render('@CapCommercio/commercant/edit.html.twig', [
-            'commercant' => $commercioCommercant,
+            'commercant' => $commercant,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}/member', name: 'cap_commercant_member', methods: ['GET', 'POST'])]
+    public function member(
+        Request $request,
+        CommercioCommercant $commercant,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $form = $this->createForm(CheckMemberType::class, $commercant);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $entityManager->flush();
+            if ($data->sendMailExpired) {
+                try {
+                    $this->mailer->sendAffiliationExpired($commercant, $this->getParameter('kernel.environment'));
+                    $this->addFlash('success', 'Le mail a bien été envoyé');
+                } catch (\Exception $e) {
+                    $this->addFlash('danger', 'Erreur lors de l\'envoie du mail: '.$e->getMessage());
+                }
+            }
+
+            return $this->redirectToRoute(
+                'cap_commercant_show',
+                ['id' => $commercant->getId()],
+                Response::HTTP_SEE_OTHER
+            );
+        }
+
+        return $this->render('@CapCommercio/commercant/member.html.twig', [
+            'commercant' => $commercant,
             'form' => $form,
         ]);
     }

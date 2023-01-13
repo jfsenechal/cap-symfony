@@ -1,5 +1,11 @@
 <div class="row gy-2 gx-1 align-items-center d-print-none mb-3">
     <div class="col-auto">
+        <a href="{{ path('cap_commercant_member',{'id':commercant.id}) }}" class="btn btn-primary" role='button'>
+            <i class="fas fa-people-group"></i>
+            Membre
+        </a>
+    </div>
+    <div class="col-auto">
         <a href="{{ path('cap_commercant_edit',{'id':commercant.id}) }}" class="btn btn-primary" role='button'>
             <i class="fas fa-edit"></i>
             Modifier

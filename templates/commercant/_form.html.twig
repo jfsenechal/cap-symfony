@@ -1,4 +1,33 @@
 {{ form_start(form) }}
-{{ form_widget(form) }}
+<div class="row">
+    <div class="col-6">{{ form_row(form.legalEntity) }}</div>
+    <div class="col-6">
+        {{ form_row(form.commercialWordTitle) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">{{ form_row(form.vatNumber) }}</div>
+    <div class="col-6"></div>
+</div>
+<div class="row">
+    <div class="col-6">{{ form_row(form.phone) }}</div>
+    <div class="col-6">{{ form_row(form.legalPhone) }}</div>
+</div>
+<div class="row">
+    <div class="col-6">{{ form_row(form.legalEmail) }}</div>
+    <div class="col-6">{{ form_row(form.legalEmail2) }}</div>
+</div>
+<div class="row">
+    <div class="col-6">{{ form_row(form.legalFirstname) }}</div>
+    <div class="col-6">{{ form_row(form.legalLastname) }}</div>
+</div>
+
+<div class="row">
+    <div class="col-6">{{ form_row(form.facebookLink) }}</div>
+    <div class="col-6">{{ form_row(form.twitterLink) }}</div>
+</div>
+
+{{ form_row(form.commercialWordDescription) }}
+
 <button class="btn btn-primary"><i class="fa fa-save"></i> Sauvegarder</button>
 {{ form_end(form) }}
