@@ -170,7 +170,6 @@ class MandrillMail
 
     public function addReceiver($email, $firstname = "", $lastname = "", $type = "to")
     {
-
         if ($email != "" && $email != " ") {
             //gestion de la mise en copy d'un autre email pour les mails admin
             $copyReceiver = array();

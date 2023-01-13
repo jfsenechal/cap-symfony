@@ -29,7 +29,6 @@ class MailerCap
 
     public function sendAffiliationExpired(CommercioCommercant $commercant, string $env)
     {
-        $email = 'jf@marche.be';
         $dateTime = $commercant->getAffiliationDate();
         $mandrillMail = new MandrillMail($this->api);
 
@@ -50,8 +49,6 @@ class MailerCap
                 );
             }
         }
-
-        $mandrillMail->addReceiver($email, "", $email);
         if ($dateTime) {
             $date = $dateTime->format("d/m/Y");
         } else {
