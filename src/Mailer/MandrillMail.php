@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-namespace Cap\Commercio\Service;
+namespace Cap\Commercio\Mailer;
 
 class MandrillMail
 {
@@ -32,7 +32,6 @@ class MandrillMail
 
     public function __construct($api, $subAccount = false)
     {
-
         $this->data = array();
         if (!$subAccount) {
             if (defined('MANDRILL_SUBACCOUNT')) {
@@ -141,7 +140,7 @@ class MandrillMail
                 $ip_pool,
                 ''
             );
-dump($res);
+            dump($res);
 
             if (isset($res[0]['reject_reason']) && $res[0]['reject_reason'] != null) {
                 $this->errors = $res[0]['reject_reason'];

@@ -1,6 +1,6 @@
 <?php
 
-namespace Cap\Commercio\Service;
+namespace Cap\Commercio\Mailer;
 
 class MandrillMailDataItem{
     private $name;
