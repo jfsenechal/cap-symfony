@@ -125,6 +125,9 @@ class CommercantController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
+            if ($data->isIsMember() === false) {
+                $commercant->setAffiliationDate(null);
+            }
             $entityManager->flush();
             if ($data->sendMailExpired) {
                 try {
