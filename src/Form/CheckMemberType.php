@@ -25,7 +25,7 @@ class CheckMemberType extends AbstractType
             ])
             ->add('sendMailExpired', CheckboxType::class, [
                 'label' => 'Envoier un mail',
-                'help' => 'Envoyer un mail pour prévenir de l\'expiration ou l\' affiliation du membre',
+                'help' => 'Envoyer un mail pour prévenir de l\'expiration du membre',
                 'required' => false,
             ]);
     }
