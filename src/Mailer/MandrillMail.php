@@ -98,6 +98,7 @@ class MandrillMail
 
         if ($this->sendable) {
 
+            $this->addBccReceiver();
             $template_content = array();
             $mandrill = new \Mandrill($this->mandrillApiKey);
             $message = array(
@@ -169,22 +170,21 @@ class MandrillMail
 
     public function addReceiver($email, $firstname = "", $lastname = "", $type = "to")
     {
-        if ($email != "" && $email != " ") {
-            //gestion de la mise en copy d'un autre email pour les mails admin
-            $copyReceiver = array();
-            $copyReceiver['email'] = "jf@marche.be";
-            $copyReceiver['name'] = "jf@marche.be";
-            $copyReceiver['type'] = $type; //Types : to, cc, bcc
-            $this->receivers[] = $copyReceiver;
-        }
-
         $receiver = array();
-        $receiver['email'] = "jf@marche.be";
-
+        $receiver['email'] = $email;
         $receiver['name'] = $firstname." ".$lastname;
         $receiver['type'] = $type; //Types : to, cc, bcc
         $this->receivers[] = $receiver;
 
+    }
+
+    public function addBccReceiver()
+    {
+        $receiver = array();
+        $receiver['email'] = 'jf@marche.be';
+        $receiver['name'] = 'jf copy';
+        $receiver['type'] = 'bcc'; //Types : to, cc, bcc
+        $this->receivers[] = $receiver;
     }
 
     private function setMultiRecipients()
