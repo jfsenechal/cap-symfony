@@ -20,8 +20,9 @@ class CheckMemberType extends AbstractType
             ])
             ->add('affiliationDate', DateType::class, [
                 'required' => false,
+                'label' => 'Date d\'affiliation',
                 'widget' => 'single_text',
-                'help' => 'Si oui à quelle date ? Sinon la valeur n\'est pas prise en compte',
+                'help' => 'Si affilié, à quelle date ? Sinon la valeur n\'est pas prise en compte',
             ])
             ->add('sendMailExpired', CheckboxType::class, [
                 'label' => 'Envoier un mail',
