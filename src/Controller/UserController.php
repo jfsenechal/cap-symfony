@@ -3,6 +3,7 @@
 namespace Cap\Commercio\Controller;
 
 use Cap\Commercio\Entity\RightAccess;
+use Cap\Commercio\Form\UserPasswordType;
 use Cap\Commercio\Form\UserSearchType;
 use Cap\Commercio\Form\UserType;
 use Cap\Commercio\Repository\AdministratorRepository;
@@ -74,6 +75,33 @@ class UserController extends AbstractController
                 $this->rightAccessRepository->flush();
                 $this->addFlash('success', 'La modification a été faite');
             }
+
+            return $this->redirectToRoute(
+                'cap_user_show',
+                ['id' => $user->getId()],
+                Response::HTTP_SEE_OTHER
+            );
+
+        }
+
+        return $this->render('@CapCommercio/user/edit.html.twig', [
+            'user' => $user,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}/password', name: 'cap_user_password', methods: ['GET', 'POST'])]
+    public function password(
+        Request $request,
+        RightAccess $user,
+    ): Response {
+        $form = $this->createForm(UserPasswordType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $password = md5($data->password_plain);
+            dd($password);
 
             return $this->redirectToRoute(
                 'cap_user_show',

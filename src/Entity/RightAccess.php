@@ -77,6 +77,8 @@ class RightAccess implements UserInterface, PasswordHasherAwareInterface,Passwor
 
     private array $roles = ['ROLE_CAP'];
 
+    public ?string $password_plain = null;
+
     public function __toString(): string
     {
         return $this->email;
