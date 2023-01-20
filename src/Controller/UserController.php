@@ -58,7 +58,7 @@ class UserController extends AbstractController
         ]);
     }
 
-#[Route('/{id}/edit', name: 'cap_user_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'cap_user_edit', methods: ['GET', 'POST'])]
     public function edit(
         Request $request,
         RightAccess $user,
@@ -67,8 +67,13 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $this->rightAccessRepository->flush();
+            $data = $form->getData();
+            if ($this->rightAccessRepository->checkExist($data->getEmail(), $user)) {
+                $this->addFlash('success', 'L\'adresse email est déjà prise sur un autre compte');
+            } else {
+                $this->addFlash('success', 'ok to modif');
+            }
+            // $this->rightAccessRepository->flush();
             $this->addFlash('success', 'La modification a été faite');
 
             return $this->redirectToRoute(

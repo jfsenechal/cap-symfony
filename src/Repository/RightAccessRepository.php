@@ -27,7 +27,7 @@ class RightAccessRepository extends ServiceEntityRepository
      * @param string $name
      * @return array|RightAccess[]
      */
-    public function search(string $name):array
+    public function search(string $name): array
     {
         $qb = $this->createQb();
 
@@ -37,6 +37,16 @@ class RightAccessRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function checkExist(string $email, RightAccess $userRef): ?RightAccess
+    {
+        return $this->createQb()
+            ->andWhere('rightAccess.email = :name')
+            ->setParameter('name', $email)
+            ->andWhere('rightAccess.id != :id')
+            ->setParameter('id', $userRef->getId())
+            ->getQuery()->getResult();
     }
 
     private function createQb(): QueryBuilder
