@@ -1,0 +1,23 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">{{ user.email }}</h3>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>Identifiant</th>
+                    <td>{{ user.userIdentifier }}</td>
+                </tr>
+                <tr>
+                    <th>Rôles</th>
+                    <td>{{ user.roles|join('') }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

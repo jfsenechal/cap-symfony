@@ -23,7 +23,11 @@ class RightAccessRepository extends ServiceEntityRepository
         parent::__construct($registry, RightAccess::class);
     }
 
-    public function search(string $name)
+    /**
+     * @param string $name
+     * @return array|RightAccess[]
+     */
+    public function search(string $name):array
     {
         $qb = $this->createQb();
 

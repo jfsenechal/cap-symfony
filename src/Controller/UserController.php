@@ -2,6 +2,7 @@
 
 namespace Cap\Commercio\Controller;
 
+use Cap\Commercio\Entity\RightAccess;
 use Cap\Commercio\Form\UserSearchType;
 use Cap\Commercio\Repository\AdministratorRepository;
 use Cap\Commercio\Repository\RightAccessRepository;
@@ -41,6 +42,14 @@ class UserController extends AbstractController
                 'form' => $form,
             ]
         );
+    }
+
+    #[Route('/{id}', name: 'cap_user_show', methods: ['GET'])]
+    public function show(RightAccess $rightAccess): Response
+    {
+        return $this->render('@CapCommercio/user/show.html.twig', [
+            'user' => $rightAccess,
+        ]);
     }
 
     #[Route(path: '/administrator', name: 'cap_administrator', methods: ['GET'])]

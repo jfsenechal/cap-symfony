@@ -23,7 +23,7 @@
                 {% for user in users %}
                     <tr>
                         <td>
-                            <a href="/">{{ user.email }}</a>
+                            <a href="{{ path('cap_user_show', {'id': user.id}) }}">{{ user.email }}</a>
                         </td>
                         <td>
                             {{ user.modifyDate|format_date('full') }}
