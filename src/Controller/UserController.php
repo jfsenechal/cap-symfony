@@ -4,6 +4,7 @@ namespace Cap\Commercio\Controller;
 
 use Cap\Commercio\Entity\RightAccess;
 use Cap\Commercio\Form\UserSearchType;
+use Cap\Commercio\Form\UserType;
 use Cap\Commercio\Repository\AdministratorRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Repository\RightAccessRepository;
@@ -54,6 +55,33 @@ class UserController extends AbstractController
         return $this->render('@CapCommercio/user/show.html.twig', [
             'user' => $rightAccess,
             'commercants' => $commercants,
+        ]);
+    }
+
+#[Route('/{id}/edit', name: 'cap_user_edit', methods: ['GET', 'POST'])]
+    public function edit(
+        Request $request,
+        RightAccess $user,
+    ): Response {
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->rightAccessRepository->flush();
+            $this->addFlash('success', 'La modification a été faite');
+
+            return $this->redirectToRoute(
+                'cap_user_show',
+                ['id' => $user->getId()],
+                Response::HTTP_SEE_OTHER
+            );
+
+        }
+
+        return $this->render('@CapCommercio/user/edit.html.twig', [
+            'user' => $user,
+            'form' => $form,
         ]);
     }
 
