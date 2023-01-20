@@ -101,13 +101,9 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $password = md5($data->password_plain);
-            dd($password);
+            dump($password);
 
-            return $this->redirectToRoute(
-                'cap_user_show',
-                ['id' => $user->getId()],
-                Response::HTTP_SEE_OTHER
-            );
+
 
         }
 
