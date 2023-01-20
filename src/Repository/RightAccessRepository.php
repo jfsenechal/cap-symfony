@@ -23,7 +23,7 @@ class RightAccessRepository extends ServiceEntityRepository
         parent::__construct($registry, RightAccess::class);
     }
 
-    public function search(?string $name)
+    public function search(string $name)
     {
         $qb = $this->createQb();
 
@@ -38,7 +38,7 @@ class RightAccessRepository extends ServiceEntityRepository
     private function createQb(): QueryBuilder
     {
         return $this->createQueryBuilder('rightAccess')
-            ->orderBy('rightAccess.legalFirstname', 'ASC');
+            ->orderBy('rightAccess.email', 'ASC');
     }
 
 }
