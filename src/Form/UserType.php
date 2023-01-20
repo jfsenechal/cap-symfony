@@ -2,7 +2,7 @@
 
 namespace Cap\Commercio\Form;
 
-use Cap\Commercio\Entity\User;
+use Cap\Commercio\Entity\RightAccess;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,7 +21,7 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => RightAccess::class,
         ]);
     }
 }
