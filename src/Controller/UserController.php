@@ -5,6 +5,7 @@ namespace Cap\Commercio\Controller;
 use Cap\Commercio\Entity\RightAccess;
 use Cap\Commercio\Form\UserSearchType;
 use Cap\Commercio\Repository\AdministratorRepository;
+use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Repository\RightAccessRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +19,8 @@ class UserController extends AbstractController
 {
     public function __construct(
         private RightAccessRepository $rightAccessRepository,
-        private AdministratorRepository $administratorRepository
+        private AdministratorRepository $administratorRepository,
+        private CommercioCommercantRepository $commercantRepository
     ) {
     }
 
@@ -47,8 +49,11 @@ class UserController extends AbstractController
     #[Route('/{id}', name: 'cap_user_show', methods: ['GET'])]
     public function show(RightAccess $rightAccess): Response
     {
+        $commercants = $this->commercantRepository->findBy(['rightAccess' => $rightAccess]);
+
         return $this->render('@CapCommercio/user/show.html.twig', [
             'user' => $rightAccess,
+            'commercants' => $commercants,
         ]);
     }
 

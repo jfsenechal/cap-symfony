@@ -17,6 +17,17 @@
                     <td>{{ user.roles|join('') }}</td>
                 </tr>
             </table>
+
+            <h4>Gère les commerces</h4>
+            <ul class="list-group">
+                {% for commercant in commercants %}
+                    <li class="list-group-item">
+                        <a href="{{ path('cap_commercant_show', {'id': commercant.id}) }}">{{ commercant.legalEntity }}</a>
+                    </li>
+                {% else %}
+                    <li>Aucun</li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 
