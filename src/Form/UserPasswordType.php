@@ -15,6 +15,7 @@ class UserPasswordType extends AbstractType
         $builder
             ->add('password_plain', TextType::class, [
                 'required' => true,
+                'label' => 'Nouveau mot de passe',
                 'attr' => ['autocomplete' => 'off'],
             ]);
     }

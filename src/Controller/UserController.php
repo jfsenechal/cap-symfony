@@ -101,10 +101,16 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $password = md5($data->password_plain);
-            dump($password);
+            $user->setPassword($password);
 
+            $this->rightAccessRepository->flush();
+            $this->addFlash('success', 'La modification a été faite');
 
-
+            return $this->redirectToRoute(
+                'cap_user_show',
+                ['id' => $user->getId()],
+                Response::HTTP_SEE_OTHER
+            );
         }
 
         return $this->render('@CapCommercio/user/password.html.twig', [
