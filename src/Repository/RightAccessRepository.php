@@ -46,7 +46,7 @@ class RightAccessRepository extends ServiceEntityRepository
             ->setParameter('name', $email)
             ->andWhere('rightAccess.id != :id')
             ->setParameter('id', $userRef->getId())
-            ->getQuery()->getResult();
+            ->getQuery()->getOneOrNullResult();
     }
 
     private function createQb(): QueryBuilder
