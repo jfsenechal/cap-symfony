@@ -111,7 +111,7 @@ class UserController extends AbstractController
 
         }
 
-        return $this->render('@CapCommercio/user/edit.html.twig', [
+        return $this->render('@CapCommercio/user/password.html.twig', [
             'user' => $user,
             'form' => $form,
         ]);
