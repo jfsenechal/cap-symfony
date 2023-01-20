@@ -69,12 +69,11 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             if ($this->rightAccessRepository->checkExist($data->getEmail(), $user)) {
-                $this->addFlash('success', 'L\'adresse email est déjà prise sur un autre compte');
+                $this->addFlash('danger', 'L\'adresse email est déjà prise sur un autre compte');
             } else {
-                $this->addFlash('success', 'ok to modif');
+                $this->rightAccessRepository->flush();
+                $this->addFlash('success', 'La modification a été faite');
             }
-            // $this->rightAccessRepository->flush();
-            $this->addFlash('success', 'La modification a été faite');
 
             return $this->redirectToRoute(
                 'cap_user_show',
