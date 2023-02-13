@@ -11,9 +11,9 @@
             Modifier
         </a>
     </div>
-    {% if rightAccess %}
+    {% if commercant.rightAccess %}
         <div class="col-auto">
-            <a href="{{ path('cap_user_show',{'id':rightAccess.id}) }}" class="btn btn-primary" role='button'>
+            <a href="{{ path('cap_user_show',{'id':commercant.rightAccess.id}) }}" class="btn btn-primary" role='button'>
                 <i class="fas fa-people-group"></i>
                 Compte
             </a>

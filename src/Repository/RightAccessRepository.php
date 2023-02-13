@@ -60,7 +60,7 @@ class RightAccessRepository extends ServiceEntityRepository
     {
         return $this->createQb()
             ->andWhere('rightAccess.uuid = :uid')
-            ->setParameter('uid', $commercant->getUuid())
+            ->setParameter('uid', $commercant->getRightAccess())
             ->getQuery()->getOneOrNullResult();
     }
 

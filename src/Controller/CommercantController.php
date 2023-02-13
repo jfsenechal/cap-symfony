@@ -82,12 +82,10 @@ class CommercantController extends AbstractController
     public function show(CommercioCommercant $commercant): Response
     {
         $gallery = $this->commercantGalleryRepository->findByCommercant($commercant);
-        $rightAccess = $this->rightAccessRepository->findByCommercant($commercant);
 
         return $this->render('@CapCommercio/commercant/show.html.twig', [
             'commercant' => $commercant,
             'gallery' => $gallery,
-            'rightAccess' => $rightAccess,
         ]);
     }
 
