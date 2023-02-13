@@ -9,6 +9,7 @@ use Cap\Commercio\Form\CommercantType;
 use Cap\Commercio\Mailer\MailerCap;
 use Cap\Commercio\Repository\CommercantGalleryRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
+use Cap\Commercio\Repository\RightAccessRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,6 +24,7 @@ class CommercantController extends AbstractController
     public function __construct(
         private CommercioCommercantRepository $commercantRepository,
         private CommercantGalleryRepository $commercantGalleryRepository,
+        private RightAccessRepository $rightAccessRepository,
         private MailerCap $mailer
     ) {
     }
@@ -80,10 +82,12 @@ class CommercantController extends AbstractController
     public function show(CommercioCommercant $commercant): Response
     {
         $gallery = $this->commercantGalleryRepository->findByCommercant($commercant);
+        $rightAccess = $this->rightAccessRepository->findByCommercant($commercant);
 
         return $this->render('@CapCommercio/commercant/show.html.twig', [
             'commercant' => $commercant,
             'gallery' => $gallery,
+            'rightAccess' => $rightAccess,
         ]);
     }
 

@@ -2,7 +2,7 @@
     <div class="col-auto">
         <a href="{{ path('cap_commercant_member',{'id':commercant.id}) }}" class="btn btn-primary" role='button'>
             <i class="fas fa-people-group"></i>
-            Membre
+            Membre ?
         </a>
     </div>
     <div class="col-auto">
@@ -11,5 +11,13 @@
             Modifier
         </a>
     </div>
+    {% if rightAccess %}
+        <div class="col-auto">
+            <a href="{{ path('cap_user_show',{'id':rightAccess.id}) }}" class="btn btn-primary" role='button'>
+                <i class="fas fa-people-group"></i>
+                Compte
+            </a>
+        </div>
+    {% endif %}
 </div>
 

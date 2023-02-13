@@ -3,6 +3,7 @@
 namespace Cap\Commercio\Repository;
 
 use Cap\Commercio\Doctrine\OrmCrudTrait;
+use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Entity\RightAccess;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -53,6 +54,14 @@ class RightAccessRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('rightAccess')
             ->orderBy('rightAccess.email', 'ASC');
+    }
+
+    public function findByCommercant(CommercioCommercant $commercant): ?RightAccess
+    {
+        return $this->createQb()
+            ->andWhere('rightAccess.uuid = :uid')
+            ->setParameter('uid', $commercant->getUuid())
+            ->getQuery()->getOneOrNullResult();
     }
 
 }
