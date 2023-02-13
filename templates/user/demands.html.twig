@@ -1,0 +1,30 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">{{ demands|length }} demandes</h3>
+        <div class="card-body">
+            <table class="table table-bordered mt-3">
+                <tr>
+                    <th>Email</th>
+                    <th>Code</th>
+                    <th>Date</th>
+                </tr>
+                {% for demand in demands %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('cap_user_show', {'id': demand.rightAccess.id}) }}">{{ demand.email }}</a>
+                        </td>
+                        <td>
+                            {{ demand.code }}
+                        </td>
+                        <td>
+                            {{ demand.insertDate|format_date('full') }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

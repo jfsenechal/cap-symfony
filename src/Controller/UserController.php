@@ -6,6 +6,7 @@ use Cap\Commercio\Entity\RightAccess;
 use Cap\Commercio\Form\UserPasswordType;
 use Cap\Commercio\Form\UserSearchType;
 use Cap\Commercio\Form\UserType;
+use Cap\Commercio\Repository\AccessDemandRepository;
 use Cap\Commercio\Repository\AdministratorRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Repository\RightAccessRepository;
@@ -22,7 +23,8 @@ class UserController extends AbstractController
     public function __construct(
         private RightAccessRepository $rightAccessRepository,
         private AdministratorRepository $administratorRepository,
-        private CommercioCommercantRepository $commercantRepository
+        private CommercioCommercantRepository $commercantRepository,
+        private AccessDemandRepository $accessDemandRepository
     ) {
     }
 
@@ -131,4 +133,18 @@ class UserController extends AbstractController
             ]
         );
     }
+
+    #[Route(path: '/access/demand', name: 'cap_access_demand', methods: ['GET'])]
+    public function accessDemand(Request $request): Response
+    {
+        $demands = $this->accessDemandRepository->findAllOrdered();
+
+        return $this->render(
+            '@CapCommercio/user/demands.html.twig',
+            [
+                'demands' => $demands,
+            ]
+        );
+    }
+
 }
