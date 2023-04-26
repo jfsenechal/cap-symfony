@@ -35,13 +35,27 @@ class PaymentOrderRepository extends ServiceEntityRepository
 
     /**
      * @param string|null $name
-     * @return array|PaymentOrder[]
+     * @return PaymentOrder[]
      */
     public function search(?string $name): array
     {
         return $this->createQb()
-            ->andWhere('commercant.firstname LIKE :name OR commercant.companyName LIKE :name')
+            ->andWhere(
+                'upper(commercant.firstname) LIKE upper(:name) OR upper(commercant.companyName) LIKE upper(:name)'
+            )
             ->setParameter('name', '%'.$name.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return PaymentOrder[]
+     */
+    public function findByCommercantId(int $commercantId): array
+    {
+        return $this->createQb()
+            ->andWhere('paymentOrder.commercantId = :id')
+            ->setParameter('id', $commercantId)
             ->getQuery()
             ->getResult();
     }

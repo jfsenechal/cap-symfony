@@ -9,6 +9,7 @@ use Cap\Commercio\Form\CommercantType;
 use Cap\Commercio\Mailer\MailerCap;
 use Cap\Commercio\Repository\CommercantGalleryRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
+use Cap\Commercio\Repository\PaymentOrderRepository;
 use Cap\Commercio\Repository\RightAccessRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,6 +25,7 @@ class CommercantController extends AbstractController
     public function __construct(
         private CommercioCommercantRepository $commercantRepository,
         private CommercantGalleryRepository $commercantGalleryRepository,
+        private PaymentOrderRepository $paymentOrderRepository,
         private RightAccessRepository $rightAccessRepository,
         private MailerCap $mailer
     ) {
@@ -82,10 +84,12 @@ class CommercantController extends AbstractController
     public function show(CommercioCommercant $commercant): Response
     {
         $gallery = $this->commercantGalleryRepository->findByCommercant($commercant);
+        $orders = $this->paymentOrderRepository->findByCommercantId($commercant->getId());
 
         return $this->render('@CapCommercio/commercant/show.html.twig', [
             'commercant' => $commercant,
             'gallery' => $gallery,
+            'orders' => $orders,
         ]);
     }
 

@@ -21,7 +21,11 @@
                     </tr>
                     <tr>
                         <th>Pdf</th>
-                        <td>{{ bill.pdfPath }} </td>
+                        <td>
+                            <a href="{{ asset(bill.pdfPath) }}">
+                                <i class="fas fa-download"></i> {{ bill.pdfPath }}
+                            </a>
+                        </td>
                     </tr>
                 </table>
             {% else %}
@@ -46,7 +50,7 @@
                 </table>
             {% endfor %}
 
-            <h4 class="text-success">Adresses</h4>
+            <h4 class="text-success">Adresse</h4>
             {% for address in addresses %}
                 <table class="table table-bordered">
                     <tr>
@@ -55,6 +59,34 @@
                     </tr>
                 </table>
             {% endfor %}
+
+            <h4 class="text-success">Au nom de</h4>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ orderCommercant.firstname }} {{ orderCommercant.lastname }}</td>
+                </tr>
+                <tr>
+                    <th>Company</th>
+                    <td>{{ orderCommercant.companyName }}</td>
+                </tr>
+                <tr>
+                    <th>Courriel</th>
+                    <td>{{ orderCommercant.email }}</td>
+                </tr>
+                <tr>
+                    <th>Vat</th>
+                    <td>{{ orderCommercant.companyVat }}</td>
+                </tr>
+                <tr>
+                    <th>Ajouté le</th>
+                    <td>{{ orderCommercant.insertDate|format_date('full') }}</td>
+                </tr>
+                <tr>
+                    <th>Modifié le</th>
+                    <td>{{ orderCommercant.modifyDate|format_date('full') }}</td>
+                </tr>
+            </table>
 
             {% include '@CapCommercio/order/_delete_form.html.twig' %}
 

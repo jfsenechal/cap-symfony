@@ -51,7 +51,7 @@ class CommercioCommercantRepository extends ServiceEntityRepository
     public function search(?string $name, ?int $isMember = null): array
     {
         $qb = $this->createQb();
-        $qb->andWhere('commercant.legalEntity LIKE :name')
+        $qb->andWhere('upper(commercant.legalEntity) LIKE upper(:name)')
             ->setParameter('name', '%'.$name.'%');
 
         if ($isMember === 1 || $isMember === 0) {
