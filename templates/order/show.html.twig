@@ -8,59 +8,7 @@
 
             {% include '@CapCommercio/order/_actions.html.twig' %}
 
-            <h4 class="text-success">Facture</h4>
-            {% for bill in bills %}
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Order</th>
-                        <td>{{ bill.order.orderNumber }} </td>
-                    </tr>
-                    <tr>
-                        <th>Montant</th>
-                        <td>{{ bill.priceVat|format_currency('eur') }} </td>
-                    </tr>
-                    <tr>
-                        <th>Pdf</th>
-                        <td>
-                            <a href="{{ asset(bill.pdfPath) }}">
-                                <i class="fas fa-download"></i> {{ bill.pdfPath }}
-                            </a>
-                        </td>
-                    </tr>
-                </table>
-            {% else %}
-                <p>Aucune</p>
-            {% endfor %}
-
-            <h4 class="text-success">Détail</h4>
-            {% for line in lines %}
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Order</th>
-                        <td>{{ line.order.orderNumber }}</td>
-                    </tr>
-                    <tr>
-                        <th>Label</th>
-                        <td>{{ line.label }}</td>
-                    </tr>
-                    <tr>
-                        <th>Price</th>
-                        <td>{{ line.totalPriceEvat|format_currency('euro') }}</td>
-                    </tr>
-                </table>
-            {% endfor %}
-
-            <h4 class="text-success">Adresse</h4>
-            {% for address in addresses %}
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Rue</th>
-                        <td>{{ address.city }} {{ address.street1 }}</td>
-                    </tr>
-                </table>
-            {% endfor %}
-
-            <h4 class="text-success">Au nom de</h4>
+            <h4 class="text-success">Bon de commande</h4>
             <table class="table table-bordered">
                 <tr>
                     <th>Nom</th>
@@ -87,6 +35,58 @@
                     <td>{{ orderCommercant.modifyDate|format_date('full') }}</td>
                 </tr>
             </table>
+
+            <h4 class="text-success">Paiement</h4>
+            {% for bill in bills %}
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Order</th>
+                        <td>{{ bill.order.orderNumber }} </td>
+                    </tr>
+                    <tr>
+                        <th>Montant</th>
+                        <td>{{ bill.priceVat|format_currency('eur') }} </td>
+                    </tr>
+                    <tr>
+                        <th>Pdf</th>
+                        <td>
+                            <a href="{{ asset(bill.pdfPath) }}" title="{{ bill.pdfPath }}">
+                                <i class="fas fa-download"></i> Télécharger
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            {% else %}
+                <p>Aucune</p>
+            {% endfor %}
+
+            <h4 class="text-success">Détails</h4>
+            {% for line in lines %}
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Order</th>
+                        <td>{{ line.order.orderNumber }}</td>
+                    </tr>
+                    <tr>
+                        <th>Label</th>
+                        <td>{{ line.label }}</td>
+                    </tr>
+                    <tr>
+                        <th>Prix TvaH</th>
+                        <td>{{ line.totalPriceEvat|format_currency('euro') }}</td>
+                    </tr>
+                </table>
+            {% endfor %}
+
+            <h4 class="text-success">Adresse</h4>
+            {% for address in addresses %}
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Rue</th>
+                        <td>{{ address.city }} {{ address.street1 }}</td>
+                    </tr>
+                </table>
+            {% endfor %}
 
             {% include '@CapCommercio/order/_delete_form.html.twig' %}
 

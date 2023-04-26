@@ -35,16 +35,35 @@ class PaymentOrderRepository extends ServiceEntityRepository
 
     /**
      * @param string|null $name
+     * @param int|null $year
+     * @param bool|null $paid
      * @return PaymentOrder[]
      */
-    public function search(?string $name): array
+    public function search(?string $name, ?int $year, ?bool $paid): array
     {
-        return $this->createQb()
-            ->andWhere(
-                'upper(commercant.firstname) LIKE upper(:name) OR upper(commercant.companyName) LIKE upper(:name)'
-            )
-            ->setParameter('name', '%'.$name.'%')
-            ->getQuery()
+        $qb = $this->createQb();
+
+        if ($name) {
+            $qb
+                ->andWhere(
+                    'upper(commercant.firstname) LIKE upper(:name) OR upper(commercant.companyName) LIKE upper(:name)'
+                )
+                ->setParameter('name', '%'.$name.'%');
+        }
+
+        if ($year) {
+            $qb
+                ->andWhere('YEAR(paymentOrder.insertDate) = :year')
+                ->setParameter('year', $year);
+        }
+
+        if ($paid !== null) {
+            $qb
+                ->andWhere('paymentOrder.isPaid = :paid')
+                ->setParameter('paid', $paid);
+        }
+
+        return $qb->getQuery()
             ->getResult();
     }
 
