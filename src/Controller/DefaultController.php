@@ -3,13 +3,13 @@
 namespace Cap\Commercio\Controller;
 
 use Cap\Commercio\Repository\SettingRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/')]
-#[IsGranted(data: 'ROLE_CAP')]
+#[IsGranted('ROLE_CAP')]
 class DefaultController extends AbstractController
 {
     public function __construct(

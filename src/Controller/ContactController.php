@@ -2,16 +2,15 @@
 
 namespace Cap\Commercio\Controller;
 
-use Cap\Commercio\Entity\ContactParams;
 use Cap\Commercio\Repository\ContactParamsRepository;
 use Cap\Commercio\Repository\ContactRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/contact')]
-#[IsGranted(data: 'ROLE_CAP')]
+#[IsGranted('ROLE_CAP')]
 class ContactController extends AbstractController
 {
     public function __construct(

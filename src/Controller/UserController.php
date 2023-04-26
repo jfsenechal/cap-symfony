@@ -10,14 +10,14 @@ use Cap\Commercio\Repository\AccessDemandRepository;
 use Cap\Commercio\Repository\AdministratorRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Repository\RightAccessRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/user')]
-#[IsGranted(data: 'ROLE_CAP')]
+#[IsGranted('ROLE_CAP')]
 class UserController extends AbstractController
 {
     public function __construct(

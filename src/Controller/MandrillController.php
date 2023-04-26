@@ -4,14 +4,14 @@ namespace Cap\Commercio\Controller;
 
 use Cap\Commercio\Mailer\MailerCap;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 //http://localhost/commerciosf/vendor/mandrill/mandrill/docs/
 #[Route(path: '/mandrill')]
-#[IsGranted(data: 'ROLE_CAP')]
+#[IsGranted('ROLE_CAP')]
 class MandrillController extends AbstractController
 {
     const templates = [
