@@ -49,7 +49,7 @@ class FixCommand extends Command
                 continue;
             }
             if (str_contains("/var/www/sites/commercio/", $order->getPdfPath())) {
-                $newPath = preg_replace('#/var/www/sites/commercio/#', "", $order->getPdfPath());
+                $newPath = str_replace('/var/www/sites/commercio/', "", $order->getPdfPath());
                 $io->writeln("new ".$newPath);
             }
             $io->writeln($order->getPdfPath());
