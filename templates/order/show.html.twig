@@ -41,7 +41,11 @@
                 <table class="table table-bordered">
                     <tr>
                         <th>Order</th>
-                        <td>{{ bill.order.orderNumber }} </td>
+                        <td>
+                            <a href="{{ path('cap_bill_show', {'id': bill.id}) }}">
+                                {{ bill.order.orderNumber }}
+                            </a>
+                        </td>
                     </tr>
                     <tr>
                         <th>Montant</th>
@@ -50,9 +54,13 @@
                     <tr>
                         <th>Pdf</th>
                         <td>
-                            <a href="{{ asset(bill.pdfPath) }}" title="{{ bill.pdfPath }}">
-                                <i class="fas fa-download"></i> Télécharger
-                            </a>
+                            {% if bill.pdfPath != null %}
+                                <a href="{{ asset(bill.pdfPath) }}" title="{{ bill.pdfPath }}">
+                                    <i class="fas fa-download"></i> Télécharger
+                                </a>
+                            {% else %}
+                                Pdf non trouvé
+                            {% endif %}
                         </td>
                     </tr>
                 </table>
@@ -65,6 +73,7 @@
                         Attention plusieurs paiements pour cette facture
                     </a>
                 </div>
+                {% include '@CapCommercio/order/_bills.html.twig' %}
             {% endif %}
 
             <h4 class="text-success">Détails</h4>

@@ -49,19 +49,6 @@ class OrderController extends AbstractController
         );
     }
 
-    #[Route(path: '/bill', name: 'cap_bill_all', methods: ['GET'])]
-    public function bill(): Response
-    {
-        $bills = $this->paymentBillRepository->findAllOrdered();
-
-        return $this->render(
-            '@CapCommercio/order/bill.html.twig',
-            [
-                'bills' => $bills,
-            ]
-        );
-    }
-
     #[Route(path: '/show/{id}', name: 'cap_order_show', methods: ['GET', 'POST'])]
     public function show(PaymentOrder $paymentOrder): Response
     {
@@ -96,7 +83,7 @@ class OrderController extends AbstractController
             $orderCommercant = $paymentOrder->getOrderCommercant();
             $lines = $this->paymentOrderLineRepository->findByOrder($paymentOrder);
             $addresses = $this->paymentOrderAddressRepository->findByOrder($paymentOrder);
-            $bills = $this->paymentBillRepository->findOneByOrder($paymentOrder);
+            $bills = $this->paymentBillRepository->findByOrder($paymentOrder);
 
             $this->paymentOrderRepository->remove($orderCommercant);
             foreach ($lines as $line) {

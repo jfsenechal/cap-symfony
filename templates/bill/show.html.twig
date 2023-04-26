@@ -1,0 +1,40 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">Paiement {{ bill.id }} de {{ order.orderNumber }}</h3>
+
+        <div class="card-body">
+
+            {% include '@CapCommercio/bill/_actions.html.twig' %}
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>Order</th>
+                    <td>
+                        <a href="{{ path('cap_order_show', {'id': order.id}) }}">
+                            {{ bill.order.orderNumber }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Montant</th>
+                    <td>{{ bill.priceVat|format_currency('eur') }} </td>
+                </tr>
+                <tr>
+                    <th>Pdf</th>
+                    <td>
+                        {% if bill.pdfPath != null %}
+                            <a href="{{ asset(bill.pdfPath) }}" title="{{ bill.pdfPath }}">
+                                <i class="fas fa-download"></i> Télécharger
+                            </a>
+                        {% else %}
+                            Pdf non trouvé
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    {{ include('@CapCommercio/bill/_delete_form.html.twig') }}
+{% endblock %}

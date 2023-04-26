@@ -1,0 +1,26 @@
+<table class="table table-bordered">
+    <tr>
+        <th>Order</th>
+        <th>Montant</th>
+        <th>Pdf</th>
+    </tr>
+    {% for bill in bills %}
+        <tr>
+            <td>
+                <a href="{{ path('cap_bill_show', {'id': bill.id}) }}">
+                    {{ bill.order.orderNumber }}
+                </a>
+            </td>
+            <td>{{ bill.priceVat|format_currency('eur') }} </td>
+            <td>
+                {% if bill.pdfPath != null %}
+                    <a href="{{ asset(bill.pdfPath) }}" title="{{ bill.pdfPath }}">
+                        <i class="fas fa-download"></i> Télécharger
+                    </a>
+                {% else %}
+                    Pdf non trouvé
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
