@@ -2,6 +2,7 @@
 
 namespace Cap\Commercio\Command;
 
+use Cap\Commercio\Entity\PaymentBill;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -44,20 +45,22 @@ class FixCommand extends Command
             $io->writeln($order->getPdfPath());
         }
         $io->section('BILL');
-        foreach ($this->paymentBillRepository->findAll() as $order) {
-            if ($order->getPdfPath() == null) {
-                $io->error('Vide'.$order->getId().$order->getOrder()->getOrderCommercant()->getCompanyName());
+        foreach ($this->paymentBillRepository->findAll() as $bill) {
+            if ($bill->getPdfPath() == null) {
+                $io->error('Vide'.$bill->getId().$bill->getOrder()->getOrderCommercant()->getCompanyName());
                 continue;
             }
-            if (str_contains($order->getPdfPath(), "/var/www/sites/commercio/")) {
-                $newPath = str_replace('/var/www/sites/commercio/', "", $order->getPdfPath());
-                $io->writeln("new ".$newPath);
-                $order->setPdfPath($newPath);
-            }
-            $io->writeln($order->getPdfPath());
+            $io->writeln($bill->getPdfPath());
         }
-        $this->paymentBillRepository->flush();
 
         return Command::SUCCESS;
+    }
+
+    private function fixPath(PaymentBill $bill)
+    {
+        if (str_contains($bill->getPdfPath(), "/var/www/sites/commercio/")) {
+            $newPath = str_replace('/var/www/sites/commercio/', "", $bill->getPdfPath());
+            $bill->setPdfPath($newPath);
+        }
     }
 }
