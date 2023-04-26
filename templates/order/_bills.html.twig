@@ -16,7 +16,7 @@
             <td>{{ bill.insertDate|format_date('full') }} </td>
             <td>
                 {% if bill.pdfPath != null %}
-                    <a href="{{ asset(bill.pdfPath) }}" title="{{ bill.pdfPath }}">
+                    <a href="{{ asset(bill.pdfPath) }}" title="{{ bill.pdfPath }}" target="_blank">
                         <i class="fas fa-download"></i> Télécharger
                     </a>
                 {% else %}
