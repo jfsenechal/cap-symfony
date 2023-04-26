@@ -1,17 +1,19 @@
 <table class="table table-bordered">
     <tr>
-        <th>Order</th>
+        <th>Number</th>
         <th>Montant</th>
+        <th>Crée le</th>
         <th>Pdf</th>
     </tr>
     {% for bill in bills %}
         <tr>
             <td>
                 <a href="{{ path('cap_bill_show', {'id': bill.id}) }}">
-                    {{ bill.order.orderNumber }}
+                    {{ bill.billNumber }}
                 </a>
             </td>
             <td>{{ bill.priceVat|format_currency('eur') }} </td>
+            <td>{{ bill.insertDate|format_date('full') }} </td>
             <td>
                 {% if bill.pdfPath != null %}
                     <a href="{{ asset(bill.pdfPath) }}" title="{{ bill.pdfPath }}">

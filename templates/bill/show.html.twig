@@ -22,6 +22,18 @@
                     <td>{{ bill.priceVat|format_currency('eur') }} </td>
                 </tr>
                 <tr>
+                    <th>Crée le</th>
+                    <td>{{ bill.insertDate|format_date('full') }} </td>
+                </tr>
+                <tr>
+                    <th>Tva</th>
+                    <td>{{ bill.vat }}% </td>
+                </tr>
+                <tr>
+                    <th>Archivé</th>
+                    <td>{{ bill.archived }} </td>
+                </tr>
+                <tr>
                     <th>Pdf</th>
                     <td>
                         {% if bill.pdfPath != null %}

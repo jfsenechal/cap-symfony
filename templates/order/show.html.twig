@@ -40,10 +40,10 @@
             {% if bill %}
                 <table class="table table-bordered">
                     <tr>
-                        <th>Order</th>
+                        <th>Number</th>
                         <td>
                             <a href="{{ path('cap_bill_show', {'id': bill.id}) }}">
-                                {{ bill.order.orderNumber }}
+                                {{ bill.billNumber }}
                             </a>
                         </td>
                     </tr>
