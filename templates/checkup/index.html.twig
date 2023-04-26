@@ -1,0 +1,22 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">Checkup</h3>
+
+        <div class="card-body">
+
+            <div class="alert alert-info">
+                Page pour vérifier l'intégrité des données
+            </div>
+
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <a href="{{ path('cap_checkup_bill') }}">Des factures</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}

@@ -38,6 +38,20 @@ class PaymentBillRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param PaymentOrder $order
+     * @return PaymentBill|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findOneByOrder(PaymentOrder $order): ?PaymentBill
+    {
+        return $this->createQueryBuilder('paymentOrderAddress')
+            ->andWhere('paymentOrderAddress.order = :order')
+            ->setParameter('order', $order)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+    /**
+     * @param PaymentOrder $order
      * @return PaymentBill[]
      */
     public function findByOrder(PaymentOrder $order): array

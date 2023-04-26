@@ -8,6 +8,7 @@ use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderAddressRepository;
 use Cap\Commercio\Repository\PaymentOrderLineRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -67,7 +68,13 @@ class OrderController extends AbstractController
         $orderCommercant = $paymentOrder->getOrderCommercant();
         $lines = $this->paymentOrderLineRepository->findByOrder($paymentOrder);
         $addresses = $this->paymentOrderAddressRepository->findByOrder($paymentOrder);
-        $bills = $this->paymentBillRepository->findByOrder($paymentOrder);
+        $bills = [];
+        try {
+            $bill = $this->paymentBillRepository->findOneByOrder($paymentOrder);
+        } catch (NonUniqueResultException $e) {
+            $bill = null;
+            $bills = $this->paymentBillRepository->findByOrder($paymentOrder);
+        }
 
         return $this->render(
             '@CapCommercio/order/show.html.twig',
@@ -76,6 +83,7 @@ class OrderController extends AbstractController
                 'orderCommercant' => $orderCommercant,
                 'lines' => $lines,
                 'addresses' => $addresses,
+                'bill' => $bill,
                 'bills' => $bills,
             ]
         );
@@ -88,7 +96,7 @@ class OrderController extends AbstractController
             $orderCommercant = $paymentOrder->getOrderCommercant();
             $lines = $this->paymentOrderLineRepository->findByOrder($paymentOrder);
             $addresses = $this->paymentOrderAddressRepository->findByOrder($paymentOrder);
-            $bills = $this->paymentBillRepository->findByOrder($paymentOrder);
+            $bills = $this->paymentBillRepository->findOneByOrder($paymentOrder);
 
             $this->paymentOrderRepository->remove($orderCommercant);
             foreach ($lines as $line) {

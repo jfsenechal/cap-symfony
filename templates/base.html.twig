@@ -38,32 +38,37 @@
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <li class="nav-item">
                         <a href="{{ path('cap_commercant_membres') }}" class="nav-link">
-                             Les membres
+                            Les membres
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ path('cap_commercant_index') }}" class="nav-link">
-                             Les commerçants
+                            Les commerçants
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ path('cap_order_all') }}" class="nav-link">
-                             Les factures
+                            Les factures
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ path('cap_user_index') }}" class="nav-link">
-                             Les utilisateurs
+                            Les utilisateurs
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ path('cap_access_demand') }}" class="nav-link">
-                             Demande mdp
+                            Demande mdp
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ path('cap_mandrill') }}" class="nav-link">
-                             Mandrill
+                            Mandrill
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ path('cap_checkup_index') }}" class="nav-link">
+                            Checkup
                         </a>
                     </li>
                 {% endif %}

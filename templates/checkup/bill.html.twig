@@ -3,28 +3,9 @@
 {% block body %}
 
     <div class="card">
-        <h3 class="card-header">{{ orders|length }} factures</h3>
+        <h3 class="card-header">Multiple paiements pour des factures</h3>
 
         <div class="card-body">
-
-            {{ form_start(form) }}
-            {{ form_errors(form) }}
-            <div class="row g-3">
-                <div class="col">
-                    {{ form_row(form.name) }}
-                </div>
-                <div class="col">
-                    {{ form_row(form.year) }}
-                </div>
-                <div class="col">
-                    {{ form_row(form.paid) }}
-                </div>
-            </div>
-            <button type="submit" name="search" class="btn btn-primary">
-                <i class="fa fa-search"></i> Rechercher
-            </button>
-            {{ form_end(form) }}
-
             <table class="table table-bordered mt-3">
                 <tr>
                     <th>Commerce</th>
@@ -53,4 +34,3 @@
     </div>
 
 {% endblock %}
-
