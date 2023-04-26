@@ -49,12 +49,14 @@ class FixCommand extends Command
                 $io->error('Vide'.$order->getId().$order->getOrder()->getOrderCommercant()->getCompanyName());
                 continue;
             }
-            if (str_contains($order->getPdfPath(),"/var/www/sites/commercio/")) {
+            if (str_contains($order->getPdfPath(), "/var/www/sites/commercio/")) {
                 $newPath = str_replace('/var/www/sites/commercio/', "", $order->getPdfPath());
                 $io->writeln("new ".$newPath);
+                $order->setPdfPath($newPath);
             }
             $io->writeln($order->getPdfPath());
         }
+        $this->paymentBillRepository->flush();
 
         return Command::SUCCESS;
     }
