@@ -2,6 +2,7 @@
 
 namespace Cap\Commercio\Command;
 
+use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -17,8 +18,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class FixCommand extends Command
 {
-    public function __construct(private PaymentOrderRepository $paymentOrderRepository)
-    {
+    public function __construct(
+        private PaymentOrderRepository $paymentOrderRepository,
+        private PaymentBillRepository $paymentBillRepository
+    ) {
         parent::__construct();
     }
 
@@ -35,6 +38,14 @@ class FixCommand extends Command
         foreach ($this->paymentOrderRepository->findAll() as $order) {
             if ($order->getPdfPath() == null) {
                 $io->error('Vide'.$order->getId().$order->getOrderCommercant()->getCompanyName());
+                continue;
+            }
+            $io->writeln($order->getPdfPath());
+        }
+        $io->section('BILL');
+        foreach ($this->paymentBillRepository->findAll() as $order) {
+            if ($order->getPdfPath() == null) {
+                $io->error('Vide'.$order->getId().$order->getOrder()->getOrderCommercant()->getCompanyName());
                 continue;
             }
             $io->writeln($order->getPdfPath());
