@@ -51,4 +51,24 @@ class CheckupController extends AbstractController
         );
     }
 
+    #[Route(path: '/order/nopaid', name: 'cap_checkup_order_without_paid', methods: ['GET', 'POST'])]
+    public function nopaid(): Response
+    {
+        $orders = $this->paymentOrderRepository->findPaid();
+        $noBill = [];
+        foreach ($orders as $order) {
+            $bills = $this->paymentBillRepository->findByOrder($order);
+            if (count($bills) == 0) {
+                $noBill[] = $order;
+            }
+        }
+
+        return $this->render(
+            '@CapCommercio/checkup/nobill.html.twig',
+            [
+                'orders' => $noBill,
+            ]
+        );
+    }
+
 }

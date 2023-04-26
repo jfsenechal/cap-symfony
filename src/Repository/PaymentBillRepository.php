@@ -44,8 +44,8 @@ class PaymentBillRepository extends ServiceEntityRepository
      */
     public function findOneByOrder(PaymentOrder $order): ?PaymentBill
     {
-        return $this->createQueryBuilder('paymentOrderAddress')
-            ->andWhere('paymentOrderAddress.order = :order')
+        return $this->createQueryBuilder('payment_bill')
+            ->andWhere('payment_bill.order = :order')
             ->setParameter('order', $order)
             ->getQuery()
             ->getOneOrNullResult();
@@ -56,8 +56,8 @@ class PaymentBillRepository extends ServiceEntityRepository
      */
     public function findByOrder(PaymentOrder $order): array
     {
-        return $this->createQueryBuilder('paymentOrderAddress')
-            ->andWhere('paymentOrderAddress.order = :order')
+        return $this->createQueryBuilder('payment_bill')
+            ->andWhere('payment_bill.order = :order')
             ->setParameter('order', $order)
             ->getQuery()
             ->getResult();

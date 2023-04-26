@@ -2,13 +2,15 @@
 
 {% block body %}
     <div class="card">
-        <h3 class="card-header">{{ order.orderNumber }} de {{ orderCommercant.companyName }}</h3>
+        <h3 class="card-header">{{ order.orderNumber }} de
+            {{ orderCommercant.companyName }}
+        </h3>
 
         <div class="card-body">
 
             {% include '@CapCommercio/order/_actions.html.twig' %}
 
-            <h4 class="text-success">Bon de commande</h4>
+            <h4 class="text-success">Facture</h4>
             <table class="table table-bordered">
                 <tr>
                     <th>Nom</th>

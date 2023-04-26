@@ -1,0 +1,36 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">Factures payées, mais sans paiement encodés</h3>
+
+        <div class="card-body">
+            <table class="table table-bordered mt-3">
+                <tr>
+                    <th>Commerce</th>
+                    <th>Au nom de</th>
+                    <th>Crée le</th>
+                    <th>Montant TVAC</th>
+                    <th>Payé ?</th>
+                </tr>
+                {% for order in orders %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('cap_order_show', {'id': order.id}) }}">
+                                {{ order.orderCommercant.companyName }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ order.orderCommercant.firstname }} {{ order.orderCommercant.lastname }}
+                        </td>
+                        <td>{{ order.insertDate|format_date('full') }}</td>
+                        <td>{{ order.priceVat|format_currency('euro') }}</td>
+                        <td>{{ order.isPaid ? 'Oui' : 'Non' }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
