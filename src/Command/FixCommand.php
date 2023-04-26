@@ -35,6 +35,7 @@ class FixCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+
         foreach ($this->paymentOrderRepository->findAll() as $order) {
             if ($order->getPdfPath() == null) {
                 $io->error('Vide'.$order->getId().$order->getOrderCommercant()->getCompanyName());
@@ -48,9 +49,8 @@ class FixCommand extends Command
                 $io->error('Vide'.$order->getId().$order->getOrder()->getOrderCommercant()->getCompanyName());
                 continue;
             }
-            if (str_contains("\/var\/www\/sites\/commercio", $order->getPdfPath())) {
-
-                $newPath = str_replace('\/var\/www\/sites\/commercio', "", $order->getPdfPath());
+            if (str_contains($order->getPdfPath(),"/var/www/sites/commercio/")) {
+                $newPath = str_replace('/var/www/sites/commercio/', "", $order->getPdfPath());
                 $io->writeln("new ".$newPath);
             }
             $io->writeln($order->getPdfPath());
