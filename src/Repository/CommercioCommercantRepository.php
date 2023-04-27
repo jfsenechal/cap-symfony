@@ -63,6 +63,20 @@ class CommercioCommercantRepository extends ServiceEntityRepository
 
     }
 
+    /**
+     * @return CommercioCommercant[]
+     */
+    public function findExpired(\DateTime $today): array
+    {
+        return $this->createQb()
+            ->andWhere('commercant.affiliationDate < :date')
+            ->setParameter('date', $today)
+            ->andWhere('commercant.isMember = :member')
+            ->setParameter('member', true)
+            ->orderBy('commercant.affiliationDate', 'DESC')
+            ->getQuery()->getResult();
+    }
+
     private function createQb(): QueryBuilder
     {
         return $this->createQueryBuilder('commercant')

@@ -2,6 +2,7 @@
 
 namespace Cap\Commercio\Controller;
 
+use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,6 +17,7 @@ class CheckupController extends AbstractController
     public function __construct(
         private PaymentOrderRepository $paymentOrderRepository,
         private PaymentBillRepository $paymentBillRepository,
+        private CommercioCommercantRepository $commercantRepository
     ) {
     }
 
@@ -67,6 +69,21 @@ class CheckupController extends AbstractController
             '@CapCommercio/checkup/nobill.html.twig',
             [
                 'orders' => $noBill,
+            ]
+        );
+    }
+
+    #[Route(path: '/expired', name: 'cap_checkup_expired', methods: ['GET', 'POST'])]
+    public function expired(): Response
+    {
+        $today = new \DateTime('+1 year');
+        $commercants = $this->commercantRepository->findExpired($today);
+
+        return $this->render(
+            '@CapCommercio/checkup/expired.html.twig',
+            [
+                'commercants' => $commercants,
+                'today' => $today,
             ]
         );
     }
