@@ -1,0 +1,48 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">{{ post.title }}</h3>
+
+        <div class="card-body">
+
+            {% include '@CapCommercio/blog_post/_actions.html.twig' %}
+
+            <div class="text-muted">
+                {{ post.summary|nl2br }}
+            </div>
+
+            <div class="m-3">
+                {{ post.postText|raw }}
+            </div>
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>Publié le</th>
+                    <td>
+                        {{ post.publishDate|format_date('full') }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Publié ?</th>
+                    <td>{{ post.isOnline ? 'oui' : 'non' }} </td>
+                </tr>
+                <tr>
+                    <th>Archivé ?</th>
+                    <td>{{ post.archived }} </td>
+                </tr>
+                <tr>
+                    <th>Crée le</th>
+                    <td>{{ post.insertDate|format_date('full') }} </td>
+                </tr>
+                <tr>
+                    <th>Auteur</th>
+                    <td>
+                        {{ post.author.firstname }} {{ post.author.lastname }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    {{ include('@CapCommercio/blog_post/_delete_form.html.twig') }}
+{% endblock %}

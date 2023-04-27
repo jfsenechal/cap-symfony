@@ -1,0 +1,38 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">Articles</h3>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>Titre</th>
+                    <th>Publié?</th>
+                    <th>Publié le</th>
+                    <th>Ajouté le</th>
+                    <th>Archivé</th>
+                </tr>
+                {% for post in posts %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('cap_blog_post_show', {'id': post.id}) }}">
+                                {{ post.title }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ post.isOnline ? 'Oui' : 'Non' }}
+                        </td>
+                        <td>{{ post.publishDate|format_date('full') }}</td>
+                        <td>{{ post.insertDate|format_date('full') }}</td>
+                        <td>
+                            {{ post.archived ? 'Oui' : 'Non' }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
