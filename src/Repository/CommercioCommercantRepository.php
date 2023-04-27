@@ -70,7 +70,7 @@ class CommercioCommercantRepository extends ServiceEntityRepository
     {
         return $this->createQb()
             ->andWhere('commercant.affiliationDate < :date')
-            ->setParameter('date', $today)
+            ->setParameter('date', $today->format('Y-m-d'))
             ->andWhere('commercant.isMember = :member')
             ->setParameter('member', true)
             ->orderBy('commercant.affiliationDate', 'DESC')

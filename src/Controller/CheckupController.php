@@ -76,7 +76,7 @@ class CheckupController extends AbstractController
     #[Route(path: '/expired', name: 'cap_checkup_expired', methods: ['GET', 'POST'])]
     public function expired(): Response
     {
-        $today = new \DateTime('+1 year');
+        $today = new \DateTime('-1 year');
         $commercants = $this->commercantRepository->findExpired($today);
 
         return $this->render(

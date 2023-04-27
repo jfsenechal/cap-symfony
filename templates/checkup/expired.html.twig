@@ -6,7 +6,8 @@
 
         <div class="card-body">
             <div class="alert alert-info">
-                Commerçants dont la date d'affiliation date de plus d'un an et dont "la case membre est cochée"
+                Commerçants dont la date d'affiliation date de plus d'un an ({{ today|date('d-m-Y') }})
+                et dont "la case membre est cochée"
             </div>
 
             {% include '@CapCommercio/commercant/_list.html.twig' %}
