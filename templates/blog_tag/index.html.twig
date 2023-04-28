@@ -1,0 +1,26 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">Les tags</h3>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>Titre</th>
+                </tr>
+                {% for tag in tags %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('cap_blog_tag_show', {'id': tag.id}) }}">
+                                {{ tag.name }}
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
