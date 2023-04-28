@@ -1,0 +1,8 @@
+<h4 class="text-success">Catégories</h4>
+<ul class="list-group list-group-horizontal">
+    {% for category in post.categories %}
+        <li class="list-group-item">
+            {{ category }}
+        </li>
+    {% endfor %}
+</ul>

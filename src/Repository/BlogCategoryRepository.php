@@ -27,8 +27,8 @@ class BlogCategoryRepository extends ServiceEntityRepository
      */
     public function findAllOrdered(): array
     {
-        return $this->createQueryBuilder('blog_tag')
-            ->orderBy('blog_tag.insertDate', 'DESC')
+        return $this->createQueryBuilder('blog_category')
+            ->orderBy('blog_category.insertDate', 'DESC')
             ->getQuery()
             ->getResult();
     }

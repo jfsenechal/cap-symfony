@@ -57,13 +57,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ path('cap_access_demand') }}" class="nav-link">
-                            Demande mdp
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ path('cap_mandrill') }}" class="nav-link">
-                            Mandrill
+                        <a href="{{ path('cap_checkup_index') }}" class="nav-link">
+                            Checkup
                         </a>
                     </li>
                     <li class="nav-item dropdown">
@@ -79,12 +74,15 @@
                             <li>
                                 <a href="{{ path('cap_user_index') }}" class="dropdown-item">Les utilisateurs</a>
                             </li>
+                            <li>
+                                <a href="{{ path('cap_access_demand') }}" class="dropdown-item">Demande mdp</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('cap_mandrill') }}" class="dropdown-item">
+                                    Mandrill
+                                </a>
+                            </li>
                         </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ path('cap_checkup_index') }}" class="nav-link">
-                            Checkup
-                        </a>
                     </li>
                 {% endif %}
             </ul>

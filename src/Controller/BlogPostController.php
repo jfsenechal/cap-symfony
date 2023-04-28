@@ -6,6 +6,7 @@ use Cap\Commercio\Entity\BlogPost;
 use Cap\Commercio\Form\BlogPostSearchType;
 use Cap\Commercio\Form\BlogPostType;
 use Cap\Commercio\Repository\BlogPostRepository;
+use Cap\Commercio\Repository\RepositoryUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +19,9 @@ class BlogPostController extends AbstractController
 {
     public function __construct(
         private BlogPostRepository $blog_postRepository,
-    ) {
+        private RepositoryUtils $repositoryUtils,
+    )
+    {
     }
 
     #[Route('/', name: 'cap_blog_post_index', methods: ['GET', 'POST'])]
@@ -63,6 +66,8 @@ class BlogPostController extends AbstractController
     #[Route('/{id}', name: 'cap_blog_post_show', methods: ['GET'])]
     public function show(BlogPost $blog_post): Response
     {
+        $this->repositoryUtils->setTagsToPost($blog_post);
+        $this->repositoryUtils->setCategoriesToPost($blog_post);
         return $this->render('@CapCommercio/blog_post/show.html.twig', [
             'post' => $blog_post,
         ]);
@@ -70,13 +75,17 @@ class BlogPostController extends AbstractController
 
     #[Route('/{id}/edit', name: 'cap_blog_post_edit', methods: ['GET', 'POST'])]
     public function edit(
-        Request $request,
+        Request  $request,
         BlogPost $blog_post,
-    ): Response {
+    ): Response
+    {
+        $this->repositoryUtils->setTagsToPost($blog_post);
+        $this->repositoryUtils->setCategoriesToPost($blog_post);
         $form = $this->createForm(BlogPostType::class, $blog_post);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $this->blog_postRepository->flush();
             $this->addFlash('success', 'La modification a été faite');
 
@@ -96,10 +105,11 @@ class BlogPostController extends AbstractController
 
     #[Route('/{id}', name: 'cap_blog_post_delete', methods: ['POST'])]
     public function delete(
-        Request $request,
+        Request  $request,
         BlogPost $blogPost,
-    ): Response {
-        if ($this->isCsrfTokenValid('delete'.$blogPost->getId(), $request->request->get('_token'))) {
+    ): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $blogPost->getId(), $request->request->get('_token'))) {
             $this->blog_postRepository->remove($blogPost);
             $this->blog_postRepository->flush();
         }
