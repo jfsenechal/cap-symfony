@@ -1,0 +1,14 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">{{ category.name }}</h3>
+
+        <div class="card-body">
+
+            {% include '@CapCommercio/blog_category/_actions.html.twig' %}
+
+        </div>
+    </div>
+    {{ include('@CapCommercio/blog_category/_delete_form.html.twig') }}
+{% endblock %}
