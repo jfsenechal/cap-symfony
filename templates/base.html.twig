@@ -52,18 +52,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ path('cap_user_index') }}" class="nav-link">
-                            Les utilisateurs
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a href="{{ path('cap_blog_post_index') }}" class="nav-link">
                             Les articles
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ path('cap_blog_tag_index') }}" class="nav-link">
-                            Les tags
                         </a>
                     </li>
                     <li class="nav-item">
@@ -75,6 +65,21 @@
                         <a href="{{ path('cap_mandrill') }}" class="nav-link">
                             Mandrill
                         </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fas fa-ellipsis-v"></i> <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{{ path('cap_blog_tag_index') }}" class="dropdown-item">Les tags</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('cap_blog_category_index') }}" class="dropdown-item">Les catégories</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('cap_user_index') }}" class="dropdown-item">Les utilisateurs</a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a href="{{ path('cap_checkup_index') }}" class="nav-link">

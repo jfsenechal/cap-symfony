@@ -50,6 +50,11 @@ class BlogTag
      */
     private $modifyDate = 'now()';
 
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
     public function getId(): ?string
     {
         return $this->id;

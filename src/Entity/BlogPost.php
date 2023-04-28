@@ -2,6 +2,7 @@
 
 namespace Cap\Commercio\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class BlogPost
 {
+    use TagTrait,CategoriesTrait;
+
     /**
      * @var int
      *
@@ -107,7 +110,7 @@ class BlogPost
     private $firstPublication = true;
 
     /**
-     * @var \Language
+     * @var Language
      *
      * @ORM\ManyToOne(targetEntity="Language")
      * @ORM\JoinColumns({
@@ -117,7 +120,7 @@ class BlogPost
     private $language;
 
     /**
-     * @var \BlogAuthor
+     * @var BlogAuthor
      *
      * @ORM\ManyToOne(targetEntity="BlogAuthor")
      * @ORM\JoinColumns({
@@ -125,6 +128,17 @@ class BlogPost
      * })
      */
     private $author;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+        $this->categories = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->title;
+    }
 
     public function getId(): ?string
     {

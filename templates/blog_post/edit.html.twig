@@ -6,7 +6,7 @@
         <h3 class="card-header">{{ post.title }}</h3>
 
         <div class="card-body">
-            {{ form(form) }}
+            {% include '@CapCommercio/blog_post/_form.html.twig' %}
         </div>
         <div class="card-footer text-end">
             <a href="{{ path('cap_blog_post_show', {'id': post.id}) }}" class="btn btn-secondary">

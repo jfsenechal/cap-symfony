@@ -44,7 +44,7 @@ class BlogCategoryPost
     private $modifyDate = 'now()';
 
     /**
-     * @var \BlogCategory
+     * @var BlogCategory
      *
      * @ORM\ManyToOne(targetEntity="BlogCategory")
      * @ORM\JoinColumns({
@@ -54,7 +54,7 @@ class BlogCategoryPost
     private $category;
 
     /**
-     * @var \BlogPost
+     * @var BlogPost
      *
      * @ORM\ManyToOne(targetEntity="BlogPost")
      * @ORM\JoinColumns({

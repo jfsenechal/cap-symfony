@@ -2,24 +2,23 @@
 
 namespace Cap\Commercio\Entity;
 
-use AcMarche\Library\Entity\Tag;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 trait TagTrait
 {
-    #[ORM\ManyToMany(targetEntity: Tag::class, cascade: ['remove'])]
+    #[ORM\ManyToMany(targetEntity: BlogTag::class, cascade: ['remove'])]
     public array|Collection $tags;
 
     /**
-     * @return Collection<int, Tag>
+     * @return Collection<int, BlogTag>
      */
     public function getTags(): Collection
     {
         return $this->tags;
     }
 
-    public function addTag(Tag $tag): self
+    public function addTag(BlogTag $tag): self
     {
         if (!$this->tags->contains($tag)) {
             $this->tags->add($tag);
@@ -28,7 +27,7 @@ trait TagTrait
         return $this;
     }
 
-    public function removeTag(Tag $tag): self
+    public function removeTag(BlogTag $tag): self
     {
         $this->tags->removeElement($tag);
 

@@ -1,0 +1,19 @@
+{{ form_start(form) }}
+{{ form_errors(form) }}
+{{ form_row(form.title) }}
+{{ form_row(form.summary) }}
+{{ form_row(form.postText) }}
+
+<div class="row">
+    <div class="col-6">
+        {{ form_row(form.publishDate) }}
+    </div>
+    <div class="col-6">
+        {{ form_row(form.archived) }}
+    </div>
+</div>
+
+{{ form_row(form.categories) }}
+{{ form_row(form.tags) }}
+<button class="btn btn-primary"><i class="fa fa-save"></i> Sauvegarder</button>
+{{ form_end(form) }}

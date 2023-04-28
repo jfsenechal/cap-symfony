@@ -44,7 +44,7 @@ class BlogTagPost
     private $modifyDate = 'now()';
 
     /**
-     * @var \BlogPost
+     * @var BlogPost
      *
      * @ORM\ManyToOne(targetEntity="BlogPost")
      * @ORM\JoinColumns({
@@ -54,7 +54,7 @@ class BlogTagPost
     private $post;
 
     /**
-     * @var \BlogTag
+     * @var BlogTag
      *
      * @ORM\ManyToOne(targetEntity="BlogTag")
      * @ORM\JoinColumns({
