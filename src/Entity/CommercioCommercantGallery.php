@@ -2,6 +2,9 @@
 
 namespace Cap\Commercio\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,6 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="commercio_commercant_gallery", uniqueConstraints={@ORM\UniqueConstraint(name="commercio_commercant_gallery_uuid_key", columns={"uuid"})}, indexes={@ORM\Index(name="IDX_5497991579D40486", columns={"commercio_commercant_id"})})
  * @ORM\Entity
  */
+#[ApiResource(operations: [
+    new Get(),
+    new GetCollection(),
+])
+]
 class CommercioCommercantGallery
 {
     /**
