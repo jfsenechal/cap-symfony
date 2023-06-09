@@ -19,7 +19,7 @@ class BlogPostController extends AbstractController
 {
     public function __construct(
         private BlogPostRepository $blog_postRepository,
-        private RepositoryUtils $repositoryUtils,
+        private RepositoryUtils    $repositoryUtils,
     )
     {
     }
@@ -81,10 +81,16 @@ class BlogPostController extends AbstractController
     {
         $this->repositoryUtils->setTagsToPost($blog_post);
         $this->repositoryUtils->setCategoriesToPost($blog_post);
+
         $form = $this->createForm(BlogPostType::class, $blog_post);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $data = $form->getData();
+            foreach ($data->categories as $category) {
+                $blog_post->addBlogCategory($category);
+            }
 
             $this->blog_postRepository->flush();
             $this->addFlash('success', 'La modification a été faite');

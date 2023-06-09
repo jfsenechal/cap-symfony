@@ -1,0 +1,30 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">Les news</h3>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>Nom</th>
+                    <th>Envoyé</th>
+                    <th>Ajouté le</th>
+                </tr>
+                {% for item in news %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('cap_news_show', {'id': item.id}) }}">
+                                {{ item.title }}
+                            </a>
+                        </td>
+                        <td>{{ item.isSend }}</td>
+                        <td>{{ item.insertDate|format_date('full') }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
+

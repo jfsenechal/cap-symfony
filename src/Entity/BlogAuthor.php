@@ -71,6 +71,11 @@ class BlogAuthor
      */
     private $modifyDate = 'now()';
 
+    public function __toString(): string
+    {
+     return $this->firstname.' '.$this->lastname;
+    }
+
     public function getId(): ?string
     {
         return $this->id;

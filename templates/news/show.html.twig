@@ -1,0 +1,35 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">{{ news.title }}</h3>
+
+        <div class="card-body">
+
+            {% include '@CapCommercio/news/_actions.html.twig' %}
+
+            {{ news.description|nl2br }}
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>Archivé</th>
+                    <td>{{ news.archived }}</td>
+                </tr>
+                <tr>
+                    <th>Envoyée ?</th>
+                    <td>{{ news.isSend }}</td>
+                </tr>
+                <tr>
+                    <th>Envoyé aux non membres</th>
+                    <td>{{ news.sendToBottin }}</td>
+                </tr>
+                <tr>
+                    <th>Envoyé par mail</th>
+                    <td>{{ news.sendByMail }}</td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+    {{ include('@CapCommercio/news/_delete_form.html.twig') }}
+{% endblock %}

@@ -23,29 +23,29 @@ class CategoryController extends AbstractController
     #[Route('/', name: 'cap_blog_category_index', methods: ['GET', 'POST'])]
     public function index(Request $request): Response
     {
-        $categorys = $this->blog_categoryRepository->findAllOrdered();
+        $categories = $this->blog_categoryRepository->findAllOrdered();
 
         return $this->render('@CapCommercio/blog_category/index.html.twig', [
-            'categorys' => $categorys,
+            'categories' => $categories,
         ]);
     }
 
     #[Route('/new', name: 'cap_blog_category_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
-        $blogPost = new BlogCategory();
-        $form = $this->createForm(BlogCategoryType::class, $blogPost);
+        $category = new BlogCategory();
+        $form = $this->createForm(BlogCategoryType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->blog_categoryRepository->persist($blogPost);
+            $this->blog_categoryRepository->persist($category);
             $this->blog_categoryRepository->flush();
 
             return $this->redirectToRoute('cap_blog_category_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('@CapCommercio/blog_category/new.html.twig', [
-            'category' => $blogPost,
+            'category' => $category,
             'form' => $form,
         ]);
     }
@@ -86,11 +86,11 @@ class CategoryController extends AbstractController
 
     #[Route('/{id}', name: 'cap_blog_category_delete', methods: ['POST'])]
     public function delete(
-        Request $request,
-        BlogCategory $blogPost,
+        Request      $request,
+        BlogCategory $category,
     ): Response {
-        if ($this->isCsrfTokenValid('delete'.$blogPost->getId(), $request->request->get('_token'))) {
-            $this->blog_categoryRepository->remove($blogPost);
+        if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
+            $this->blog_categoryRepository->remove($category);
             $this->blog_categoryRepository->flush();
         }
 

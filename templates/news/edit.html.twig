@@ -1,0 +1,18 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">{{ news.title }}</h3>
+
+        <div class="card-body">
+            {% include '@CapCommercio/news/_form.html.twig' %}
+        </div>
+        <div class="card-footer text-end">
+            <a href="{{ path('cap_news_show', {'id': news.id}) }}" class="btn btn-secondary">
+                <i class="fa fa-arrow-left"></i> Annuler
+            </a>
+        </div>
+    </div>
+
+{% endblock %}

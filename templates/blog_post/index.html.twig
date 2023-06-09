@@ -9,9 +9,9 @@
             <table class="table table-bordered">
                 <tr>
                     <th>Titre</th>
+                    <th>Auteur</th>
                     <th>Publié?</th>
                     <th>Publié le</th>
-                    <th>Ajouté le</th>
                     <th>Archivé</th>
                 </tr>
                 {% for post in posts %}
@@ -21,11 +21,11 @@
                                 {{ post.title }}
                             </a>
                         </td>
+                        <td>{{ post.author }}</td>
                         <td>
                             {{ post.isOnline ? 'Oui' : 'Non' }}
                         </td>
                         <td>{{ post.publishDate|format_date('full') }}</td>
-                        <td>{{ post.insertDate|format_date('full') }}</td>
                         <td>
                             {{ post.archived ? 'Oui' : 'Non' }}
                         </td>
