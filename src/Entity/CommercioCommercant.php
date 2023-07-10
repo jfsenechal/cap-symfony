@@ -13,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 class CommercioCommercant
 {
     public array $images = [];
+    public array $hours=[];
+    public int $bottin_id = 0;
 
     /**
      * @var int
