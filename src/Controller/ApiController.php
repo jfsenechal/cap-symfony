@@ -2,10 +2,9 @@
 
 namespace Cap\Commercio\Controller;
 
-use Cap\Commercio\Entity\CommercioCommercant;
-use Cap\Commercio\Repository\CommercantGalleryRepository;
 use Cap\Commercio\Repository\CommercioBottinRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
+use Cap\Commercio\Service\ImagesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,39 +13,48 @@ use Symfony\Component\Routing\Annotation\Route;
 class ApiController extends AbstractController
 {
     public function __construct(
-        private CommercantGalleryRepository $commercantGalleryRepository,
         private CommercioCommercantRepository $commercioCommercantRepository,
         private CommercioBottinRepository $commercioBottinRepository,
+        private ImagesRepository $imagesRepository
     ) {
     }
 
+    /**
+     * Get id bottin
+     * Check if a cap fiche exist
+     * Get images cap
+     * @param int $id id du bottin
+     * @return JsonResponse
+     */
     #[Route('/shop/{id}', name: 'cap_api_shop', methods: ['GET'])]
-    public function show(CommercioCommercant $commercant): JsonResponse
+    public function shop(int $id): JsonResponse
     {
-        return $this->json($commercant);
+        if ($commercioBottin = $this->commercioBottinRepository->findOneBy(['commercantId' => $id])) {
+            if (!$commercant = $this->commercioCommercantRepository->find($commercioBottin->getCommercantId())) {
+                return $this->json(null);
+            }
+            $this->imagesRepository->set($commercant);
+
+            return $this->json($commercant);
+        }
+
+        return $this->json(null);
     }
 
     #[Route('/bottin/{id}', name: 'cap_api_commercant', methods: ['GET'])]
     public function bottin(int $id): JsonResponse
     {
-        $commercant = $this->commercioBottinRepository->findBy(['commercantId'=>$id]);
-        return $this->json($commercant);
+        return $this->json($this->commercioBottinRepository->findOneBy(['commercantId' => $id]));
     }
 
     #[Route('/images/{id}', name: 'cap_api_images', methods: ['GET'])]
-    public function images(CommercioCommercant $commercant): JsonResponse
+    public function images(int $id): JsonResponse
     {
-        $galleries = $this->commercantGalleryRepository->findByCommercant($commercant);
-        $images = [];
-        foreach ($galleries as $gallery) {
-            $img = [
-                'id' => $gallery->getId(),
-                'name' => $gallery->getName(),
-                'path' => $gallery->getMediaPath(),
-                'alt' => $gallery->getAlt(),
-            ];
-            $images[] = $img;
+        $commercant = $this->commercioCommercantRepository->find($id);
+        if (!$commercant) {
+            return $this->json([]);
         }
+        $images = $this->imagesRepository->set($commercant);
 
         return $this->json($images);
     }
