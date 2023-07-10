@@ -23,6 +23,16 @@ class CommercioCommercantRepository extends ServiceEntityRepository
         parent::__construct($registry, CommercioCommercant::class);
     }
 
+
+    public function findByIdCommercant(int $id): ?CommercioCommercant
+    {
+        return $this->createQb()
+            ->andWhere('commercant.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     /**
      * @return CommercioCommercant[]
      */
