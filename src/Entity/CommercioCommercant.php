@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CommercioCommercant
 {
+    public array $images = [];
+
     /**
      * @var int
      *
