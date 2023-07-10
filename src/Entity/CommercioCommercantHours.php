@@ -12,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CommercioCommercantHours
 {
+    public ?string $morning_start_short = null;
+    public ?string $morning_end_short = null;
+    public ?string $noon_start_short = null;
+    public ?string $noon_end_short = null;
+
     /**
      * @var int
      *
