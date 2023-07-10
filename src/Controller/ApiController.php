@@ -30,9 +30,12 @@ class ApiController extends AbstractController
     public function shop(int $id): JsonResponse
     {
         if ($commercioBottin = $this->commercioBottinRepository->findOneBy(['commercantId' => $id])) {
-            if (!$commercant = $this->commercioCommercantRepository->find($commercioBottin->getCommercantId())) {
+            if (!$commercant = $this->commercioCommercantRepository->findByIdCommercant(
+                $commercioBottin->getCommercantId()
+            )) {
                 return $this->json(null);
             }
+            $commercant->bottin_id = $commercant->getId();
             $this->imagesRepository->set($commercant);
 
             return $this->json($commercant);
