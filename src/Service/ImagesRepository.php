@@ -4,11 +4,14 @@ namespace Cap\Commercio\Service;
 
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Repository\CommercantGalleryRepository;
+use Cap\Commercio\Repository\CommercioCommercantHoursRepository;
 
 class ImagesRepository
 {
-    public function __construct(private CommercantGalleryRepository $commercantGalleryRepository)
-    {
+    public function __construct(
+        private CommercantGalleryRepository $commercantGalleryRepository,
+        private CommercioCommercantHoursRepository $commercioCommercantHoursRepository,
+    ) {
     }
 
     public function set(CommercioCommercant $commercant): array
@@ -31,6 +34,23 @@ class ImagesRepository
             }
         } else {
             $commercant->setProfileMediaPath(null);
+        }
+
+        foreach ($this->commercioCommercantHoursRepository->findByCommercerant($commercant) as $hour) {
+            $hour->setCommercioCommercant(null);//bug serialize
+            if ($hour->getMorningStart() instanceof \DateTime) {
+                $hour->morning_start_short = $hour->getMorningStart()->format('H:i');
+            }
+            if ($hour->getMorningEnd() instanceof \DateTime) {
+                $hour->morning_end_short = $hour->getMorningEnd()->format('H:i');
+            }
+            if ($hour->getNoonStart() instanceof \DateTime) {
+                $hour->noon_start_short = $hour->getNoonStart()->format('H:i');
+            }
+            if ($hour->getNoonEnd() instanceof \DateTime) {
+                $hour->noon_end_short = $hour->getNoonEnd()->format('H:i');
+            }
+            $commercant->hours[] = $hour;
         }
 
         return $images;
