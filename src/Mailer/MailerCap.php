@@ -127,7 +127,7 @@ class MailerCap
         $mailchimp = new \Mandrill($this->api);
         $template = new \Mandrill_Templates($mailchimp);
 
-        return $template->getList();
+        return $template->getList('commercio');
     }
 
     public function templateShow(string $name): array
@@ -136,6 +136,14 @@ class MailerCap
         $template = new \Mandrill_Templates($mailchimp);
 
         return $template->info($name);
+    }
+
+    public function templateSet(string $name, string $content): array
+    {
+        $mailchimp = new \Mandrill($this->api);
+        $template = new \Mandrill_Templates($mailchimp);
+
+        return $template->update($name, code:$content);
     }
 
     public function templateRender(string $name, array $vars): string

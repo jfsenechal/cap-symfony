@@ -2,9 +2,11 @@
 
 namespace Cap\Commercio\Controller;
 
+use Cap\Commercio\Form\TemplateType;
 use Cap\Commercio\Mailer\MailerCap;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -136,6 +138,31 @@ class MandrillController extends AbstractController
             '@CapCommercio/mandrill/template_show.html.twig',
             [
                 'template' => $template,
+            ]
+        );
+    }
+
+    #[Route(path: '/template/edit/{name}', name: 'cap_commercio_mandrill_edittemplate', methods: ['GET', 'POST'])]
+    public function editTemplate(Request $request, string $name): Response
+    {
+        $template = $this->mailer->templateShow($name);
+        $form = $this->createForm(TemplateType::class, ['code' => $template['code']]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $code = $form->get('code')->getData();
+
+            $result = $this->mailer->templateSet($template['name'], $code);
+
+            dd($result);
+        }
+
+        return $this->render(
+            '@CapCommercio/mandrill/template_edit.html.twig',
+            [
+                'template' => $template,
+                'form' => $form->createView(),
             ]
         );
     }

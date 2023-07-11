@@ -7,6 +7,16 @@
 
         <div class="card-body">
 
+            <div class="row gy-2 gx-1 align-items-center d-print-none mb-3">
+                <div class="col-auto">
+                    <a href="{{ path('cap_commercio_mandrill_edittemplate',{'name':template.name}) }}" class="btn btn-primary"
+                       role='button'>
+                        <i class="fas fa-edit"></i>
+                        Modifier
+                    </a>
+                </div>
+            </div>
+
             {{ template.code|raw }}
 
 
