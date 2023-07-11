@@ -76,7 +76,7 @@ class MailerCap
         }
     }
 
-    private function testMandrill(): bool
+    public function testMandrill(): bool
     {
         $email = 'jf@marche.be';
         $mandrillMail = new MandrillMail($this->api);
@@ -106,7 +106,7 @@ class MailerCap
         return false;
     }
 
-    private function testNewApi()
+    public function testNewApi()
     {
         $mail = new Email();
         $mail->to('jf@marche.be');
@@ -122,7 +122,32 @@ class MailerCap
         $this->testMandrill();
     }
 
-    private function infos()
+    public function getTemplates(): array
+    {
+        $mailchimp = new \Mandrill($this->api);
+        $template = new \Mandrill_Templates($mailchimp);
+
+        return $template->getList();
+    }
+
+    public function templateShow(string $name): array
+    {
+        $mailchimp = new \Mandrill($this->api);
+        $template = new \Mandrill_Templates($mailchimp);
+
+        return $template->info($name);
+    }
+
+    public function templateRender(string $name, array $vars):string
+    {
+        $mailchimp = new \Mandrill($this->api);
+        $template = new \Mandrill_Templates($mailchimp);
+        $content = [];
+
+        return $template->render($name, $content, $vars);
+    }
+
+    public function infos()
     {
         $mailchimp = new \Mandrill($this->api);
         $template = new \Mandrill_Templates($mailchimp);
@@ -133,6 +158,7 @@ class MailerCap
         //$hooks = new \Mandrill_Webhooks($mailchimp);
         //$urls = new \Mandrill_Urls(            $mailchimp        );//Due to changes to our infrastructure, we no longer support URL tracking reports in Mandrill
 
+        dump($template->getList());
         // dump($hooks->getList());
         //  dump($user->info());
         //   dump($senders->getList());

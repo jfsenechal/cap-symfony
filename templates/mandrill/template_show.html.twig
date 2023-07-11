@@ -1,0 +1,14 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">{{ template.name }}</h3>
+
+        <div class="card-body">
+
+            {{ template.code|raw }}
+
+        </div>
+    </div>
+{% endblock %}

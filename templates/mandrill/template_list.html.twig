@@ -1,0 +1,28 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">Liste des templates</h3>
+
+        <div class="card-body">
+
+            <table class="table table-bordered mt-3">
+                <tr>
+                    <th>Nom</th>
+                    <th>Date</th>
+                </tr>
+                {% for template in templates %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('cap_commercio_mandrill_showtemplate', {'name': 'template.name'}) }}">
+                                {{ template.name }}
+                            </a>
+                        </td>
+                        <td>{{ template.publish_name }}</td>
+                        <td>{{ template.updated_at }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
