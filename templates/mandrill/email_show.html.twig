@@ -1,0 +1,37 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">{{ message.subject }} </h3>
+
+        <div class="card-body">
+
+            Id: {{ message._id }}<br>
+            State: {{ message.state }}<br>
+            Email: {{ message.email }}<br>
+            Opens: {{ message.opens }}<br>
+            Clicks: {{ message.clicks }}<br>
+            Subaccount: {{ message.subaccount }}<br>
+            Sender: {{ message.sender }}<br>
+            Template: {{ message.template }}<br>
+            {% for key,data in  message.metadata %}
+                {{ key }} => {{ data }} <br>
+            {% endfor %}
+            <br><br>
+            <hr>
+            <br>
+            From email: {{ content.from_email }}<br>
+
+            {% for key,data in content.to %}
+                {{ key }} => {{ data }} <br>
+            {% endfor %}
+
+            <p>
+                {{ content.html|raw }}
+            </p>
+        </div>
+
+    </div>
+{% endblock %}
+

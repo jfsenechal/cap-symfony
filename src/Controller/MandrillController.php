@@ -52,6 +52,8 @@ class MandrillController extends AbstractController
     #[Route(path: '/', name: 'cap_mandrill_index', methods: ['GET'])]
     public function index(): Response
     {
+        //$this->mailer->infos();
+
         return $this->render(
             '@CapCommercio/mandrill/index.html.twig',
             [
@@ -77,6 +79,39 @@ class MandrillController extends AbstractController
 
         return $this->redirectToRoute('cap_mandrill_index');
 
+    }
+
+    #[Route(path: '/messages/list', name: 'cap_commercio_mandrill_listmessages', methods: ['GET'])]
+    public function listMessages(): Response
+    {
+        $tmp = $this->mailer->getMessages(10000);
+        $messages = [];
+        foreach ($tmp as $message) {
+            $message['createdAt'] = $message['@timestamp'];
+            $messages[] = $message;
+        }
+
+        return $this->render(
+            '@CapCommercio/mandrill/email_list.html.twig',
+            [
+                'messages' => $messages,
+            ]
+        );
+    }
+
+    #[Route(path: '/messages/show/{id}', name: 'cap_commercio_mandrill_message_show', methods: ['GET'])]
+    public function messageShow(string $id): Response
+    {
+        $message = $this->mailer->getMessage($id);
+        $content = $this->mailer->getMessageContent($id);
+
+        return $this->render(
+            '@CapCommercio/mandrill/email_show.html.twig',
+            [
+                'message' => $message,
+                'content' => $content,
+            ]
+        );
     }
 
     #[Route(path: '/template/list', name: 'cap_commercio_mandrill_listtemplate', methods: ['GET'])]

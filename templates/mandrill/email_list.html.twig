@@ -1,0 +1,36 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">Liste des {{ messages|length }} messages</h3>
+
+        <div class="card-body">
+
+            <table class="table table-bordered mt-3">
+                <tr>
+                    <th>Sujet</th>
+                    <th>Sender</th>
+                    <th>Email</th>
+                    <th>Date</th>
+                    <th>Account</th>
+                    <th>Template</th>
+                </tr>
+                {% for message in messages %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('cap_commercio_mandrill_message_show', {'id': message._id}) }}">
+                                {{ message.subject }}
+                            </a>
+                        </td>
+                        <td>{{ message.sender }}</td>
+                        <td>{{ message.email }}</td>
+                        <td>{{ message.createdAt }}</td>
+                        <td>{{ message.subaccount }}</td>
+                        <td>{{ message.template }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
