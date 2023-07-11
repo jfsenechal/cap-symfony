@@ -49,17 +49,11 @@ class MandrillController extends AbstractController
 
     }
 
-    #[Route(path: '/', name: 'cap_mandrill', methods: ['GET'])]
+    #[Route(path: '/', name: 'cap_mandrill_index', methods: ['GET'])]
     public function index(): Response
     {
-
-        //dd($this->mailer->infos());
-        $adl = $this->commercantRepository->find(1384);
-
-        // $this->mailer->sendAffiliationExpired($adl,$this->getParameter('kernel.environment'));
-
         return $this->render(
-            '@CapCommercio/default/message.html.twig',
+            '@CapCommercio/mandrill/index.html.twig',
             [
                 'messages' => [],
                 'senders' => [],
@@ -67,6 +61,22 @@ class MandrillController extends AbstractController
                 'accounts' => [],
             ]
         );
+    }
+
+    #[Route(path: '/test', name: 'cap_mandrill_test', methods: ['GET'])]
+    public function test(): Response
+    {
+        //dd($this->mailer->infos());
+        $adl = $this->commercantRepository->find(1384);
+
+        try {
+            $this->mailer->sendAffiliationExpired($adl, $this->getParameter('kernel.environment'));
+        } catch (\Exception $e) {
+            $this->addFlash('danger', $e->getMessage());
+        }
+
+        return $this->redirectToRoute('cap_mandrill_index');
+
     }
 
     #[Route(path: '/template/list', name: 'cap_commercio_mandrill_listtemplate', methods: ['GET'])]

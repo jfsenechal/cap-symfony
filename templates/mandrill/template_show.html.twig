@@ -9,6 +9,20 @@
 
             {{ template.code|raw }}
 
+
+            <form>
+                <div class="mb-3">
+                    <label for="commercant_commercialWordDescription" class="form-label">
+
+                    </label>
+                    <textarea id="commercant_commercialWordDescription"
+                              name="commercant[commercialWordDescription]" rows="15"
+                              class="form-control">
+                     {{ template.code }}
+                    </textarea>
+                </div>
+            </form>
+
         </div>
     </div>
 {% endblock %}
