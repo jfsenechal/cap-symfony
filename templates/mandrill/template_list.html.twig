@@ -14,7 +14,7 @@
                 {% for template in templates %}
                     <tr>
                         <td>
-                            <a href="{{ path('cap_commercio_mandrill_showtemplate', {'name': 'template.name'}) }}">
+                            <a href="{{ path('cap_commercio_mandrill_showtemplate', {'name': template.name|url_encode}) }}">
                                 {{ template.name }}
                             </a>
                         </td>

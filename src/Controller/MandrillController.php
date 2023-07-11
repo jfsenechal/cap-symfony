@@ -4,10 +4,11 @@ namespace Cap\Commercio\Controller;
 
 use Cap\Commercio\Mailer\MailerCap;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Cache\CacheInterface;
 
 //http://localhost/commerciosf/vendor/mandrill/mandrill/docs/
 #[Route(path: '/mandrill')]
@@ -42,7 +43,8 @@ class MandrillController extends AbstractController
 
     public function __construct(
         private MailerCap $mailer,
-        private CommercioCommercantRepository $commercantRepository
+        private CommercioCommercantRepository $commercantRepository,
+        private CacheInterface $cache
     ) {
 
     }
@@ -70,7 +72,7 @@ class MandrillController extends AbstractController
     #[Route(path: '/template/list', name: 'cap_commercio_mandrill_listtemplate', methods: ['GET'])]
     public function listTemplates(): Response
     {
-        $templates = $this->mailer->getTemplates();
+        $templates = $this->cache->get('mandrill_templates', fn() => $this->mailer->getTemplates());
 
         return $this->render(
             '@CapCommercio/mandrill/template_list.html.twig',
