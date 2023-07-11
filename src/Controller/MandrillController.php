@@ -16,10 +16,28 @@ class MandrillController extends AbstractController
 {
     const templates = [
         'commercio_access_demand',
-        "commercio_recovery",
-        "commercio_reminder_days",
-        "commercio_reminder_month",
-        "commercio_reminder_month",
+        'commercio_commande',
+        'commercio_commercant_contact',
+        'commercio_commercant_contact_confirm',
+        'commercio_contact_site',
+        'commercio_contact_site_confirm',
+        'commercio_double_optin',
+        'commercio_facture',
+        'commercio_news',
+        'commercio_newsletter',
+        'commercio_newsletter_inscription',
+        'commercio_noncommercant_contact',
+        'commercio_recovery',
+        'commercio_reminder_days',
+        'commercio_reminder_expired',
+        'commercio_reminder_month',
+        'commercio_revendique',
+        'commercio_revendique_admin',
+        'commercio_tender',
+        'commercio_visits_expired_members',
+        'commercio_visits_incomplete_members',
+        'commercio_visits_members',
+        'commercio_visits_non_members',
     ];
 
     public function __construct(
