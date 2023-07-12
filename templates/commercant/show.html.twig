@@ -137,4 +137,16 @@
         </div>
     </div>
     {{ include('@CapCommercio/commercant/_delete_form.html.twig') }}
+            {% include '@CapCommercio/hours/_delete_holiday_form.html.twig' %}
 {% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        document.querySelector('#exampleModal').addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const imageId = button.dataset.imageid;
+            document.querySelector('#imageid').value = imageId;
+        })
+    </script>
+{% endblock %}
+

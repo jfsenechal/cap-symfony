@@ -6,10 +6,8 @@ use Cap\Commercio\Entity\CommercioCommercantHoliday;
 use Cap\Commercio\Entity\CommercioCommercantHours;
 use Cap\Commercio\Form\HolidayType;
 use Cap\Commercio\Form\HourType;
-use Cap\Commercio\Form\UserType;
 use Cap\Commercio\Repository\CommercioCommercantHolidayRepository;
 use Cap\Commercio\Repository\CommercioCommercantHoursRepository;
-use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +21,6 @@ class OpeningHoursController extends AbstractController
     public function __construct(
         private CommercioCommercantHoursRepository $commercioCommercantHoursRepository,
         private CommercioCommercantHolidayRepository $commercioCommercantHolidayRepository,
-        private CommercioCommercantRepository $commercantRepository,
     ) {
     }
 
@@ -38,6 +35,7 @@ class OpeningHoursController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $this->commercioCommercantHolidayRepository->flush();
+            $this->addFlash('success', 'Le congé a été modifié');
 
             return $this->redirectToRoute(
                 'cap_commercant_show',
@@ -63,6 +61,7 @@ class OpeningHoursController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $this->commercioCommercantHoursRepository->flush();
+            $this->addFlash('success', 'L\' horaire a été modifié');
 
             return $this->redirectToRoute('cap_commercant_show', ['id' => $hour->getCommercioCommercant()->getId()]);
         }
@@ -75,20 +74,34 @@ class OpeningHoursController extends AbstractController
     }
 
 
-    #[Route('/delete/holiday/{id}', name: 'cap_holiday_delete', methods: ['POST'])]
+    #[Route('/delete/holiday', name: 'cap_holiday_delete', methods: ['POST'])]
     public function holidayDelete(
         Request $request,
-        CommercioCommercantHoliday $holiday,
     ): Response {
+
+        $holidayId = (int)$request->request->get('imageid');
+        if (0 === $holidayId) {
+            $this->addFlash('danger', 'Congé non trouvé');
+
+            return $this->redirectToRoute('cap_commercant_index');
+        }
+
+        $holiday = $this->commercioCommercantHolidayRepository->find($holidayId);
+        if (!$holiday instanceof CommercioCommercantHoliday) {
+            $this->addFlash('danger', 'Congé non trouvé');
+
+            return $this->redirectToRoute('cap_commercant_index');
+        }
+
         $id = $holiday->getCommercioCommercant()->getId();
-        if ($this->isCsrfTokenValid('delete'.$holiday->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('deleteholiday', $request->request->get('_token'))) {
             $this->commercioCommercantHolidayRepository->remove($holiday);
             $this->commercioCommercantHolidayRepository->flush();
+            $this->addFlash('success', 'Le congé a été effacé');
         }
 
         return $this->redirectToRoute('cap_commercant_show', ['id' => $id], Response::HTTP_SEE_OTHER);
     }
-
 
     #[Route('/delete/holiday/{id}', name: 'cap_hour_delete', methods: ['POST'])]
     public function hourDelete(
@@ -103,6 +116,5 @@ class OpeningHoursController extends AbstractController
 
         return $this->redirectToRoute('cap_commercant_show', ['id' => $id], Response::HTTP_SEE_OTHER);
     }
-
 
 }

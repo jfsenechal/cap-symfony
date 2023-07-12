@@ -23,10 +23,19 @@
                     {% endif %}
                 </td>
                 <td>
-                    <p class="text-muted">{{ holiday.note }}</p>
+                    <p class="text-muted">{{ holiday.note|u.truncate(80,'...') }}</p>
                 </td>
                 <td>
-                    <a href="{{ path('cap_holiday_edit', {'id': holiday.id}) }}">Editer</a>
+                    <a href="{{ path('cap_holiday_edit', {'id': holiday.id}) }}"> <i class="fas fa-pencil-alt"></i> Editer</a> <br /><br />
+                     <a
+                            data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"
+                            data-imageid="{{ holiday.id }}"
+                            title="supprimer ce congé"
+                            class="removeclassment text-center mt-3"
+                            style="cursor: pointer;">
+                        <i class="far fa-trash-alt"></i> Supprimer
+                    </a>
                 </td>
             </tr>
         {% endfor %}
