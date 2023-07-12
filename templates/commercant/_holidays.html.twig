@@ -1,0 +1,37 @@
+<h3 class="text-success">Congé(s)</h3>
+{% if holidays|length > 0 %}
+    <table class='table table-bordered table-hover'>
+        <thead>
+        <tr>
+            <th>Du</th>
+            <th>Au</th>
+            <th>Note</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for holiday in holidays %}
+            <tr>
+                <td>
+                    {% if holiday.beginDate %}
+                        {{ holiday.beginDate | format_date('full') }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if holiday.endDate %}
+                        {{ holiday.endDate | format_date('full') }}
+                    {% endif %}
+                </td>
+                <td>
+                    <p class="text-muted">{{ holiday.note }}</p>
+                </td>
+                <td>
+                    <a href="{{ path('cap_holiday_edit', {'id': holiday.id}) }}">Editer</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    Aucun
+{% endif %}

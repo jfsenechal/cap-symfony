@@ -8,6 +8,8 @@ use Cap\Commercio\Form\CommercantSearchType;
 use Cap\Commercio\Form\CommercantType;
 use Cap\Commercio\Mailer\MailerCap;
 use Cap\Commercio\Repository\CommercantGalleryRepository;
+use Cap\Commercio\Repository\CommercioCommercantHolidayRepository;
+use Cap\Commercio\Repository\CommercioCommercantHoursRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
 use Cap\Commercio\Repository\RightAccessRepository;
@@ -26,7 +28,8 @@ class CommercantController extends AbstractController
         private CommercioCommercantRepository $commercantRepository,
         private CommercantGalleryRepository $commercantGalleryRepository,
         private PaymentOrderRepository $paymentOrderRepository,
-        private RightAccessRepository $rightAccessRepository,
+        private CommercioCommercantHoursRepository $commercioCommercantHoursRepository,
+        private CommercioCommercantHolidayRepository $commercioCommercantHolidayRepository,
         private MailerCap $mailer
     ) {
     }
@@ -85,11 +88,15 @@ class CommercantController extends AbstractController
     {
         $gallery = $this->commercantGalleryRepository->findByCommercant($commercant);
         $orders = $this->paymentOrderRepository->findByCommercantId($commercant->getId());
+        $hours = $this->commercioCommercantHoursRepository->findByCommercerant($commercant);
+        $holidays = $this->commercioCommercantHolidayRepository->findByCommercerant($commercant);
 
         return $this->render('@CapCommercio/commercant/show.html.twig', [
             'commercant' => $commercant,
             'gallery' => $gallery,
             'orders' => $orders,
+            'hours' => $hours,
+            'holidays' => $holidays,
         ]);
     }
 

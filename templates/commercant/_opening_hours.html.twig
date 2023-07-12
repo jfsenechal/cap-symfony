@@ -1,0 +1,62 @@
+<h3 class="text-success">Heures d'ouverture</h3>
+
+<p>
+    Type
+    d'ouverture {% if commercant.hoursType %} {{ commercant.hoursType.id }} : {{ commercant.hoursType.name }} {% endif %}
+</p>
+<table class='table table-bordered table-hover'>
+    <thead>
+    <tr>
+        <th>Jour</th>
+        <th>Fermé ?</th>
+        <th>Fermé à midi ?</th>
+        <th>Ouverture<br/> matinée</th>
+        <th>Fermeture<br/> matinée</th>
+        <th>Ouverture<br/> après midi</th>
+        <th>Fermeture<br/> après midi</th>
+        <th>Sur Rdv</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for hour in hours %}
+        <tr>
+            <td>{{ ("jour"~hour.day) | trans }}</td>
+            <td></td>
+            <td>
+                {% if hour.isClosedAtLunch %}
+                    <span class="fas fa-check"></span>
+                {% endif %}
+            </td>
+            <td>
+                {% if hour.morningStart %}
+                    {{ hour.morningStart | date('H:i') }}
+                {% endif %}
+            </td>
+            <td>
+                {% if hour.morningEnd %}
+                    {{ hour.morningEnd | date('H:i') }}
+                {% endif %}
+            </td>
+            <td>
+                {% if hour.noonStart %}
+                    {{ hour.noonStart | date('H:i') }}
+                {% endif %}
+            </td>
+            <td>
+                {% if hour.noonEnd %}
+                    {{ hour.noonEnd | date('H:i') }}
+                {% endif %}
+            </td>
+            <td>
+                {% if hour.isRdv %}
+                    <span class="fas fa-check"></span>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{{ path('cap_hour_edit', {'id': hour.id}) }}">Editer</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
