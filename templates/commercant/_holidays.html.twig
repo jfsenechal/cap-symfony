@@ -29,10 +29,10 @@
                     <a href="{{ path('cap_holiday_edit', {'id': holiday.id}) }}"> <i class="fas fa-pencil-alt"></i> Editer</a> <br /><br />
                      <a
                             data-bs-toggle="modal"
-                            data-bs-target="#exampleModal"
-                            data-imageid="{{ holiday.id }}"
+                            data-bs-target="#holidayModal"
+                            data-holidayid="{{ holiday.id }}"
                             title="supprimer ce congé"
-                            class="removeclassment text-center mt-3"
+                            class="text-center mt-3"
                             style="cursor: pointer;">
                         <i class="far fa-trash-alt"></i> Supprimer
                     </a>

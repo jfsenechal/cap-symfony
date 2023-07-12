@@ -140,12 +140,13 @@
             {% include '@CapCommercio/hours/_delete_holiday_form.html.twig' %}
 {% endblock %}
 
-{% block scripts %}
+{% block javascripts %}
     <script type="text/javascript">
-        document.querySelector('#exampleModal').addEventListener('show.bs.modal', function (event) {
+        document.querySelector('#holidayModal').addEventListener('show.bs.modal', function (event) {
             const button = event.relatedTarget;
-            const imageId = button.dataset.imageid;
-            document.querySelector('#imageid').value = imageId;
+            const holidayId = button.dataset.holidayid;
+            console.log(holidayId)
+            document.querySelector('#holidayid').value = holidayId;
         })
     </script>
 {% endblock %}

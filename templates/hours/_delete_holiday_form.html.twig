@@ -1,8 +1,8 @@
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="holidayModal" tabindex="-1" aria-labelledby="holidayModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Supprimer le congé ?</h5>
+                <h5 class="modal-title" id="holidayModalLabel">Supprimer le congé ?</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -11,7 +11,7 @@
             <div class="modal-footer">
                 <form method="post" action="{{ path('cap_holiday_delete') }}">
                     <input type="hidden" name="_token" value="{{ csrf_token('deleteholiday' ) }}">
-                    <input type="hidden" id="imageid" name="imageid" value="0">
+                    <input type="hidden" id="holidayid" name="holidayid" value="0">
                     <button type="button" class="btn btn-secondary"
                             data-bs-dismiss="modal">Annuler
                     </button>

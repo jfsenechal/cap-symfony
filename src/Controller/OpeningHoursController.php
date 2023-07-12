@@ -79,7 +79,7 @@ class OpeningHoursController extends AbstractController
         Request $request,
     ): Response {
 
-        $holidayId = (int)$request->request->get('imageid');
+        $holidayId = $request->request->getInt('holidayid');
         if (0 === $holidayId) {
             $this->addFlash('danger', 'Congé non trouvé');
 
