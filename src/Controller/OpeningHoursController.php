@@ -24,7 +24,17 @@ class OpeningHoursController extends AbstractController
     ) {
     }
 
-    #[Route('/{id}/hour/edit', name: 'cap_holiday_edit', methods: ['GET', 'POST'])]
+    #[Route('/holiday/index', name: 'cap_holiday_index', methods: ['GET'])]
+    public function holidays(): Response
+    {
+        $holidays = $this->commercioCommercantHolidayRepository->findAllOrdered();
+
+        return $this->render('@CapCommercio/hours/holiday_index.html.twig', [
+            'holidays' => $holidays,
+        ]);
+    }
+
+    #[Route('/{id}/holiday/edit', name: 'cap_holiday_edit', methods: ['GET', 'POST'])]
     public function holidayEdit(
         Request $request,
         CommercioCommercantHoliday $holiday,
@@ -50,7 +60,7 @@ class OpeningHoursController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/holiday/edit', name: 'cap_hour_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/hour/edit', name: 'cap_hour_edit', methods: ['GET', 'POST'])]
     public function hoursEdit(
         Request $request,
         CommercioCommercantHours $hour,

@@ -1,0 +1,53 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">Les congés de nos commercants</h3>
+
+        <div class="card-body">
+
+            {% if holidays|length > 0 %}
+                <table class='table table-bordered table-hover'>
+                    <thead>
+                    <tr>
+                        <th>Commerçant</th>
+                        <th>Du</th>
+                        <th>Au</th>
+                        <th>Note</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for holiday in holidays %}
+                        <tr>
+                            <td>
+                                {% if holiday.commercioCommercant %}
+                                    <a href="{{ path('cap_commercant_show', {'id': holiday.commercioCommercant.id }) }}">
+                                        {{ holiday.commercioCommercant.legalEntity }}
+                                    </a>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if holiday.beginDate %}
+                                    {{ holiday.beginDate | format_date('full') }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if holiday.endDate %}
+                                    {{ holiday.endDate | format_date('full') }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <p class="text-muted">{{ holiday.note|u.truncate(80,'...') }}</p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                Aucun
+            {% endif %}
+        </div>
+
+    </div>
+{% endblock %}
+
