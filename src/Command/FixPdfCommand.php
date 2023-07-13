@@ -3,6 +3,7 @@
 namespace Cap\Commercio\Command;
 
 use Cap\Commercio\Entity\PaymentBill;
+use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -56,8 +57,8 @@ class FixPdfCommand extends Command
             if ($this->isAbsolutePath($order->getPdfPath())) {
                 $io->writeln($order->getPdfPath());
             }
-            if (!is_readable($this->path.$order->getPdfPath())) {
-                $io->error('not readable: '.$this->path.$order->getPdfPath());
+            if (!is_readable($this->getAbsolutePathPdf($order))) {
+                $io->error('not readable: '.$this->getAbsolutePathPdf($order));
             }
 
         }
@@ -79,8 +80,8 @@ class FixPdfCommand extends Command
                     $this->paymentBillRepository->flush();
                 }
             }
-            if (!is_readable($this->path.$order->getPdfPath())) {
-                $io->error('not readable: '.$this->path.$order->getPdfPath());
+            if (!is_readable($this->getAbsolutePathPdf($bill))) {
+                $io->error('not readable: '.$this->getAbsolutePathPdf($bill));
             }
         }
 
@@ -98,5 +99,12 @@ class FixPdfCommand extends Command
             $newPath = str_replace($this->path, "", $bill->getPdfPath());
             $bill->setPdfPath($newPath);
         }
+    }
+
+    private function getAbsolutePathPdf(PaymentBill|PaymentOrder $object)
+    {
+        list($name) = explode('?', $object->getPdfPath());
+
+        return $this->path.$name;
     }
 }
