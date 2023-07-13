@@ -5,6 +5,10 @@
                 <i class="fas fa-download"></i>
                 Télécharger le pdf</a>
         </div>
+    {% else %}
+        <div class="col-auto">
+            Pas de chemin pdf !
+        </div>
     {% endif %}
     <div class="col-auto"><a href="{{ path('cap_order_all') }}" class="btn btn-primary" role='button'><i
                     class="fas fa-list"></i>

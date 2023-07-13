@@ -1,0 +1,100 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">Pdf manquants</h3>
+
+        <div class="card-body">
+            <h4 class="text-success">Commandes sans pdf encodés</h4>
+            <table class="table table-bordered mt-3">
+                <tr>
+                    <th>Numéro</th>
+                    <th>Commerce</th>
+                    <th>Crée le</th>
+                    <th>Pdf</th>
+                </tr>
+                {% for order in ordersMissing %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('cap_order_show', {'id': order.id}) }}">{{ order.orderNumber }}</a>
+                        </td>
+                        <td>
+                            <a href="{{ path('cap_commercant_show', {'id': order.orderCommercant.id}) }}">
+                                {{ order.orderCommercant.companyName }}
+                            </a>
+                        </td>
+                        <td>{{ order.insertDate|format_date('full') }}</td>
+                        <td>{{ order.pdfPath }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <h4 class="text-success">Commandes fichier pdf non trouvé</h4>
+            <table class="table table-bordered mt-3">
+                <tr>
+                    <th>Numéro</th>
+                    <th>Commerce</th>
+                    <th>Crée le</th>
+                    <th>Pdf</th>
+                </tr>
+                {% for order in ordersPath %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('cap_order_show', {'id': order.id}) }}">{{ order.orderNumber }}</a>
+                        </td>
+                        <td>
+                            <a href="{{ path('cap_commercant_show', {'id': order.orderCommercant.id}) }}">
+                                {{ order.orderCommercant.companyName }}
+                            </a>
+                        </td>
+                        <td>{{ order.insertDate|format_date('full') }}</td>
+                        <td>{{ order.pdfPath }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <h4 class="text-success">Factures sans pdf encodés</h4>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Numero</th>
+                    <th>Nom</th>
+                    <th>Date</th>
+                    <th>Pdf</th>
+                </tr>
+                {% for bill in billsMissing %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('cap_bill_show', {'id': bill.id}) }}">{{ bill.billNumber }}</a>
+                        </td>
+                        <td>
+                            {{ bill.order.orderCommercant.companyName }}
+                        </td>
+                        <td>{{ bill.insertDate|format_date('full') }}</td>
+                        <td>{{ bill.pdfPath }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <h4 class="text-success">Factures fichier pdf non trouvé</h4>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Numero</th>
+                    <th>Nom</th>
+                    <th>Date</th>
+                    <th>Pdf</th>
+                </tr>
+                {% for bill in billsPath %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('cap_bill_show', {'id': bill.id}) }}">{{ bill.billNumber }}</a>
+                        </td>
+                        <td>
+                            {{ bill.order.orderCommercant.companyName }}
+                        </td>
+                        <td>{{ bill.insertDate|format_date('full') }}</td>
+                        <td>{{ bill.pdfPath }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
