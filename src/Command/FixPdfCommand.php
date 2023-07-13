@@ -12,7 +12,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 #[AsCommand(
     name: 'cap:fix-pdf',
@@ -20,12 +19,11 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 )]
 class FixPdfCommand extends Command
 {
-    private string $path = '';
+    private string $path = '/var/www/sites/commercio/';
 
     public function __construct(
         private PaymentOrderRepository $paymentOrderRepository,
-        private PaymentBillRepository $paymentBillRepository,
-        private ParameterBagInterface $parameterBag
+        private PaymentBillRepository $paymentBillRepository
     ) {
         parent::__construct();
     }
@@ -41,7 +39,6 @@ class FixPdfCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $this->path = $this->parameterBag->get('kernel.project_dir').'/';
         $fix = $input->getOption('fix');
         $flush = $input->getOption('flush');
 
@@ -49,7 +46,7 @@ class FixPdfCommand extends Command
         foreach ($this->paymentOrderRepository->findAll() as $order) {
             if ($order->getPdfPath() == null) {
                 $io->error(
-                    'Pas de chemin'.$order->getId().$order->getOrderCommercant()->getCompanyName(
+                    'Pas de chemin en bd id '.$order->getId().' '.$order->getOrderCommercant()->getCompanyName(
                     ).' '.$order->getModifyDate()->format('Y-m-d')
                 );
                 continue;
@@ -58,7 +55,7 @@ class FixPdfCommand extends Command
                 $io->writeln($order->getPdfPath());
             }
             if (!is_readable($this->getAbsolutePathPdf($order))) {
-                $io->error('not readable: '.$this->getAbsolutePathPdf($order));
+                $io->error('not readable id: '.$order->getId().' '.$this->getAbsolutePathPdf($order));
             }
 
         }
@@ -66,7 +63,7 @@ class FixPdfCommand extends Command
         foreach ($this->paymentBillRepository->findAll() as $bill) {
             if ($bill->getPdfPath() == null) {
                 $io->error(
-                    'Pas de chemin'.$bill->getId().$bill->getOrder()->getOrderCommercant()->getCompanyName(
+                    'Pas de chemin en db id '.$bill->getId().' '.$bill->getOrder()->getOrderCommercant()->getCompanyName(
                     ).' '.$bill->getModifyDate()->format('Y-m-d')
                 );
                 continue;
