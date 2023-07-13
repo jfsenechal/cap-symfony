@@ -3,11 +3,12 @@
 {% block body %}
 
     <div class="card">
-        <h3 class="card-header">Multiple paiements pour des factures</h3>
+        <h3 class="card-header">Multiple paiements pour des bons de commande</h3>
 
         <div class="card-body">
             <table class="table table-bordered mt-3">
                 <tr>
+                    <th>Numéro de commande</th>
                     <th>Commerce</th>
                     <th>Au nom de</th>
                     <th>Crée le</th>
@@ -17,9 +18,12 @@
                 {% for order in orders %}
                     <tr>
                         <td>
-                            <a href="{{ path('cap_order_show', {'id': order.id}) }}">
-                                {{ order.orderCommercant.companyName }}
+                             <a href="{{ path('cap_order_show', {'id': order.id}) }}">
+                                {{ order.orderNumber }}
                             </a>
+                        </td>
+                        <td>
+                                {{ order.orderCommercant.companyName }}
                         </td>
                         <td>
                             {{ order.orderCommercant.firstname }} {{ order.orderCommercant.lastname }}

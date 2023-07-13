@@ -35,7 +35,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                     <li class="nav-item">
                         <a href="{{ path('cap_commercant_membres') }}" class="nav-link">
                             Les membres
@@ -47,8 +47,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ path('cap_order_all') }}" class="nav-link">
+                        <a href="{{ path('cap_bill_all') }}" class="nav-link">
                             Les factures
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ path('cap_order_all') }}" class="nav-link">
+                            Les bons de commande
                         </a>
                     </li>
                     <li class="nav-item">
@@ -95,7 +100,7 @@
                 {% endif %}
             </ul>
             <ul class="navbar-nav mb-2 mb-lg-0">
-                {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                     <li class="nav-item">
                         <a href="{{ path('cap_home') }}" class="nav-link"><i class="fas fa-sign-in-alt"></i>
                             Se connecter</a>
@@ -104,12 +109,12 @@
                     <li class="nav-item">
                         <a href="{{ path('cap_home') }}" class="nav-link">
                             <i class="fas fa-user"></i>
-                            Compte</a>
+                            Mon compte</a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ path('app_logout') }}" class="nav-link">
                             <i class="fas fa-sign-out"></i>
-                            Logout</a>
+                            Quitter</a>
                     </li>
                 {% endif %}
             </ul>

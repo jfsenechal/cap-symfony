@@ -2,7 +2,7 @@
 
 {% block body %}
     <div class="card">
-        <h3 class="card-header">Paiement {{ bill.id }} de {{ order.orderNumber }}</h3>
+        <h3 class="card-header">Paiement {{ bill.billNumber }}</h3>
 
         <div class="card-body">
 
@@ -10,7 +10,7 @@
 
             <table class="table table-bordered">
                 <tr>
-                    <th>Order</th>
+                    <th>Commande</th>
                     <td>
                         <a href="{{ path('cap_order_show', {'id': order.id}) }}">
                             {{ bill.order.orderNumber }}
@@ -18,16 +18,24 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Montant</th>
+                    <th>Montant Tvac</th>
                     <td>{{ bill.priceVat|format_currency('eur') }} </td>
+                </tr>
+                <tr>
+                    <th>Montant Htva</th>
+                    <td>{{ bill.priceEvat|format_currency('eur') }} </td>
+                </tr>
+                <tr>
+                    <th>Montant Tva</th>
+                    <td>{{ bill.vatAmount|format_currency('eur') }} </td>
+                </tr>
+                <tr>
+                    <th>Tva</th>
+                    <td>{{ bill.vat }}%</td>
                 </tr>
                 <tr>
                     <th>Crée le</th>
                     <td>{{ bill.insertDate|format_date('full') }} </td>
-                </tr>
-                <tr>
-                    <th>Tva</th>
-                    <td>{{ bill.vat }}% </td>
                 </tr>
                 <tr>
                     <th>Archivé</th>
@@ -36,13 +44,7 @@
                 <tr>
                     <th>Pdf</th>
                     <td>
-                        {% if bill.pdfPath != null %}
-                            <a href="{{ asset(bill.pdfPath) }}" title="{{ bill.pdfPath }}" target="_blank">
-                                <i class="fas fa-download"></i> Télécharger
-                            </a>
-                        {% else %}
-                            Pdf non trouvé
-                        {% endif %}
+
                     </td>
                 </tr>
             </table>

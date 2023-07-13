@@ -34,16 +34,13 @@ class PaymentOrderLineRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    /**
-     * @return PaymentOrderLines[]
-     */
-    public function findByOrder(PaymentOrder $order): array
+    public function findByOrder(PaymentOrder $order): ?PaymentOrderLines
     {
         return $this->createQueryBuilder('paymentOrderLine')
             ->andWhere('paymentOrderLine.order = :order')
             ->setParameter('order', $order)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
     }
 
 }

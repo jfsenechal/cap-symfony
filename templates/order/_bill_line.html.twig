@@ -1,0 +1,30 @@
+<table class="table table-bordered">
+    <tr>
+        <th>Number</th>
+        <td>
+            <a href="{{ path('cap_bill_show', {'id': bill.id}) }}">
+                {{ bill.billNumber }}
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <th>Montant</th>
+        <td>{{ bill.priceVat|format_currency('eur') }} </td>
+    </tr>
+    <tr>
+        <th>Crée le</th>
+        <td>{{ bill.insertDate|format_date('full') }} </td>
+    </tr>
+    <tr>
+        <th>Pdf</th>
+        <td>
+            {% if bill.pdfPath != null %}
+                <a href="{{ asset(bill.pdfPath) }}" title="{{ bill.pdfPath }}" target="_blank">
+                    <i class="fas fa-download"></i> Télécharger
+                </a>
+            {% else %}
+                Pdf non trouvé
+            {% endif %}
+        </td>
+    </tr>
+</table>

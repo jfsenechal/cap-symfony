@@ -2,9 +2,7 @@
 
 {% block body %}
     <div class="card">
-        <h3 class="card-header">{{ order.orderNumber }} de
-            {{ orderCommercant.companyName }}
-        </h3>
+        <h3 class="card-header">Bon de commande {{ order.orderNumber }}</h3>
 
         <div class="card-body">
 
@@ -40,61 +38,34 @@
 
             <h4 class="text-success">Paiement</h4>
             {% if bill %}
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Number</th>
-                        <td>
-                            <a href="{{ path('cap_bill_show', {'id': bill.id}) }}">
-                                {{ bill.billNumber }}
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Montant</th>
-                        <td>{{ bill.priceVat|format_currency('eur') }} </td>
-                    </tr>
-                    <tr>
-                        <th>Pdf</th>
-                        <td>
-                            {% if bill.pdfPath != null %}
-                                <a href="{{ asset(bill.pdfPath) }}" title="{{ bill.pdfPath }}" target="_blank">
-                                    <i class="fas fa-download"></i> Télécharger
-                                </a>
-                            {% else %}
-                                Pdf non trouvé
-                            {% endif %}
-                        </td>
-                    </tr>
-                </table>
-            {% else %}
-                <p>Aucun paiement</p>
-            {% endif %}
-            {% if bills|length > 0 %}
-                <div class="alert alert-danger">
-                    <a href="{{ path('cap_checkup_bill') }}">
-                        Attention plusieurs paiements pour cette facture
-                    </a>
-                </div>
-                {% include '@CapCommercio/order/_bills.html.twig' %}
+                {% include '@CapCommercio/order/_bill_line.html.twig' %}
+            {% elseif bills|length > 0 %}
+                {% for bill in bills %}
+                    {% include '@CapCommercio/order/_bill_line.html.twig' %}
+                {% endfor %}
+                {% else %}
+                    <p>Aucun paiement</p>
             {% endif %}
 
             <h4 class="text-success">Détails</h4>
-            {% for line in lines %}
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Order</th>
-                        <td>{{ line.order.orderNumber }}</td>
-                    </tr>
-                    <tr>
-                        <th>Label</th>
-                        <td>{{ line.label }}</td>
-                    </tr>
-                    <tr>
-                        <th>Prix TvaH</th>
-                        <td>{{ line.totalPriceEvat|format_currency('euro') }}</td>
-                    </tr>
-                </table>
-            {% endfor %}
+            <table class="table table-bordered">
+                <tr>
+                    <th>Label</th>
+                    <td>{{ line.label }}</td>
+                </tr>
+                <tr>
+                    <th>Prix TvaH</th>
+                    <td>{{ line.totalPriceEvat|format_currency('euro') }}</td>
+                </tr>
+                <tr>
+                    <th>Référence</th>
+                    <td>{{ line.reference }}</td>
+                </tr>
+                <tr>
+                    <th>Quantité</th>
+                    <td>{{ line.quantityLabel }} {{ line.quantity }}</td>
+                </tr>
+            </table>
 
             <h4 class="text-success">Adresse</h4>
             {% for address in addresses %}

@@ -3,6 +3,7 @@
 namespace Cap\Commercio\Controller;
 
 use Cap\Commercio\Entity\PaymentBill;
+use Cap\Commercio\Form\BillSearchType;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,14 +23,23 @@ class BillController extends AbstractController
     }
 
     #[Route(path: '/', name: 'cap_bill_all', methods: ['GET', 'POST'])]
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $bills = $this->paymentBillRepository->findAllOrdered();
+        $form = $this->createForm(BillSearchType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $bills = $this->paymentBillRepository->search($data['name'], $data['year'], $data['paid']);
+        } else {
+            $bills = $this->paymentBillRepository->findAllOrdered();
+        }
 
         return $this->render(
             '@CapCommercio/bill/index.html.twig',
             [
                 'bills' => $bills,
+                'form' => $form->createView(),
             ]
         );
     }

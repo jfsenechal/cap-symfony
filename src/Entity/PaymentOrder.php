@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class PaymentOrder
 {
+    public ?PaymentBill $bill = null;
+
     /**
      * @var int
      *

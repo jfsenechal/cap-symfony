@@ -40,6 +40,15 @@ class OrderController extends AbstractController
             $orders = $this->paymentOrderRepository->findAllOrdered();
         }
 
+        foreach ($orders as $order) {
+            try {
+                $order->bill = $this->paymentBillRepository->findOneByOrder($order);
+            } catch (NonUniqueResultException $e) {
+                $order->bill = null;
+                $this->addFlash('danger', 'Le bon de commande a plusieurs paiements '.$order->getOrderNumber());
+            }
+        }
+
         return $this->render(
             '@CapCommercio/order/index.html.twig',
             [
@@ -53,7 +62,7 @@ class OrderController extends AbstractController
     public function show(PaymentOrder $paymentOrder): Response
     {
         $orderCommercant = $paymentOrder->getOrderCommercant();
-        $lines = $this->paymentOrderLineRepository->findByOrder($paymentOrder);
+        $line = $this->paymentOrderLineRepository->findByOrder($paymentOrder);
         $addresses = $this->paymentOrderAddressRepository->findByOrder($paymentOrder);
         $bills = [];
         try {
@@ -61,6 +70,9 @@ class OrderController extends AbstractController
         } catch (NonUniqueResultException $e) {
             $bill = null;
             $bills = $this->paymentBillRepository->findByOrder($paymentOrder);
+            if (count($bills) > 0) {
+                $this->addFlash('danger', 'Attention plusieurs paiements pour cette facture');
+            }
         }
 
         return $this->render(
@@ -68,7 +80,7 @@ class OrderController extends AbstractController
             [
                 'order' => $paymentOrder,
                 'orderCommercant' => $orderCommercant,
-                'lines' => $lines,
+                'line' => $line,
                 'addresses' => $addresses,
                 'bill' => $bill,
                 'bills' => $bills,
@@ -81,14 +93,13 @@ class OrderController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$paymentOrder->getId(), $request->request->get('_token'))) {
             $orderCommercant = $paymentOrder->getOrderCommercant();
-            $lines = $this->paymentOrderLineRepository->findByOrder($paymentOrder);
+            $line = $this->paymentOrderLineRepository->findByOrder($paymentOrder);
             $addresses = $this->paymentOrderAddressRepository->findByOrder($paymentOrder);
             $bills = $this->paymentBillRepository->findByOrder($paymentOrder);
 
             $this->paymentOrderRepository->remove($orderCommercant);
-            foreach ($lines as $line) {
-                $this->paymentOrderRepository->remove($line);
-            }
+            $this->paymentOrderRepository->remove($line);
+
             foreach ($addresses as $address) {
                 $this->paymentOrderRepository->remove($address);
             }
