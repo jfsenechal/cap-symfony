@@ -47,4 +47,13 @@ class PaymentOrderAddressRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findOneByOrder(PaymentOrder $order): ?PaymentOrderAddress
+    {
+        return $this->createQueryBuilder('paymentOrderAddress')
+            ->andWhere('paymentOrderAddress.order = :order')
+            ->setParameter('order', $order)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 }

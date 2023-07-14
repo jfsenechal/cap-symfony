@@ -1,6 +1,10 @@
-<page backimg='{{ rpath }}engine/modules/payment/templates/background.jpg' backtop="10" footer="page">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Bon de commande</title>
     <style type="text/css">
-        page {
+        main {
             color: #545454;
             font-family: Arial, Helvetica, sans-serif;
         }
@@ -92,13 +96,25 @@
             width: 75mm;
             font-size: 14px;
             line-height: 150%;
-
         }
 
     </style>
+</head>
+<body>
+<main style="background-image: url('{{ absolute_url(asset('bundles/capcommercio/backgroundOrder.jpg')) }}');" backtop="10" footer="page">
 
     <div class="enveloppe">
-        {{ client_address_entete }}
+
+        {{ orderCommercant.lastname }} {{ orderCommercant.firstname }} <br/>
+        {{ orderCommercant.companyName }} <br/>
+
+        {{ address.street1 }} <br/>
+        {{ address.street2 }} <br/>
+        {{ address.zipcode }} <br/>
+        {{ address.city }} <br/>
+        Belgique <br/>
+        {{ orderCommercant.companyVat }} <br/>
+
     </div>
 
     <table width="600" border="0" cellspacing="0" cellpadding="5">
@@ -106,12 +122,12 @@
         <tr>
             <td valign="top" class="align-right" colspan="2">
                 <b>Date émission :</b>
-                <br>{{ date }}
+                <br>{{ order.insertDate|format_date('full') }}
             </td>
 
             <td width="200" class="align-right" colspan="2">
                 <b>Numéro de la commande :</b>
-                <br>{{ reference }}
+                <br>{{ order.orderNumber }}
                 <br>
                 <b> </b>
                 <br>
@@ -123,17 +139,18 @@
         </tr>
         <tr>
             <td width="485" colspan="2" class="entete"><br>
-                <b>{{ company_name }}</b>
+                <b>CAP sur Marche ASBL</b>
                 <br>
-                {{ company_address }}<br>
-                {{ company_cp }} {{ company_city }}<br>
-                TVA : {{ company_tva }}</td>
+                Avenue de France, 126<br>
+                6900 Marche-en-Famenne<br>
+                TVA : BE 0525 968 345
+            </td>
         </tr>
         <tr class="content">
             <td width="600" colspan="4">
-                <p>{{ clienttitle }}, <br><br>
+                <p>Madame, Monsieur, <br><br>
                     Nous vous remercions pour votre confiance. Nous nous tenons à votre disposition pour toute
-                    information complémentaire. N'hésitez pas à nous contacter par email ({{ company_email }})
+                    information complémentaire. N'hésitez pas à nous contacter par email (cap@marche.be)
                     ou par téléphone (0478/34 69 42).<br><br>
                     Ci-dessous se trouvent les détails de votre commande.</p>
             </td>
@@ -146,18 +163,16 @@
             </th>
         </tr>
 
-        {!LOOP lines
         |
         <tr class="tableCell">
-            <td width="60" height="25" valign="middle" align="center">{!quantity!}</td>
-            <td width="375" valign="middle" align="left" class="decale">{!label!}</td>
-            <td width="80" valign="middle" align="right">{!price_evat!}€</td>
-            <td width="135" align="right" valign="middle">{!total_price_evat!}€</td>
+            <td width="60" height="25" valign="middle" align="center">{{ line.quantity }}</td>
+            <td width="375" valign="middle" align="left" class="decale">{{ line.label }}</td>
+            <td width="80" valign="middle" align="right">{{ line.priceEvat|format_currency('euro') }}</td>
+            <td width="135" align="right" valign="middle">{{ line.totalPriceEvat|format_currency('euro') }}</td>
         </tr>
-        |LOOP!}
+        |
 
-        {{ promo_html }}
-
+        {# % include '@CapCommercio/order/_promo.html.twig' % #}
 
         <tr valign="top" height="12">
             <td width="650" height="1" colspan="4" align="center" valign="top">
@@ -167,23 +182,31 @@
         <tr valign="top" height="12">
             <td width="65" height="12" valign="top" align="center"><b>&nbsp;</b></td>
             <td width="505" height="12" colspan="2" align="right" valign="top"><b>TOTAL ARTICLE(S) HTVA</b></td>
-            <td width="80" height="12" align="right" valign="top"><b>{{ total_htva }}€</b></td>
+            <td width="80" height="12" align="right" valign="top"><b>{{ order.priceEvat|format_currency('euro') }}</b>
+            </td>
         </tr>
-
-
-        {{ vat_amount }}
-        {{ total_tvac }}
-
-
+        <tr valign='top' height='12'>
+            <td width='65' height='12' valign='top' align='center'><b>&nbsp;</b></td>
+            <td width='505' height='12' colspan='2' align='right' valign='top'><b>TOTAL TVA ({{ order.vat }})</b></td>
+            <td width='80' height='12' align='right' valign='top'><b>{{ order.vatAmount|format_currency('euro') }}</b>
+            </td>
+        </tr>
+        <tr valign='top' height='12'>
+            <td width='65' height='12' valign='top' align='center'><b>&nbsp;</b></td>
+            <td width='505' height='12' colspan='2' align='right' valign='top'><b>TOTAL TVAC</b></td>
+            <td width='80' height='12' align='right' valign='top'><b>{{ order.priceVat|format_currency('euro') }}</b>
+            </td>
+        </tr>
         </tbody>
     </table>
-    <div id='footer'>
-        {{ company_name }} - {{ company_address }} - {{ company_cp }} {{ company_city }} (Belgique)
-        <br/>
-        N° de téléphone : 0478/34 69 42 - TVA : {{ company_tva }} - {{ company_email }} - IBAN : BE51 0689 3813 9062
-        <br/>
-        Les conditions d'utilisation sont d'application pour l'affiliation. Vous retrouvez ces conditions sur notre
-        site.
-    </div>
-
-</page>
+</main>
+<footer id='footer'>
+    CAP sur Marche ASBL - Avenue de France, 126 - 6900 Marche-en-Famenne (Belgique)
+    <br/>
+    N° de téléphone : 0478/34 69 42 - TVA : BE 0525 968 345 - cap@marche.be - IBAN : BE51 0689 3813 9062
+    <br/>
+    Les conditions d'utilisation sont d'application pour l'affiliation. Vous retrouvez ces conditions sur notre
+    site.
+</footer>
+</body>
+</html>

@@ -1,0 +1,87 @@
+$hasPromo = false;
+{% if order.promoCodeId %}
+
+
+{% endif %}
+if (isset($document['promo_code_id'])) {
+
+$_POST = array();
+$_POST['promo_id'] = $document['promo_code_id'];
+$_POST['price_evat'] = $document['price_evat'];
+
+$_POST['vat'] = $document['vat'];
+$promoController = new PromoController();
+$promoValues = $promoController->calculatePromoCode();
+
+if ($promoValues) {
+$hasPromo = true;
+$data['promo_html'] = '
+<tr class="tableCell">'.
+    '
+    <td width="60" height="25" valign="middle" align="center">&nbsp;</td>
+    '.
+    '
+    <td width="375" valign="middle" align="left" class="decale">Réduction de '.$promoValues['percent'].' % (Code promo :
+        '.$promoValues["code"].')
+    </td>
+    '.
+    '
+    <td width="80" valign="middle" align="right">-'.$promoValues["promo"].'€</td>
+    '.
+    '
+    <td width="135" align="right" valign="middle">-'.$promoValues["promo"].'€</td>
+    '.
+    '
+</tr>';
+//                $data['total_htva'] = money_format('%.2n', $promoValues['price_evat']);
+$data['total_htva'] = round($promoValues['price_evat'], 2);
+
+$data['vat_amount'] = sprintf(
+"
+<tr valign='top' height='12'>
+    <td width='65' height='12' valign='top' align='center'><b>&nbsp;</b></td>
+    <td width='505' height='12' colspan='2' align='right' valign='top'><b>TOTAL TVA (%s%%)</b></td>
+    <td width='80' height='12' align='right' valign='top'><b>%s€</b></td>
+</tr>",
+$document['vat'],
+round($promoValues['vat_amount'], 2)
+);
+$data['total_tvac'] = sprintf(
+"
+<tr valign='top' height='12'>
+    <td width='65' height='12' valign='top' align='center'><b>&nbsp;</b></td>
+    <td width='505' height='12' colspan='2' align='right' valign='top'><b>TOTAL TVAC</b></td>
+    <td width='80' height='12' align='right' valign='top'><b>%s€</b></td>
+</tr>",
+round($promoValues['price_vat'], 2)
+);
+
+}
+
+}
+if (!$hasPromo) {
+$data['promo_html'] = "";
+//            $data['total_htva'] = money_format('%.2n', $document['price_evat']);
+$data['total_htva'] = round($document['price_evat'], 2);
+
+
+$data['vat_amount'] = sprintf(
+"
+<tr valign='top' height='12'>
+    <td width='65' height='12' valign='top' align='center'><b>&nbsp;</b></td>
+    <td width='505' height='12' colspan='2' align='right' valign='top'><b>TOTAL TVA (%s%%)</b></td>
+    <td width='80' height='12' align='right' valign='top'><b>%s€</b></td>
+</tr>",
+$document['vat'],
+round($document['vat_amount'], 2)
+);
+$data['total_tvac'] = sprintf(
+"
+<tr valign='top' height='12'>
+    <td width='65' height='12' valign='top' align='center'><b>&nbsp;</b></td>
+    <td width='505' height='12' colspan='2' align='right' valign='top'><b>TOTAL TVAC</b></td>
+    <td width='80' height='12' align='right' valign='top'><b>%s€</b></td>
+</tr>",
+round($document['price_vat'], 2)
+);
+}

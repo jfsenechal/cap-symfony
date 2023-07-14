@@ -25,6 +25,7 @@
                         </td>
                         <td>{{ order.insertDate|format_date('full') }}</td>
                         <td>{{ order.pdfPath }}</td>
+                        <td><a href="{{ path('cap_order_pdf',{'id':order.id}) }}">Générer</a></td>
                     </tr>
                 {% endfor %}
             </table>

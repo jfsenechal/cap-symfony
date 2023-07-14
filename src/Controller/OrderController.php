@@ -62,7 +62,7 @@ class OrderController extends AbstractController
     public function show(PaymentOrder $paymentOrder): Response
     {
         $orderCommercant = $paymentOrder->getOrderCommercant();
-        $line = $this->paymentOrderLineRepository->findByOrder($paymentOrder);
+        $line = $this->paymentOrderLineRepository->findOneByOrder($paymentOrder);
         $addresses = $this->paymentOrderAddressRepository->findByOrder($paymentOrder);
         $bills = [];
         try {
@@ -93,7 +93,7 @@ class OrderController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$paymentOrder->getId(), $request->request->get('_token'))) {
             $orderCommercant = $paymentOrder->getOrderCommercant();
-            $line = $this->paymentOrderLineRepository->findByOrder($paymentOrder);
+            $line = $this->paymentOrderLineRepository->findOneByOrder($paymentOrder);
             $addresses = $this->paymentOrderAddressRepository->findByOrder($paymentOrder);
             $bills = $this->paymentBillRepository->findByOrder($paymentOrder);
 
