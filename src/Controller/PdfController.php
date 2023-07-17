@@ -20,11 +20,11 @@ class PdfController extends AbstractController
     {
     }
 
-    #[Route('/order/{id}', name: 'cap_order_pdf', methods: ['GET', 'POST'])]
-    public function order(PaymentOrder $order): Response
+    #[Route('/order/{id}/{debug}', name: 'cap_order_pdf', methods: ['GET', 'POST'])]
+    public function order(PaymentOrder $order, bool $debug = true): Response
     {
         $html = $this->pdfGenerator->generateForOrder($order);
 
-        return $this->downloadPdf($html, 'commande-'.$order->getOrderNumber().'.pdf',false);
+        return $this->downloadPdf($html, 'commande-'.$order->getOrderNumber().'.pdf',$debug);
     }
 }

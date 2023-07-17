@@ -29,7 +29,7 @@ class PdfGenerator
         $line = $this->paymentOrderLineRepository->findOneByOrder($order);
         $address = $this->paymentOrderAddressRepository->findOneByOrder($order);
 
-        return $this->environment->render('@CapCommercio/order/pdf.html.twig', [
+        return $this->environment->render('@CapCommercio/pdf/order.html.twig', [
             'order' => $order,
             'orderCommercant' => $orderCommercant,
             'line' => $line,
