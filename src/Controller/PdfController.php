@@ -25,6 +25,6 @@ class PdfController extends AbstractController
     {
         $html = $this->pdfGenerator->generateForOrder($order);
 
-        return $this->downloadPdf($html, 'commande-'.$order->getOrderNumber().'.pdf',$debug);
+        return $this->downloadPdfH2($html, 'commande-'.$order->getOrderNumber().'.pdf',$debug);
     }
 }
