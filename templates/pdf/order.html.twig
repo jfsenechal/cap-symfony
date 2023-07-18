@@ -1,169 +1,119 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Bon de commande</title>
-
-
-
-    <link rel="stylesheet" href="{{ absolute_url(asset('dist/output.css')) }}" media="all"/>
-
-
-    <style>
-        table {
-            page-break-inside: auto
-        }
-        tr {
-            page-break-inside: avoid;
-            page-break-after: auto
-        }
-        thead {
-            display: table-header-group
-        }
-        tfoot {
-            display: table-footer-group
-        }
-
-        /* main {
-             color: #545454;
-             font-family: Arial, Helvetica, sans-serif;
-             height: 1360px;
-             position: relative;
-         }
-
-         footer {
-             color: #545454;
-             font-family: Arial, Helvetica, sans-serif;
-         }
-
-         table {
-             border-collapse: collapse;
-             width: 100%;
-         }
-
-         td {
-             border: 1px solid #ccc;
-             padding: .23em;
-         }
-
-         .footer {
-
-         }
-
-         table {
-             position: absolute;
-             top: 0;
-             left: 0;
-             z-index: 1000;
-         }
-
-         table .tableCell td {
-             padding-top: 6px;
-             padding-bottom: 6px;
-         }
-
-
-         table td {
-             padding: 3px;
-             font-family: Arial, Helvetica, sans-serif;
-             font-size: 13px;
-             line-height: 1.4;
-         }
-
-         .titre {
-             color: #FFF;
-             padding: 2px 0;
-             background-color: #74b8d1;
-             font-family: Arial, Helvetica, sans-serif;
-             font-size: 13px;
-         }
-
-         .decale {
-             padding-left: 5px;
-         }
-
-         .entete {
-             font-family: Arial, Helvetica, sans-serif;
-             font-size: 13px;
-             padding-top: -20px;
-         }
-
-         .align-right {
-             text-align: right;
-         }
-
-         hr {
-             color: #74b8d1;
-             border-color: #74b8d1;
-             height: 1px;
-         }
-
-         .content td {
-             padding-top: 30px;
-             padding-bottom: 20px;
-         }
-
-         .htva {
-             font-size: 10px;
-         }
-
-         #footer {
-             position: absolute;
-             color: red;
-             bottom: 0;
-             text-align: center;
-             right: 0;
-             left: 0;
-             line-height: 150%;
-             padding-top: 5px;
-             margin: auto;
-             width: 100%;
+<page backimg="{{ absolute_url(asset('bundles/capcommercio/backgroundOrder.jpg')) }}" backtop="10" footer="page">
+    <style type="text/css">
+        page {
             color: #545454;
-         }
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-         #footer p {
-             margin: 0;
-             padding: 0;
-         }
+        footer {
+            color: #545454;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-         .enveloppe {
-             position: absolute;
-             top: 27mm;
-             right: 25mm;
-             width: 75mm;
-             font-size: 14px;
-             line-height: 150%;
-         }*/
+        table {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        table .tableCell td {
+            padding-top: 6px;
+            padding-bottom: 6px;
+        }
+
+
+        table td {
+            padding: 3px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .titre {
+            color: #FFF;
+            padding: 2px 0;
+            background-color: #74b8d1;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13px;
+        }
+
+        .decale {
+            padding-left: 5px;
+        }
+
+        .entete {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13px;
+            padding-top: -20px;
+        }
+
+        .align-right {
+            text-align: right;
+        }
+
+        hr {
+            color: #74b8d1;
+            border-color: #74b8d1;
+            height: 1px;
+        }
+
+        .content td {
+            padding-top: 30px;
+            padding-bottom: 20px;
+        }
+
+        .htva {
+            font-size: 10px;
+        }
+
+        #footer {
+            position: absolute;
+            bottom: -7px;
+            text-align: center;
+            right: 0;
+            left: 0;
+            line-height: 150%;
+            padding-top: 5px;;
+            margin: auto;
+            width: 100%;
+            color: #545454;
+        }
+
+        #footer p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .enveloppe {
+            position: absolute;
+            top: 27mm;
+            right: 25mm;
+            width: 75mm;
+            font-size: 14px;
+            line-height: 150%;
+
+        }
+
+        .titlePaiement {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            color: #74b8d1;
+            font-size: 1.2rem;
+            font-weight: bold;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .textPaiement {
+            color: #36b591;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
     </style>
-</head>
-<body>
-<main class="p-24 text-pdf-black" style="position: relative;
-    margin: 10pt;
-    padding: 10pt;
-    outline: thin solid rgb(0, 0, 0, 0.25);">
 
-    <table class="w-full text-right ml-10 mb-36 mt-64" style="text-align: right;margin-right: 20pt;">
-        <tbody>
-        <tr>
-            <td valign="top" class="text-right" colspan="2">
-                <span class="font-semibold text-red-400">Date émission :</span>
-                <br>{{ order.insertDate|format_date('full') }}
-            </td>
-
-            <td width="200" class="align-right text-red-400" colspan="2">
-                <span class="font-semibold text-red-400">Numéro de la commande :</span>
-                <br>{{ order.orderNumber }}
-                <br>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-<a href="{{ path('cap_order_pdf', {'id': 875, 'debug':0}) }}">Pdf</a>
-
-    <div class="text-pdf-blue">
-
+    <div class="enveloppe">
         {{ orderCommercant.lastname }} {{ orderCommercant.firstname }} <br/>
         {{ orderCommercant.companyName }} <br/>
 
@@ -173,10 +123,9 @@
         {{ address.city }} <br/>
         Belgique <br/>
         {{ orderCommercant.companyVat }} <br/>
-
     </div>
 
-    <table width="600" border="0" cellspacing="0" cellpadding="5" style="height: 400pt;margin-top: 30px;margin-bottom: 50px;">
+    <table width="600" border="0" cellspacing="0" cellpadding="5">
         <tbody>
         <tr>
             <td valign="top" class="align-right" colspan="2">
@@ -207,7 +156,7 @@
         </tr>
         <tr class="content">
             <td width="600" colspan="4">
-                <p>Madame, Monsieur, <br><br>
+                <p>Madame, Monsieur,<br><br>
                     Nous vous remercions pour votre confiance. Nous nous tenons à votre disposition pour toute
                     information complémentaire. N'hésitez pas à nous contacter par email (cap@marche.be)
                     ou par téléphone (0478/34 69 42).<br><br>
@@ -222,22 +171,13 @@
             </th>
         </tr>
 
-        |
         <tr class="tableCell">
             <td width="60" height="25" valign="middle" align="center">{{ line.quantity }}</td>
             <td width="375" valign="middle" align="left" class="decale">{{ line.label }}</td>
             <td width="80" valign="middle" align="right">{{ line.priceEvat|format_currency('euro') }}</td>
             <td width="135" align="right" valign="middle">{{ line.totalPriceEvat|format_currency('euro') }}</td>
         </tr>
-        |
 
-        {# % include '@CapCommercio/order/_promo.html.twig' % #}
-
-        <tr valign="top" height="12">
-            <td width="650" height="1" colspan="4" align="center" valign="top">
-                <hr>
-            </td>
-        </tr>
         <tr valign="top" height="12">
             <td width="65" height="12" valign="top" align="center"><b>&nbsp;</b></td>
             <td width="505" height="12" colspan="2" align="right" valign="top"><b>TOTAL ARTICLE(S) HTVA</b></td>
@@ -256,16 +196,31 @@
             <td width='80' height='12' align='right' valign='top'><b>{{ order.priceVat|format_currency('euro') }}</b>
             </td>
         </tr>
+
+        <tr valign="top" height="12">
+            <td width="650" height="1" colspan="4" align="center" valign="top">
+                <hr>
+            </td>
+        </tr>
+
         </tbody>
     </table>
-    <footer id='footer' class="footer" style="position: fixed; height: 100px; bottom: 0px; left:0;">
+
+    <h3 class="titlePaiement">Informations pour le paiement</h3>
+
+    <p class="textPaiement">
+        Vous pouvez verser la somme de {{ order.priceVat|format_currency('euro') }} TTC sur le compte de CAP sur Marche BE51 0689 3813 9062 avec
+        votre
+        numéro de TVA en communication.
+    </p>
+
+    <div id='footer'>
         CAP sur Marche ASBL - Avenue de France, 126 - 6900 Marche-en-Famenne (Belgique)
         <br/>
         N° de téléphone : 0478/34 69 42 - TVA : BE 0525 968 345 - cap@marche.be - IBAN : BE51 0689 3813 9062
         <br/>
         Les conditions d'utilisation sont d'application pour l'affiliation. Vous retrouvez ces conditions sur notre
         site.
-    </footer>
-</main>
-</body>
-</html>
+    </div>
+
+</page>
