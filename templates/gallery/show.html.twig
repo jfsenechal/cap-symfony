@@ -1,0 +1,55 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">Gallerie de <a href="{{ path('cap_commercant_show', {'id': commercant.id}) }}">
+                {{ commercant.legalEntity }}</a>
+        </h3>
+
+        <div class="card-body">
+
+            {% include '@CapCommercio/gallery/_actions.html.twig' %}
+
+            {% if gallery|length > 0 %}
+
+                    {% for img in gallery %}
+                    <div class="row mt-3">
+                        <div class="col">
+                            <img src="/{{ img.mediaPath }}" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="col">
+                            <a
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#imageModal"
+                                    data-imageid="{{ img.id }}"
+                                    title="supprimer ce congé"
+                                    class="btn btn-danger btn-sm text-center mt-3"
+                                    style="cursor: pointer;">
+                                <i class="far fa-trash-alt"></i> Supprimer
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+            {% else %}
+                <p class="text-muted">Aucune photo</p>
+            {% endif %}
+
+            {% include '@CapCommercio/gallery/_delete_form.html.twig' %}
+
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        document.querySelector('#imageModal').addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const imageId = button.dataset.imageid;
+            console.log(imageId)
+            document.querySelector('#imageid').value = imageId;
+        })
+    </script>
+{% endblock %}
+

@@ -11,24 +11,52 @@
             {% include '@CapCommercio/commercant/_bills.html.twig' %}
             {% include '@CapCommercio/commercant/_orders.html.twig' %}
 
-            <h4 class="text-success">Informations</h4>
+            <h4 class="text-success">Fiche d'identité</h4>
+
             <table class="table table-bordered">
-                <tbody>
-                <tr>
-                    <th>Id</th>
-                    <td>{{ commercant.id }}</td>
+                 <tr>
+                    <th>LegalEmail</th>
+                    <td>{{ commercant.legalEmail }}</td>
                 </tr>
                 <tr>
-                    <th>Uuid</th>
-                    <td>{{ commercant.uuid }}</td>
+                    <th>LegalPhone</th>
+                    <td>{{ commercant.legalPhone }}</td>
                 </tr>
                 <tr>
-                    <th>ProfileMediaPath</th>
-                    <td>{{ commercant.profileMediaPath }}</td>
+                    <th>LegalFirstname</th>
+                    <td>{{ commercant.legalFirstname }}</td>
                 </tr>
                 <tr>
-                    <th>MediaPath</th>
-                    <td>{{ commercant.mediaPath }}</td>
+                    <th>LegalLastname</th>
+                    <td>{{ commercant.legalLastname }}</td>
+                </tr>
+                <tr>
+                    <th>LegalEntity</th>
+                    <td>{{ commercant.legalEntity }}</td>
+                </tr>
+                <tr>
+                    <th>VatNumber</th>
+                    <td>{{ commercant.vatNumber }}</td>
+                </tr>
+                <tr>
+                    <th>Phone</th>
+                    <td>{{ commercant.phone }}</td>
+                </tr>
+                <tr>
+                    <th>LegalEmail2</th>
+                    <td>{{ commercant.legalEmail2 }}</td>
+                </tr>
+                <tr>
+                    <th>FacebookLink</th>
+                    <td>{{ commercant.facebookLink }}</td>
+                </tr>
+                <tr>
+                    <th>TwitterLink</th>
+                    <td>{{ commercant.twitterLink }}</td>
+                </tr>
+                <tr>
+                    <th>LinkedinLink</th>
+                    <td>{{ commercant.linkedinLink }}</td>
                 </tr>
                 <tr>
                     <th>CanReceiveTender</th>
@@ -47,20 +75,12 @@
                     <td>{{ commercant.commercialWordTitle }}</td>
                 </tr>
                 <tr>
+                    <th>CommercialWordDescription</th>
+                    <td>{{ commercant.commercialWordDescription }}</td>
+                </tr>
+                <tr>
                     <th>CommercialWordMediaPath</th>
                     <td>{{ commercant.commercialWordMediaPath }}</td>
-                </tr>
-                <tr>
-                    <th>LegalEntity</th>
-                    <td>{{ commercant.legalEntity }}</td>
-                </tr>
-                <tr>
-                    <th>VatNumber</th>
-                    <td>{{ commercant.vatNumber }}</td>
-                </tr>
-                <tr>
-                    <th>Phone</th>
-                    <td>{{ commercant.phone }}</td>
                 </tr>
                 <tr>
                     <th>IsMember</th>
@@ -91,46 +111,29 @@
                     <td>{{ commercant.commercialWordVideoPath }}</td>
                 </tr>
                 <tr>
-                    <th>CommercialWordDescription</th>
-                    <td>{{ commercant.commercialWordDescription }}</td>
-                </tr>
-                <tr>
-                    <th>LegalEmail</th>
-                    <td>{{ commercant.legalEmail }}</td>
-                </tr>
-                <tr>
-                    <th>LegalPhone</th>
-                    <td>{{ commercant.legalPhone }}</td>
-                </tr>
-                <tr>
-                    <th>LegalFirstname</th>
-                    <td>{{ commercant.legalFirstname }}</td>
-                </tr>
-                <tr>
-                    <th>LegalLastname</th>
-                    <td>{{ commercant.legalLastname }}</td>
-                </tr>
-                <tr>
                     <th>CanReceiveNews</th>
                     <td>{{ commercant.canReceiveNews ? 'Yes' : 'No' }}</td>
                 </tr>
-                <tr>
-                    <th>LegalEmail2</th>
-                    <td>{{ commercant.legalEmail2 }}</td>
+                 <tr>
+                    <th>Id</th>
+                    <td>{{ commercant.id }}</td>
                 </tr>
                 <tr>
-                    <th>FacebookLink</th>
-                    <td>{{ commercant.facebookLink }}</td>
+                    <th>Uuid</th>
+                    <td>{{ commercant.uuid }}</td>
                 </tr>
                 <tr>
-                    <th>TwitterLink</th>
-                    <td>{{ commercant.twitterLink }}</td>
+                    <th>ProfileMediaPath</th>
+                    <td>{{ commercant.profileMediaPath }}</td>
                 </tr>
                 <tr>
-                    <th>LinkedinLink</th>
-                    <td>{{ commercant.linkedinLink }}</td>
+                    <th>MediaPath</th>
+                    <td>{{ commercant.mediaPath }}</td>
                 </tr>
-                </tbody>
+                <tr>
+                    <th>Uuid</th>
+                    <td>{{ commercant.uuid }}</td>
+                </tr>
             </table>
             {% include '@CapCommercio/commercant/_opening_hours.html.twig' %}
             {% include '@CapCommercio/commercant/_holidays.html.twig' %}
@@ -138,7 +141,7 @@
         </div>
     </div>
     {{ include('@CapCommercio/commercant/_delete_form.html.twig') }}
-            {% include '@CapCommercio/hours/_delete_holiday_form.html.twig' %}
+    {% include '@CapCommercio/hours/_delete_holiday_form.html.twig' %}
 {% endblock %}
 
 {% block javascripts %}

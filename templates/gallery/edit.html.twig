@@ -1,0 +1,24 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+
+     <div class="card">
+        <div class="card-header">
+            <h3>Images de {{ commercant.legalEntity }}</h3>
+        </div>
+        <div class="card-body">
+            {{ form_start(form, { 'attr': {'id': 'formdrop','class': 'mt-3 dropzone', 'data-controller': 'dropzone'}}) }}
+            {{ form_widget(form, { label: false }) }}
+            {{ form_errors(form) }}
+
+            <button type="submit" class="btn btn-primary"><i class="fas fa-upload"></i> Envoyer les images</button>
+            {{ form_end(form) }}
+
+        </div>
+         <div class="card-footer text-end">
+             <a href="{{ path('cap_commercant_show', {'id': commercant.id}) }}" class="btn btn-secondary">
+                 <i class="fa fa-arrow-left"></i> Annuler
+             </a>
+         </div>
+    </div>
+{% endblock %}

@@ -11,6 +11,12 @@
             Modifier
         </a>
     </div>
+    <div class="col-auto">
+        <a href="{{ path('cap_gallery_show',{'id':commercant.id}) }}" class="btn btn-primary" role='button'>
+            <i class="fas fa-image"></i>
+            Images
+        </a>
+    </div>
     {% if commercant.rightAccess %}
         <div class="col-auto">
             <a href="{{ path('cap_user_show',{'id':commercant.rightAccess.id}) }}" class="btn btn-primary"
