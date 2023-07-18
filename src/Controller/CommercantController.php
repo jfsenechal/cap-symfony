@@ -11,9 +11,8 @@ use Cap\Commercio\Repository\CommercantGalleryRepository;
 use Cap\Commercio\Repository\CommercioCommercantHolidayRepository;
 use Cap\Commercio\Repository\CommercioCommercantHoursRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
+use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
-use Cap\Commercio\Repository\RightAccessRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +27,7 @@ class CommercantController extends AbstractController
         private CommercioCommercantRepository $commercantRepository,
         private CommercantGalleryRepository $commercantGalleryRepository,
         private PaymentOrderRepository $paymentOrderRepository,
+        private PaymentBillRepository $paymentBillRepository,
         private CommercioCommercantHoursRepository $commercioCommercantHoursRepository,
         private CommercioCommercantHolidayRepository $commercioCommercantHolidayRepository,
         private MailerCap $mailer
@@ -64,15 +64,15 @@ class CommercantController extends AbstractController
     }
 
     #[Route('/new', name: 'cap_commercant_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request): Response
     {
         $commercioCommercant = new CommercioCommercant();
         $form = $this->createForm(CommercantType::class, $commercioCommercant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($commercioCommercant);
-            $entityManager->flush();
+            $this->commercantRepository->persist($commercioCommercant);
+            $this->commercantRepository->flush();
 
             return $this->redirectToRoute('cap_commercant_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -88,6 +88,7 @@ class CommercantController extends AbstractController
     {
         $gallery = $this->commercantGalleryRepository->findByCommercant($commercant);
         $orders = $this->paymentOrderRepository->findByCommercantId($commercant->getId());
+        $bills = $this->paymentBillRepository->findByCommercant($commercant);
         $hours = $this->commercioCommercantHoursRepository->findByCommercerant($commercant);
         $holidays = $this->commercioCommercantHolidayRepository->findByCommercerant($commercant);
 
@@ -95,6 +96,7 @@ class CommercantController extends AbstractController
             'commercant' => $commercant,
             'gallery' => $gallery,
             'orders' => $orders,
+            'bills' => $bills,
             'hours' => $hours,
             'holidays' => $holidays,
         ]);
@@ -103,14 +105,13 @@ class CommercantController extends AbstractController
     #[Route('/{id}/edit', name: 'cap_commercant_edit', methods: ['GET', 'POST'])]
     public function edit(
         Request $request,
-        CommercioCommercant $commercant,
-        EntityManagerInterface $entityManager
+        CommercioCommercant $commercant
     ): Response {
         $form = $this->createForm(CommercantType::class, $commercant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            $this->commercantRepository->flush();
             $this->addFlash('success', 'La modification a été faite');
 
             return $this->redirectToRoute(
@@ -130,8 +131,7 @@ class CommercantController extends AbstractController
     #[Route('/{id}/member', name: 'cap_commercant_member', methods: ['GET', 'POST'])]
     public function member(
         Request $request,
-        CommercioCommercant $commercant,
-        EntityManagerInterface $entityManager
+        CommercioCommercant $commercant
     ): Response {
         $form = $this->createForm(CheckMemberType::class, $commercant);
         $form->handleRequest($request);
@@ -141,7 +141,7 @@ class CommercantController extends AbstractController
             if ($data->isIsMember() === false) {
                 $commercant->setAffiliationDate(null);
             }
-            $entityManager->flush();
+            $this->commercantRepository->flush();
             if ($data->sendMailExpired) {
                 try {
                     $this->mailer->sendAffiliationExpired($commercant, $this->getParameter('kernel.environment'));
@@ -169,11 +169,10 @@ class CommercantController extends AbstractController
     public function delete(
         Request $request,
         CommercioCommercant $commercioCommercant,
-        EntityManagerInterface $entityManager
     ): Response {
         if ($this->isCsrfTokenValid('delete'.$commercioCommercant->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($commercioCommercant);
-            $entityManager->flush();
+            $this->commercantRepository->remove($commercioCommercant);
+            $this->commercantRepository->flush();
         }
 
         return $this->redirectToRoute('cap_commercant_index', [], Response::HTTP_SEE_OTHER);

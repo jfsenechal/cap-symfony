@@ -57,6 +57,8 @@
                                 <a href="{{ path('cap_bill_show', {'id': order.bill.id}) }}">
                                     {{ order.bill.billNumber }}
                                 </a>
+                            {% else %}
+                                Pas de facture trouvée
                             {% endif %}
                         </td>
                     </tr>

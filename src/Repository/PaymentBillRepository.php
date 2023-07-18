@@ -3,6 +3,7 @@
 namespace Cap\Commercio\Repository;
 
 use Cap\Commercio\Doctrine\OrmCrudTrait;
+use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Entity\PaymentBill;
 use Cap\Commercio\Entity\PaymentOrder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -37,6 +38,18 @@ class PaymentBillRepository extends ServiceEntityRepository
     /**
      * @return PaymentBill[]
      */
+    public function findByCommercant(CommercioCommercant $commercant): array
+    {
+        return $this->createQb()
+            ->andWhere('orderCap.orderCommercant = :commercant')
+            ->setParameter('commercant', $commercant)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return PaymentBill[]
+     */
     public function search(?string $number, ?string $name, ?int $year, ?bool $paid): array
     {
         $qb = $this->createQb();
@@ -44,7 +57,7 @@ class PaymentBillRepository extends ServiceEntityRepository
         if ($number) {
             $qb
                 ->andWhere(
-                    'upper(paymentBill.billNumber) LIKE upper(:number)'
+                    'upper(payment_bill.billNumber) LIKE upper(:number)'
                 )
                 ->setParameter('number', '%'.$number.'%');
         }
@@ -103,9 +116,9 @@ class PaymentBillRepository extends ServiceEntityRepository
     private function createQb(): QueryBuilder
     {
         return $this->createQueryBuilder('payment_bill')
-            ->leftJoin('payment_bill.order', 'ordercap', 'WITH')
-            ->leftJoin('ordercap.orderCommercant', 'orderCommercant', 'WITH')
-            ->addSelect('ordercap', 'orderCommercant')
+            ->leftJoin('payment_bill.order', 'orderCap', 'WITH')
+            ->leftJoin('orderCap.orderCommercant', 'orderCommercant', 'WITH')
+            ->addSelect('orderCap', 'orderCommercant')
             ->orderBy('payment_bill.insertDate', 'DESC');
     }
 

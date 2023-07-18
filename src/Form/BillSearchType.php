@@ -19,6 +19,7 @@ class BillSearchType extends AbstractType
             ->add('number', SearchType::class, [
                 'label' => 'Numéro',
                 'required' => false,
+                'attr' => ['autocomplete' => 'off'],
             ])
             ->add('name', SearchType::class, [
                 'label' => 'Nom',

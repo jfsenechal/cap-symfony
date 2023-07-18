@@ -1,14 +1,14 @@
-<h4 class="text-success">Facture(s)</h4>
+<h4 class="text-success">Bons de commande</h4>
 <table class="table table-bordered">
     <tr>
-        <th>Id</th>
+        <th>Numéro</th>
         <th>Date</th>
         <th>Payé ?</th>
         <th>Montant Tvac</th>
     </tr>
     {% for order in orders %}
         <tr>
-            <td>{{ order.id }}</td>
+            <td>{{ order.orderNumber }}</td>
             <td>
                 <a href="{{ path('cap_order_show', {'id': order.id}) }}">
                     {{ order.modifyDate|format_date('full') }}

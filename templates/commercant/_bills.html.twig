@@ -1,0 +1,19 @@
+<h4 class="text-success">Facture(s)</h4>
+<table class="table table-bbilled">
+    <tr>
+        <th>Numéro</th>
+        <th>Date</th>
+        <th>Montant Tvac</th>
+    </tr>
+    {% for bill in bills %}
+        <tr>
+            <td>{{ bill.numberBill }}</td>
+            <td>
+                <a href="{{ path('cap_bill_show', {'id': bill.id}) }}">
+                    {{ bill.modifyDate|format_date('full') }}
+                </a>
+            </td>
+            <td>{{ bill.priceVat|format_currency('eur') }}</td>
+        </tr>
+    {% endfor %}
+</table>

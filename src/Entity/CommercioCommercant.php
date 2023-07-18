@@ -223,7 +223,7 @@ class CommercioCommercant
     private $linkedinLink;
 
     /**
-     * @var \CommercioCta
+     * @var CommercioCta
      *
      * @ORM\ManyToOne(targetEntity="CommercioCta")
      * @ORM\JoinColumns({
@@ -233,7 +233,7 @@ class CommercioCommercant
     private $cta;
 
     /**
-     * @var \CommercioCommercantHoursType
+     * @var CommercioCommercantHoursType
      *
      * @ORM\ManyToOne(targetEntity="CommercioCommercantHoursType")
      * @ORM\JoinColumns({
@@ -243,7 +243,7 @@ class CommercioCommercant
     private $hoursType;
 
     /**
-     * @var \RightAccess
+     * @var RightAccess
      *
      * @ORM\ManyToOne(targetEntity="RightAccess")
      * @ORM\JoinColumns({
@@ -252,7 +252,7 @@ class CommercioCommercant
      */
     private $rightAccess;
 
-    public $sendMailExpired = false;
+    public bool $sendMailExpired = false;
 
     public function getId(): ?string
     {
