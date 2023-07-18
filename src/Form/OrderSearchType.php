@@ -16,6 +16,10 @@ class OrderSearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('number', SearchType::class, [
+                'label' => 'Numéro',
+                'required' => false,
+            ])
             ->add('name', SearchType::class, [
                 'label' => 'Nom',
                 'required' => false,

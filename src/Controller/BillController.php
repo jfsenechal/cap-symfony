@@ -5,7 +5,6 @@ namespace Cap\Commercio\Controller;
 use Cap\Commercio\Entity\PaymentBill;
 use Cap\Commercio\Form\BillSearchType;
 use Cap\Commercio\Repository\PaymentBillRepository;
-use Cap\Commercio\Repository\PaymentOrderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +17,6 @@ class BillController extends AbstractController
 {
     public function __construct(
         private PaymentBillRepository $paymentBillRepository,
-        private PaymentOrderRepository $paymentOrderRepository,
     ) {
     }
 
@@ -30,7 +28,7 @@ class BillController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $bills = $this->paymentBillRepository->search($data['name'], $data['year'], $data['paid']);
+            $bills = $this->paymentBillRepository->search($data['number'], $data['name'], $data['year'], $data['paid']);
         } else {
             $bills = $this->paymentBillRepository->findAllOrdered();
         }

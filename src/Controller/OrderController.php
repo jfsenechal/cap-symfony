@@ -35,7 +35,7 @@ class OrderController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $orders = $this->paymentOrderRepository->search($data['name'], $data['year'], $data['paid']);
+            $orders = $this->paymentOrderRepository->search($data['number'],$data['name'], $data['year'], $data['paid']);
         } else {
             $orders = $this->paymentOrderRepository->findAllOrdered();
         }

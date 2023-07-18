@@ -105,8 +105,8 @@
         }
 
         .textPaiement {
-            color: #36b591;
-            margin-bottom: 1rem;
+            color: #dd4444;
+            padding-left: 1rem;
             font-size: 1rem;
             font-family: Arial, Helvetica, sans-serif;
         }
@@ -178,7 +178,7 @@
             <td width="135" align="right" valign="middle">{{ line.totalPriceEvat|format_currency('euro') }}</td>
         </tr>
 
- {# % include '@CapCommercio/order/_promo.html.twig' % #}
+        {# % include '@CapCommercio/order/_promo.html.twig' % #}
 
         <tr valign="top" height="12">
             <td width="65" height="12" valign="top" align="center"><b>&nbsp;</b></td>
@@ -211,9 +211,9 @@
     <h3 class="titlePaiement">Informations pour le paiement</h3>
 
     <p class="textPaiement">
-        Vous pouvez verser la somme de {{ order.priceVat|format_currency('euro') }} TTC sur le compte de CAP sur Marche BE51 0689 3813 9062 avec
-        votre
-        numéro de TVA en communication.
+        Vous pouvez verser la somme de {{ order.priceVat|format_currency('euro') }} TTC sur le compte de CAP sur Marche
+        BE51 0689 3813 9062
+        <br/>avec <strong>votre numéro de TVA en communication.</strong>
     </p>
 
     <div id='footer'>

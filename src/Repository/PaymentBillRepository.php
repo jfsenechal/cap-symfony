@@ -37,9 +37,17 @@ class PaymentBillRepository extends ServiceEntityRepository
     /**
      * @return PaymentBill[]
      */
-    public function search(?string $name, ?int $year, ?bool $paid): array
+    public function search(?string $number, ?string $name, ?int $year, ?bool $paid): array
     {
         $qb = $this->createQb();
+
+        if ($number) {
+            $qb
+                ->andWhere(
+                    'upper(paymentBill.billNumber) LIKE upper(:number)'
+                )
+                ->setParameter('number', '%'.$number.'%');
+        }
 
         if ($name) {
             $qb

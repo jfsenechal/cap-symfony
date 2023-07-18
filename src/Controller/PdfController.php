@@ -6,6 +6,8 @@ use Cap\Commercio\Entity\PaymentBill;
 use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Pdf\PdfDownloaderTrait;
 use Cap\Commercio\Pdf\PdfGenerator;
+use Cap\Commercio\Repository\PaymentBillRepository;
+use Cap\Commercio\Repository\PaymentOrderRepository;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -22,12 +24,16 @@ class PdfController extends AbstractController
 {
     use PdfDownloaderTrait;
 
-    public function __construct(private PdfGenerator $pdfGenerator, private ParameterBagInterface $parameterBag)
-    {
+    public function __construct(
+        private ParameterBagInterface $parameterBag,
+        private PdfGenerator $pdfGenerator,
+        private PaymentOrderRepository $orderRepository,
+        private PaymentBillRepository $billRepository
+    ) {
     }
 
     #[Route('/order/{id}/{save}/{debug}', name: 'cap_order_pdf', methods: ['GET', 'POST'])]
-    public function order(PaymentOrder $order, bool $save = false, bool $debug = true): Response
+    public function order(PaymentOrder $order, bool $save = false, bool $debug = false): Response
     {
         try {
             $html = $this->pdfGenerator->generateForOrder($order);
@@ -38,21 +44,13 @@ class PdfController extends AbstractController
         }
 
         $fileName = 'commande-'.$order->getUuid().'.pdf';
-        if ($save) {
-            $fileName = $this->parameterBag->get('CAP_PATH').'pdf-docs/'.$fileName;
-        }
 
-        try {
-            return $this->downloadPdfH2Pdf($html, $fileName, $save, $debug);
-        } catch (Html2PdfException $e) {
-            $this->addFlash('danger', 'Erreur: '.$e->getMessage());
+        return $this->saveResponse($order, $fileName, $html, $save, $debug);
 
-            return $this->redirectToRoute('cap_home');
-        }
     }
 
     #[Route('/facture/{id}/{save}/{debug}', name: 'cap_facture_pdf', methods: ['GET', 'POST'])]
-    public function facture(PaymentBill $bill, bool $save = false, bool $debug = true): Response
+    public function facture(PaymentBill $bill, bool $save = false, bool $debug = false): Response
     {
         try {
             $html = $this->pdfGenerator->generateForBill($bill);
@@ -62,13 +60,31 @@ class PdfController extends AbstractController
             return $this->redirectToRoute('cap_home');
         }
 
-        $fileName = 'facture-'.$bill->getUuid().'.pdf';
+        $fileName = 'bill-'.$bill->getUuid().'.pdf';
+
+        return $this->saveResponse($bill, $fileName, $html, $save, $debug);
+    }
+
+    private function saveResponse(
+        PaymentBill|PaymentOrder $object,
+        string $fileName,
+        string $html,
+        bool $save,
+        bool $debug
+    ): Response {
         if ($save) {
-            $fileName = $this->parameterBag->get('CAP_PATH').'pdf-docs/'.$fileName;
+            $path = $this->parameterBag->get('CAP_PATH').'pdf-docs/'.$fileName;
         }
 
         try {
-            return $this->downloadPdfH2Pdf($html, $fileName, $save, $debug);
+            $response = $this->downloadPdfH2Pdf($html, $path, $save, $debug);
+            if ($response instanceof Response) {
+                return $response;
+            }
+            $object->setPdfPath('pdf-docs/'.$fileName);
+            $this->billRepository->flush();
+
+            return new Response($response);
         } catch (Html2PdfException $e) {
             $this->addFlash('danger', 'Erreur: '.$e->getMessage());
 
