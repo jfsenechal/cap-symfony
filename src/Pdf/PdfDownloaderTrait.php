@@ -25,8 +25,12 @@ trait PdfDownloaderTrait
         return $this->pdf;
     }
 
-    public function downloadPdf(string $html, string $fileName, bool $debug = false): Response
-    {
+    public function downloadPdf(
+        string $html,
+        string $fileName,
+        bool $writeToDisk = false,
+        bool $debug = false
+    ): Response {
         if ($debug) {
             return new Response($html);
         }
@@ -44,8 +48,12 @@ trait PdfDownloaderTrait
         );
     }
 
-    public function downloadPdfDom(string $html, string $fileName, bool $debug = false)
-    {
+    public function downloadPdfDom(
+        string $html,
+        string $fileName,
+        bool $writeToDisk = false,
+        bool $debug = false
+    ): ?Response {
         if ($debug) {
             return new Response($html);
         }
@@ -58,9 +66,19 @@ trait PdfDownloaderTrait
         $dompdf->setOptions($options);
         $dompdf->render();
         $dompdf->stream($fileName);
+
+        return null;
     }
 
-    public function downloadPdfH2Pdf(string $html, string $fileName, bool $debug = false)
+    /**
+     * @param string $html
+     * @param string $fileName
+     * @param bool $writeToDisk
+     * @param bool $debug
+     * @return string|Response
+     * @throws \Spipu\Html2Pdf\Exception\Html2PdfException
+     */
+    public function downloadPdfH2Pdf(string $html, string $fileName, bool $writeToDisk = false, bool $debug = false)
     {
         if ($debug) {
             return new Response($html);
@@ -69,7 +87,12 @@ trait PdfDownloaderTrait
         $html2pdf = new Html2Pdf('P', 'A4', 'fr');
         $html2pdf->writeHTML($html);
 
-        return $html2pdf->output($fileName, 'D');
+        $output = 'D';
+        if($writeToDisk) {
+            $output = 'F';
+        }
+
+        return $html2pdf->output($fileName, $output);
 
     }
 }

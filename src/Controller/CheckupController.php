@@ -16,8 +16,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_CAP')]
 class CheckupController extends AbstractController
 {
-    private string $path = '/var/www/sites/commercio/';
-
     public function __construct(
         private PaymentOrderRepository $paymentOrderRepository,
         private PaymentBillRepository $paymentBillRepository,
@@ -93,16 +91,16 @@ class CheckupController extends AbstractController
     }
 
     #[Route(path: '/missingpath', name: 'cap_checkup_missing_path', methods: ['GET'])]
-    public function missingPaht(): Response
+    public function missingPath(): Response
     {
-        $ordersMissing = $billsMissing = $ordersPath = $billsPath = [];
+        $ordersMissing = $billsMissing = [];
         foreach ($this->paymentOrderRepository->findAll() as $order) {
             if ($order->getPdfPath() == null) {
                 $ordersMissing[] = $order;
 
             }
             if (!is_readable($this->getAbsolutePathPdf($order))) {
-                $ordersPath[] = $order;
+                $ordersMissing[] = $order;
             }
         }
 
@@ -111,7 +109,7 @@ class CheckupController extends AbstractController
                 $billsMissing[] = $bill;
             }
             if (!is_readable($this->getAbsolutePathPdf($bill))) {
-                $billsPath = $bill;
+                $billsMissing[] = $bill;
             }
         }
 
@@ -120,8 +118,6 @@ class CheckupController extends AbstractController
             [
                 'ordersMissing' => $ordersMissing,
                 'billsMissing' => $billsMissing,
-                'billsPath' => $billsPath,
-                'ordersPath' => $ordersPath,
             ]
         );
     }
@@ -129,8 +125,9 @@ class CheckupController extends AbstractController
     private function getAbsolutePathPdf(PaymentBill|PaymentOrder $object)
     {
         list($name) = explode('?', $object->getPdfPath());
+        $path = $this->getParameter('CAP_PATH');
 
-        return $this->path.$name;
+        return $path.$name;
     }
 
 }

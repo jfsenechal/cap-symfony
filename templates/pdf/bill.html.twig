@@ -17,6 +17,13 @@
             z-index: 1000;
         }
 
+        table .topTable {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
         table .tableCell td {
             padding-top: 6px;
             padding-bottom: 6px;
@@ -95,21 +102,6 @@
 
         }
 
-        .titlePaiement {
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-            color: #74b8d1;
-            font-size: 1.2rem;
-            font-weight: bold;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .textPaiement {
-            color: #36b591;
-            margin-bottom: 1rem;
-            font-size: 1rem;
-            font-family: Arial, Helvetica, sans-serif;
-        }
 
     </style>
 
@@ -130,20 +122,19 @@
         <tr>
             <td valign="top" class="align-right" colspan="2">
                 <b>Date émission :</b>
-                <br>{{ order.insertDate|format_date('full') }}
+                <br>{{ bill.insertDate|format_date('full') }}
             </td>
 
             <td width="200" class="align-right" colspan="2">
-                <b>Numéro de la commande :</b>
-                <br>{{ order.orderNumber }}
+                <b>Numéro de la facture :</b>
+                <br>{{ bill.billNumber }}
                 <br>
-                <b> </b>
-                <br>
-                <br>
+                <b>Référence du paiement :</b>
+                <br>{{ order.paymentRef }}
             </td>
         </tr>
         <tr>
-            <td colspan="4" class="denomination"><h3>BON DE COMMANDE</h3></td>
+            <td colspan="4" class="denomination"><h3>FACTURE</h3></td>
         </tr>
         <tr>
             <td width="485" colspan="2" class="entete"><br>
@@ -160,12 +151,12 @@
                     Nous vous remercions pour votre confiance. Nous nous tenons à votre disposition pour toute
                     information complémentaire. N'hésitez pas à nous contacter par email (cap@marche.be)
                     ou par téléphone (0478/34 69 42).<br><br>
-                    Ci-dessous se trouvent les détails de votre commande.</p>
+                    Ci-dessous se trouvent les détails de votre facture.</p>
             </td>
         </tr>
         <tr class="tableCell thead">
             <th width="60" height="20" align="center" valign="middle" class="titre">Quantité</th>
-            <th width="380" align="left" valign="middle" class="titre decale">Produit</th>
+            <th width="375" align="left" valign="middle" class="titre decale">Produit</th>
             <th width="80" align="center" valign="middle" class="titre">Prix unitaire</th>
             <th width="135" align="center" valign="middle" class="titre">Sous-total<span class="htva"> (HTVA)</span>
             </th>
@@ -178,7 +169,7 @@
             <td width="135" align="right" valign="middle">{{ line.totalPriceEvat|format_currency('euro') }}</td>
         </tr>
 
- {# % include '@CapCommercio/order/_promo.html.twig' % #}
+        {# % include '@CapCommercio/order/_promo.html.twig' % #}
 
         <tr valign="top" height="12">
             <td width="65" height="12" valign="top" align="center"><b>&nbsp;</b></td>
@@ -204,18 +195,14 @@
                 <hr>
             </td>
         </tr>
+        <tr class="content">
+            <td width="600" colspan="4">
+                <p>Cette facture est déjà payée.</p>
+            </td>
+        </tr>
 
         </tbody>
     </table>
-
-    <h3 class="titlePaiement">Informations pour le paiement</h3>
-
-    <p class="textPaiement">
-        Vous pouvez verser la somme de {{ order.priceVat|format_currency('euro') }} TTC sur le compte de CAP sur Marche BE51 0689 3813 9062 avec
-        votre
-        numéro de TVA en communication.
-    </p>
-
     <div id='footer'>
         CAP sur Marche ASBL - Avenue de France, 126 - 6900 Marche-en-Famenne (Belgique)
         <br/>
