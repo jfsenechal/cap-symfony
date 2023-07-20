@@ -81,9 +81,9 @@ class GalleryController extends AbstractController
         $image->setCommercioCommercant($commercant);
 
         $fileName = Uuid::v4().'.'.$file->guessClientExtension();
-        $path = $this->getParameter('CAP_PATH').'media/'.$fileName;
+        $path = $this->getParameter('CAP_PATH').$this->getParameter('CAP_FOLDER_IMAGE').'/'.$fileName;
 
-        $image->setMediaPath('/media/'.$fileName);
+        $image->setMediaPath($this->getParameter('CAP_FOLDER_IMAGE').'/'.$fileName);
 
         try {
             $file->move(

@@ -35,7 +35,12 @@ class OrderController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $orders = $this->paymentOrderRepository->search($data['number'],$data['name'], $data['year'], $data['paid']);
+            $orders = $this->paymentOrderRepository->search(
+                $data['number'],
+                $data['name'],
+                $data['year'],
+                $data['paid']
+            );
         } else {
             $orders = $this->paymentOrderRepository->findAllOrdered();
         }
@@ -86,6 +91,13 @@ class OrderController extends AbstractController
                 'bills' => $bills,
             ]
         );
+    }
+
+    #[Route(path: '/paid/{id}', name: 'cap_order_paid', methods: ['GET', 'POST'])]
+    public function paid(PaymentOrder $paymentOrder): Response
+    {
+
+
     }
 
     #[Route(path: '/delete/{id}', name: 'cap_order_delete', methods: ['POST'])]

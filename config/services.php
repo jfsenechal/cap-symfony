@@ -6,6 +6,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
     $parameters->set('MANDRILL_API','%env(MANDRILL_API)%');
     $parameters->set('CAP_PATH','%env(CAP_PATH)%');
+    $parameters->set('CAP_FOLDER_IMAGE','zeze');
 
     $services = $containerConfigurator->services();
 
