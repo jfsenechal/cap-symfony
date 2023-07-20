@@ -2,6 +2,7 @@
 
 namespace Cap\Commercio\Controller;
 
+use Cap\Commercio\Bill\Generator\BillGenerator;
 use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Form\OrderSearchType;
 use Cap\Commercio\Repository\PaymentBillRepository;
@@ -23,7 +24,8 @@ class OrderController extends AbstractController
         private PaymentOrderRepository $paymentOrderRepository,
         private PaymentBillRepository $paymentBillRepository,
         private PaymentOrderLineRepository $paymentOrderLineRepository,
-        private PaymentOrderAddressRepository $paymentOrderAddressRepository
+        private PaymentOrderAddressRepository $paymentOrderAddressRepository,
+        private BillGenerator $billGenerator
     ) {
     }
 
@@ -96,8 +98,17 @@ class OrderController extends AbstractController
     #[Route(path: '/paid/{id}', name: 'cap_order_paid', methods: ['GET', 'POST'])]
     public function paid(PaymentOrder $paymentOrder): Response
     {
+        try {
+            $bill = $this->billGenerator->generateFromOrder($paymentOrder);
+            $this->addFlash('success', 'Facture générée');
 
+            return $this->redirectToRoute('cap_bill_show', ['id' => $bill->getId()]);
+        } catch (\Exception $exception) {
 
+            $this->addFlash('danger', 'Une erreur est survenue '.$exception->getMessage());
+
+            return $this->redirectToRoute('cap_bill_show', ['id' => $bill->getId()]);
+        }
     }
 
     #[Route(path: '/delete/{id}', name: 'cap_order_delete', methods: ['POST'])]

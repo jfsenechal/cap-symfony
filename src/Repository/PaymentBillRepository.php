@@ -113,6 +113,19 @@ class PaymentBillRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @return PaymentBill[]
+     */
+    public function countBetweenDates(string $startDate, string $endDate): array
+    {
+        return $this->createQb()
+            ->andWhere('payment_bill.insertDate BETWEEN :begin and :end')
+            ->setParameter('begin', $startDate)
+            ->setParameter('end', $endDate)
+            ->getQuery()
+            ->getResult();
+    }
+
     private function createQb(): QueryBuilder
     {
         return $this->createQueryBuilder('payment_bill')
@@ -121,5 +134,6 @@ class PaymentBillRepository extends ServiceEntityRepository
             ->addSelect('orderCap', 'orderCommercant')
             ->orderBy('payment_bill.insertDate', 'DESC');
     }
+
 
 }
