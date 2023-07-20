@@ -5,6 +5,7 @@ namespace Cap\Commercio\Controller;
 use Cap\Commercio\Bill\Generator\BillGenerator;
 use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Form\OrderSearchType;
+use Cap\Commercio\Form\PaidOrderType;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderAddressRepository;
 use Cap\Commercio\Repository\PaymentOrderLineRepository;
@@ -96,19 +97,36 @@ class OrderController extends AbstractController
     }
 
     #[Route(path: '/paid/{id}', name: 'cap_order_paid', methods: ['GET', 'POST'])]
-    public function paid(PaymentOrder $paymentOrder): Response
+    public function paid(Request $request, PaymentOrder $paymentOrder): Response
     {
-        try {
-            $bill = $this->billGenerator->generateFromOrder($paymentOrder);
-            $this->addFlash('success', 'Facture générée');
+        if ($this->paymentBillRepository->findByOrder($paymentOrder)) {
+            $this->addFlash('danger', 'Cette commande a déjà une facture liée');
 
-            return $this->redirectToRoute('cap_bill_show', ['id' => $bill->getId()]);
-        } catch (\Exception $exception) {
-
-            $this->addFlash('danger', 'Une erreur est survenue '.$exception->getMessage());
-
-            return $this->redirectToRoute('cap_bill_show', ['id' => $bill->getId()]);
+            return $this->redirectToRoute('cap_order_show', ['id' => $paymentOrder->getId()]);
         }
+
+        $form = $this->createForm(PaidOrderType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            try {
+                $bill = $this->billGenerator->generateFromOrder($paymentOrder);
+                $this->addFlash('success', 'Facture générée');
+
+                return $this->redirectToRoute('cap_bill_show', ['id' => $bill->getId()]);
+            } catch (\Exception $exception) {
+
+                $this->addFlash('danger', 'Une erreur est survenue '.$exception->getMessage());
+
+                return $this->redirectToRoute('cap_order_show', ['id' => $paymentOrder->getId()]);
+            }
+        }
+
+        return $this->render('@CapCommercio/order/paid.html.twig', [
+            'order' => $paymentOrder,
+            'form' => $form->createView(),
+        ]);
     }
 
     #[Route(path: '/delete/{id}', name: 'cap_order_delete', methods: ['POST'])]
