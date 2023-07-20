@@ -15,7 +15,7 @@
                     {% for img in gallery %}
                     <div class="row mt-3">
                         <div class="col">
-                            <img src="{{ img.mediaPath }}" class="d-block w-100" alt="...">
+                            <img src="{{ asset(img.mediaPath) }}" class="d-block w-100" alt="...">
                         </div>
                         <div class="col">
                             <a
