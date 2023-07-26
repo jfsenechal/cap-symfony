@@ -26,7 +26,6 @@
                         <td>{{ order.insertDate|format_date('full') }}</td>
                         <td>
                             <a href="{{ path('cap_order_pdf',{'id':order.id}) }}">Générer</a><br/>
-                            <a href="{{ path('cap_order_pdf',{'id':order.id,'save':1}) }}">Save disk</a>
                         </td>
                     </tr>
                 {% endfor %}
