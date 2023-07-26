@@ -6,12 +6,14 @@ use Dompdf\Dompdf;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Spipu\Html2Pdf\Html2Pdf;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Service\Attribute\Required;
 
 trait PdfDownloaderTrait
 {
-    public Pdf $pdf;
+    private Pdf $pdf;
+    private ParameterBagInterface $parameterBag;
 
     #[Required]
     public function setPdf(Pdf $pdf): void
@@ -19,9 +21,10 @@ trait PdfDownloaderTrait
         $this->pdf = $pdf;
     }
 
-    public function getPdf(): Pdf
+    #[Required]
+    public function setParameterBag(ParameterBagInterface $parameterBag): void
     {
-        return $this->pdf;
+        $this->parameterBag = $parameterBag;
     }
 
     /**
@@ -71,7 +74,7 @@ trait PdfDownloaderTrait
      * TESTS OTHER LIB
      **********/
 
-    public function downloadPdfTest(
+    private function downloadPdfTest(
         string $html,
         string $fileName,
         bool $writeToDisk = false,
@@ -94,7 +97,7 @@ trait PdfDownloaderTrait
         );
     }
 
-    public function downloadPdfDomTest(
+    private function downloadPdfDomTest(
         string $html,
         string $fileName,
         bool $writeToDisk = false,

@@ -12,7 +12,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
 #[AsCommand(
@@ -24,7 +23,6 @@ class GenerateCssCommand extends Command
     use PdfDownloaderTrait;
 
     public function __construct(
-        private ParameterBagInterface $parameterBag,
         private PdfGenerator $pdfGenerator,
         private PaymentOrderRepository $paymentOrderRepository
     ) {

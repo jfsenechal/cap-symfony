@@ -9,7 +9,6 @@ use Cap\Commercio\Pdf\PdfGenerator;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -24,7 +23,6 @@ class PdfController extends AbstractController
     use PdfDownloaderTrait;
 
     public function __construct(
-        private ParameterBagInterface $parameterBag,
         private PdfGenerator $pdfGenerator,
         private PaymentOrderRepository $orderRepository,
         private PaymentBillRepository $billRepository
