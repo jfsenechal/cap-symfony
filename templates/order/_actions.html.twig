@@ -13,13 +13,14 @@
     <div class="col-auto">
         <a href="{{ path('cap_commercant_show',{'id':order.commercantId}) }}" class="btn btn-primary" role='button'><i
                     class="fas fa-arrow-left"></i>
-        Retour au magasin
+            Retour au magasin
         </a>
     </div>
     <div class="col-auto">
-        <a href="{{ path('cap_order_paid',{'id':order.id}) }}" class="btn btn-primary" role='button'><i
-                    class="fas fa-euro-sign"></i>
-            Payer la commande</a>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paidModal">
+            <i class="fas fa-euro-sign"></i>
+            Payer la commande
+        </button>
     </div>
     <div class="col-auto">
         <a href="{{ path('cap_order_all') }}" class="btn btn-primary" role='button'><i

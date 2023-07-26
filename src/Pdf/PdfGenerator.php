@@ -10,6 +10,8 @@ use Twig\Environment;
 
 class PdfGenerator
 {
+    use PdfDownloaderTrait;
+
     public function __construct(
         private Environment $environment,
         private PaymentOrderLineRepository $paymentOrderLineRepository,
@@ -24,7 +26,7 @@ class PdfGenerator
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function generateForOrder(PaymentOrder $order): string
+    public function generateContentForOrder(PaymentOrder $order): string
     {
         $orderCommercant = $order->getOrderCommercant();
         $line = $this->paymentOrderLineRepository->findOneByOrder($order);
@@ -46,7 +48,7 @@ class PdfGenerator
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function generateForBill(PaymentBill $bill): string
+    public function generateContentForBill(PaymentBill $bill): string
     {
         $order = $bill->getOrder();
         $orderCommercant = $order->getOrderCommercant();
@@ -60,6 +62,6 @@ class PdfGenerator
             'line' => $line,
             'address' => $address,
         ]);
-
     }
+
 }

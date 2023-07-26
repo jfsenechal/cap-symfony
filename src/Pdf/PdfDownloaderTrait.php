@@ -3,7 +3,6 @@
 namespace Cap\Commercio\Pdf;
 
 use Dompdf\Dompdf;
-use Dompdf\Options;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Spipu\Html2Pdf\Html2Pdf;
@@ -25,7 +24,54 @@ trait PdfDownloaderTrait
         return $this->pdf;
     }
 
-    public function downloadPdf(
+    /**
+     * @param string $html
+     * @param string $fileName
+     * @param bool $debug
+     * @return string
+     * @throws \Spipu\Html2Pdf\Exception\Html2PdfException
+     */
+    public function downloadPdf(string $html, string $fileName, bool $debug = false): Response
+    {
+        $html2pdf = $this->generatePdfH2Pdf($html, $debug);
+
+        return $html2pdf->output($fileName, 'D');
+    }
+
+    /**
+     * @param string $html
+     * @param string $fileName
+     * @param bool $debug
+     * @return string
+     * @throws \Spipu\Html2Pdf\Exception\Html2PdfException
+     */
+    public function savePdfToDisk(string $html, string $fileName, bool $debug = false): string
+    {
+        $html2pdf = $this->generatePdfH2Pdf($html, $debug);
+        $path = $this->parameterBag->get('CAP_PATH').'pdf-docs/'.$fileName;
+
+        return $html2pdf->output($path, 'F');
+    }
+
+    private function generatePdfH2Pdf(
+        string $html,
+        bool $debug
+    ): Html2Pdf|Response {
+        if ($debug) {
+            return new Response($html);
+        }
+
+        $html2pdf = new Html2Pdf('P', 'A4', 'fr');
+        $html2pdf->writeHTML($html);
+
+        return $html2pdf;
+    }
+
+    /**********
+     * TESTS OTHER LIB
+     **********/
+
+    public function downloadPdfTest(
         string $html,
         string $fileName,
         bool $writeToDisk = false,
@@ -48,7 +94,7 @@ trait PdfDownloaderTrait
         );
     }
 
-    public function downloadPdfDom(
+    public function downloadPdfDomTest(
         string $html,
         string $fileName,
         bool $writeToDisk = false,
@@ -70,29 +116,4 @@ trait PdfDownloaderTrait
         return null;
     }
 
-    /**
-     * @param string $html
-     * @param string $fileName
-     * @param bool $writeToDisk
-     * @param bool $debug
-     * @return string|Response
-     * @throws \Spipu\Html2Pdf\Exception\Html2PdfException
-     */
-    public function downloadPdfH2Pdf(string $html, string $fileName, bool $writeToDisk = false, bool $debug = false)
-    {
-        if ($debug) {
-            return new Response($html);
-        }
-
-        $html2pdf = new Html2Pdf('P', 'A4', 'fr');
-        $html2pdf->writeHTML($html);
-
-        $output = 'D';
-        if($writeToDisk) {
-            $output = 'F';
-        }
-
-        return $html2pdf->output($fileName, $output);
-
-    }
 }

@@ -7,15 +7,11 @@ use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Pdf\PdfGenerator;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Symfony\Component\Uid\Uuid;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 
 class BillGenerator
 {
     public function __construct(
         private PaymentBillRepository $billRepository,
-        private PdfGenerator $pdfGenerator,
     ) {
     }
 
@@ -35,17 +31,9 @@ class BillGenerator
         $bill->setPriceVat($order->getPriceVat());
         $bill->setVat($order->getVat());
         $bill->setVatAmount($order->getVatAmount());
+        $this->billRepository->flush();
 
-        try {
-            $this->pdfGenerator->generateForBill($bill);
-            $fileName = 'bill-'.$bill->getUuid().'.pdf';
-            $bill->setPdfPath('pdf-docs/'.$fileName);
-            $this->billRepository->flush();
-
-            return $bill;
-        } catch (LoaderError|RuntimeError|SyntaxError $e) {
-            throw new \Exception($e->getMessage());
-        }
+        return $bill;
     }
 
     private function getBillNextSequenceNumber(): string

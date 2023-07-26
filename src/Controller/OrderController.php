@@ -6,6 +6,7 @@ use Cap\Commercio\Bill\Generator\BillGenerator;
 use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Form\OrderSearchType;
 use Cap\Commercio\Form\PaidOrderType;
+use Cap\Commercio\Pdf\PdfGenerator;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderAddressRepository;
 use Cap\Commercio\Repository\PaymentOrderLineRepository;
@@ -16,6 +17,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 #[Route(path: '/order')]
 #[IsGranted('ROLE_CAP')]
@@ -26,7 +30,8 @@ class OrderController extends AbstractController
         private PaymentBillRepository $paymentBillRepository,
         private PaymentOrderLineRepository $paymentOrderLineRepository,
         private PaymentOrderAddressRepository $paymentOrderAddressRepository,
-        private BillGenerator $billGenerator
+        private BillGenerator $billGenerator,
+        private PdfGenerator $pdfGenerator,
     ) {
     }
 
@@ -96,37 +101,39 @@ class OrderController extends AbstractController
         );
     }
 
-    #[Route(path: '/paid/{id}', name: 'cap_order_paid', methods: ['GET', 'POST'])]
+    #[Route(path: '/paid/{id}', name: 'cap_order_paid', methods: ['POST'])]
     public function paid(Request $request, PaymentOrder $paymentOrder): Response
     {
-        if ($this->paymentBillRepository->findByOrder($paymentOrder)) {
-            $this->addFlash('danger', 'Cette commande a déjà une facture liée');
+        if ($this->isCsrfTokenValid('paid'.$paymentOrder->getId(), $request->request->get('_token'))) {
 
-            return $this->redirectToRoute('cap_order_show', ['id' => $paymentOrder->getId()]);
-        }
+            if ($bill = $this->paymentBillRepository->findByOrder($paymentOrder)) {
+                $this->addFlash('danger', 'Cette commande a déjà une facture liée');
 
-        $form = $this->createForm(PaidOrderType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+                return $this->redirectToRoute('cap_bill_show', ['id' => $bill->getId()]);
+            }
 
             try {
                 $bill = $this->billGenerator->generateFromOrder($paymentOrder);
                 $this->addFlash('success', 'Facture générée');
 
+                try {
+                    $html = $this->pdfGenerator->generateContentForBill($bill);
+                    $fileName = 'bill-'.$bill->getUuid().'.pdf';
+                    $this->pdfGenerator->savePdfToDisk($html, $fileName);
+                    $bill->setPdfPath('pdf-docs/'.$fileName);
+                    $this->paymentBillRepository->flush();
+
+                } catch (LoaderError|RuntimeError|SyntaxError|\Exception $e) {
+                    throw new \Exception($e->getMessage());
+                }
+
                 return $this->redirectToRoute('cap_bill_show', ['id' => $bill->getId()]);
             } catch (\Exception $exception) {
-
                 $this->addFlash('danger', 'Une erreur est survenue '.$exception->getMessage());
-
-                return $this->redirectToRoute('cap_order_show', ['id' => $paymentOrder->getId()]);
             }
         }
 
-        return $this->render('@CapCommercio/order/paid.html.twig', [
-            'order' => $paymentOrder,
-            'form' => $form->createView(),
-        ]);
+        return $this->redirectToRoute('cap_order_show', ['id' => $paymentOrder->getId()]);
     }
 
     #[Route(path: '/delete/{id}', name: 'cap_order_delete', methods: ['POST'])]

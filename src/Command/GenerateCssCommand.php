@@ -45,7 +45,7 @@ class GenerateCssCommand extends Command
         $cssToInlineStyles = new CssToInlineStyles();
 
         $order = $this->paymentOrderRepository->find(875);
-        $html = $this->pdfGenerator->generateForOrder($order);
+        $html = $this->pdfGenerator->generateContentForOrder($order);
         $css = file_get_contents($this->parameterBag->get('kernel.project_dir').'/public/dist/output.css');
 
         $compiled = $cssToInlineStyles->convert($html, $css);
