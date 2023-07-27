@@ -51,7 +51,7 @@ class StripeController extends AbstractController
         }
 
         return $this->render(
-            '@CapCommercio/stripe/index.html.twig',
+            '@CapCommercio/stripe/customers.html.twig',
             [
                 'customers' => $customers,
             ]
