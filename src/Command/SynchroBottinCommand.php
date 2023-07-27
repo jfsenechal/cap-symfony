@@ -6,7 +6,6 @@ use Cap\Commercio\Repository\CommercioBottinRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -42,7 +41,6 @@ class SynchroBottinCommand extends Command
                 $io->writeln($commercant->getLegalEntity());
                 if ($fix) {
                     $this->commercantRepository->remove($commercant);
-                    $this->commercantRepository->flush();
                 }
             }
         }
