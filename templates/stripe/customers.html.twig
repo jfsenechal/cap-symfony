@@ -3,11 +3,10 @@
 {% block body %}
 
     <div class="card">
-        <h3 class="card-header">Stripe</h3>
+        <h3 class="card-header">{{ customers|length }} clients</h3>
 
         <div class="card-body">
 
-            <h5 class="text-success">{{ customers|length }} clients</h5>
             <table class="table table-bordered">
                 <tr>
                     <th>Nom</th>
