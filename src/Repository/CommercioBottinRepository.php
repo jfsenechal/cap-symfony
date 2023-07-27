@@ -4,6 +4,7 @@ namespace Cap\Commercio\Repository;
 
 use Cap\Commercio\Doctrine\OrmCrudTrait;
 use Cap\Commercio\Entity\CommercioBottin;
+use Cap\Commercio\Entity\CommercioCommercant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -27,9 +28,18 @@ class CommercioBottinRepository extends ServiceEntityRepository
      */
     public function findAllOrdered(): array
     {
-        return $this->createQb()
+        return $this->createQueryBuilder('commercio_bottin')
             ->getQuery()
             ->getResult();
+    }
+
+    public function findByCommercerant(CommercioCommercant $commercant): ?CommercioBottin
+    {
+        return $this->createQueryBuilder('commercio_bottin')
+            ->andWhere('commercio_bottin.commercantId = :id')
+            ->setParameter('id', $commercant->getId())
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
 }

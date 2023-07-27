@@ -2,6 +2,7 @@
 
 namespace Cap\Commercio\Controller;
 
+use Cap\Commercio\Bottin\BottinUtils;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Form\CheckMemberType;
 use Cap\Commercio\Form\CommercantSearchType;
@@ -25,6 +26,7 @@ class CommercantController extends AbstractController
 {
     public function __construct(
         private CommercioCommercantRepository $commercantRepository,
+        private BottinUtils $bottinUtils,
         private CommercantGalleryRepository $commercantGalleryRepository,
         private PaymentOrderRepository $paymentOrderRepository,
         private PaymentBillRepository $paymentBillRepository,
@@ -91,6 +93,7 @@ class CommercantController extends AbstractController
         $bills = $this->paymentBillRepository->findByCommercant($commercant);
         $hours = $this->commercioCommercantHoursRepository->findByCommercerant($commercant);
         $holidays = $this->commercioCommercantHolidayRepository->findByCommercerant($commercant);
+        $urlCap = $this->bottinUtils->urlCap($commercant);
 
         return $this->render('@CapCommercio/commercant/show.html.twig', [
             'commercant' => $commercant,
@@ -99,6 +102,7 @@ class CommercantController extends AbstractController
             'bills' => $bills,
             'hours' => $hours,
             'holidays' => $holidays,
+            'urlCap' => $urlCap,
         ]);
     }
 
