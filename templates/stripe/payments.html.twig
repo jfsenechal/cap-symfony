@@ -1,0 +1,35 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">{{ payments|length }} paiements</h3>
+
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Nom</th>
+                    <th>Statut</th>
+                    <th>Date</th>
+                    <th>Montant</th>
+                    <td>Payé</td>
+                    <td>Payé</td>
+                </tr>
+                {% for payment in payments %}
+                    <tr>
+                        <td>
+                            {% if payment.customer %}
+                                {{ payment.customer }}
+                            {% endif %}
+                        </td>
+                        <td>{{ payment.status }}</td>
+                        <td>{{ payment.created|format_date('full') }}</td>
+                        <td>{{ (payment.amount/100)|format_currency('euro') }}</td>
+                        <td>{{ payment.charges.data.0.paid }}</td>
+                        <td>{{ payment.charges.data.0.payment_method_details.card.brand }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
+

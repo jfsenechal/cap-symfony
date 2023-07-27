@@ -39,6 +39,25 @@ class StripeController extends AbstractController
         );
     }
 
+    #[Route(path: '/customers', name: 'stripe_customer_index', methods: ['GET'])]
+    public function customers(): Response
+    {
+        try {
+            $customers = $this->stripeCap->customersAll();
+        } catch (ApiErrorException $e) {
+            $this->addFlash('danger', $e->getMessage());
+
+            return $this->redirectToRoute('stripe_home');
+        }
+
+        return $this->render(
+            '@CapCommercio/stripe/index.html.twig',
+            [
+                'customers' => $customers,
+            ]
+        );
+    }
+
     #[Route(path: '/{id}/show', name: 'stripe_customer_show', methods: ['GET'])]
     public function showCustomer(string $id): Response
     {
@@ -50,19 +69,10 @@ class StripeController extends AbstractController
             return $this->redirectToRoute('stripe_home');
         }
 
-        try {
-            $payments = $this->stripeCap->listPayment($id);
-        } catch (ApiErrorException $e) {
-
-            $this->addFlash('danger', $e->getMessage());
-            $payments = [];
-        }
-
         return $this->render(
             '@CapCommercio/stripe/customer_show.html.twig',
             [
                 'customer' => $customer,
-                'payments' => $payments,
             ]
         );
     }
@@ -79,7 +89,7 @@ class StripeController extends AbstractController
             }
 
             try {
-                $customer = $this->stripeCap->createPaymentCustomer($commercant);
+                $customer = $this->stripeCap->createCustomer($commercant);
                 $commercant->setStripeUserRef($customer->id);
 
                 return $this->redirectToRoute('stripe_customer_show', ['id' => $customer->id]);
@@ -90,6 +100,25 @@ class StripeController extends AbstractController
         }
 
         return $this->redirectToRoute('stripe_home');
+    }
+
+    #[Route(path: '/payments', name: 'stripe_payment_index', methods: ['GET'])]
+    public function payments(): Response
+    {
+        try {
+            $payments = $this->stripeCap->listPayment();
+        } catch (ApiErrorException $e) {
+
+            $this->addFlash('danger', $e->getMessage());
+            $payments = [];
+        }
+
+        return $this->render(
+            '@CapCommercio/stripe/payments.html.twig',
+            [
+                'payments' => $payments,
+            ]
+        );
     }
 
 }

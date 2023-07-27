@@ -29,8 +29,8 @@ class StripeCap
      */
     public function customersAll(int $limit = 100): array
     {
-        $customers = [];
         $this->connect();
+        $customers = [];
         $years = range(2016, date('Y'));
         $startDate = new \DateTime();
         foreach ($years as $year) {
@@ -63,6 +63,7 @@ class StripeCap
      */
     public function createCustomer(CommercioCommercant $commercant): Customer
     {
+        $this->connect();
         $stripeData = [
             'email' => $commercant->getLegalEmail(),
             'description' => $commercant->getLegalEntity(),
@@ -76,9 +77,13 @@ class StripeCap
      * @return PaymentIntent[]
      * @throws ApiErrorException
      */
-    public function listPayment(string $idClient): iterable
+    public function listPayment(string $idClient = null): iterable
     {
-        return $this->stripe->paymentIntents->all(['customer' => $idClient]);
+        $this->connect();
+
+        return $this->stripe->paymentIntents->all([
+            'limit' => 100,
+        ]);
     }
 
     /**
@@ -104,6 +109,8 @@ class StripeCap
             'createCard' => $createCard,
             'customer' => $idClient,
         ];
+
+        $this->connect();
 
         return $this->stripe->paymentIntents->create(
             $params

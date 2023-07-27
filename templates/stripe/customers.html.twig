@@ -1,0 +1,34 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">Stripe</h3>
+
+        <div class="card-body">
+
+            <h5 class="text-success">{{ customers|length }} clients</h5>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Id</th>
+                </tr>
+                {% for customer in customers %}
+                    <tr>
+                        <td>
+                            {{ customer.description }}
+                        </td>
+                        <td>{{ customer.email }}</td>
+                        <td>
+                            <a href="{{ path('stripe_customer_show', {'id': customer.id}) }}">
+                                {{ customer.id }}
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
