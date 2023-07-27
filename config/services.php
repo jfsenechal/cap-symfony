@@ -16,8 +16,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure()
         ->private();
 
-    $services->load('Cap\\Commercio\\', __DIR__.'/../src/*')
-        ->exclude([__DIR__.'/../src/{Entity,Tests}']);
-
-
+    $services->load('Cap\\Commercio\\', __DIR__ . '/../src/*')
+        ->exclude([__DIR__ . '/../src/{Entity,Tests}']);
 };

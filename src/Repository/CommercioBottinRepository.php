@@ -41,5 +41,4 @@ class CommercioBottinRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
-
 }

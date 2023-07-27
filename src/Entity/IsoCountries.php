@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class IsoCountries
 {
-    
     #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
@@ -36,11 +35,8 @@ class IsoCountries
     #[ORM\Column(name: 'displayed', type: 'boolean', nullable: false)]
     private bool $displayed = false;
 
-    /**
-     * @var int|null
-     */
     #[ORM\Column(name: 'stat_counter', type: 'bigint', nullable: true)]
-    private ?string $statCounter = '0';
+    private ?int $statCounter = 0;
 
     public function getId(): ?string
     {
@@ -130,6 +126,4 @@ class IsoCountries
 
         return $this;
     }
-
-
 }

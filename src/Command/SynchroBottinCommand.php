@@ -51,5 +51,4 @@ class SynchroBottinCommand extends Command
 
         return Command::SUCCESS;
     }
-
 }

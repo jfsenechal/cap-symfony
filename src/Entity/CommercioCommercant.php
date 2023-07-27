@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 class CommercioCommercant
 {
     public array $images = [];
-    public array $hours=[];
+    public array $hours = [];
     public int $bottin_id = 0;
 
     
@@ -64,9 +64,6 @@ class CommercioCommercant
     #[ORM\Column(name: 'is_member', type: 'boolean', nullable: false)]
     private bool $isMember = false;
 
-    /**
-     * @var DateTime|null
-     */
     #[ORM\Column(name: 'affiliation_date', type: 'datetime', nullable: true)]
     private ?DateTimeInterface $affiliationDate = null;
 
@@ -507,6 +504,4 @@ class CommercioCommercant
 
         return $this;
     }
-
-
 }

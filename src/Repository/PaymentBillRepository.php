@@ -2,12 +2,12 @@
 
 namespace Cap\Commercio\Repository;
 
-use Doctrine\ORM\NonUniqueResultException;
 use Cap\Commercio\Doctrine\OrmCrudTrait;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Entity\PaymentBill;
 use Cap\Commercio\Entity\PaymentOrder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -60,7 +60,7 @@ class PaymentBillRepository extends ServiceEntityRepository
                 ->andWhere(
                     'upper(payment_bill.billNumber) LIKE upper(:number)'
                 )
-                ->setParameter('number', '%'.$number.'%');
+                ->setParameter('number', '%' . $number . '%');
         }
 
         if ($name) {
@@ -68,7 +68,7 @@ class PaymentBillRepository extends ServiceEntityRepository
                 ->andWhere(
                     'upper(commercant.firstname) LIKE upper(:name) OR upper(commercant.companyName) LIKE upper(:name)'
                 )
-                ->setParameter('name', '%'.$name.'%');
+                ->setParameter('name', '%' . $name . '%');
         }
 
         if ($year) {
@@ -133,6 +133,4 @@ class PaymentBillRepository extends ServiceEntityRepository
             ->addSelect('orderCap', 'orderCommercant')
             ->orderBy('payment_bill.insertDate', 'DESC');
     }
-
-
 }

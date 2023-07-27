@@ -10,11 +10,11 @@ use Cap\Commercio\Repository\AccessDemandRepository;
 use Cap\Commercio\Repository\AdministratorRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Repository\RightAccessRepository;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/user')]
 #[IsGranted('ROLE_CAP')]
@@ -83,7 +83,6 @@ class UserController extends AbstractController
                 ['id' => $user->getId()],
                 Response::HTTP_SEE_OTHER
             );
-
         }
 
         return $this->render('@CapCommercio/user/edit.html.twig', [
@@ -135,7 +134,7 @@ class UserController extends AbstractController
     }
 
     #[Route(path: '/access/demand', name: 'cap_access_demand', methods: ['GET'])]
-    public function accessDemand() : Response
+    public function accessDemand(): Response
     {
         $demands = $this->accessDemandRepository->findAllOrdered();
         return $this->render(
@@ -145,5 +144,4 @@ class UserController extends AbstractController
             ]
         );
     }
-
 }

@@ -2,11 +2,11 @@
 
 namespace Cap\Commercio\Entity;
 
-use Stringable;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 
 /**
  * BlogPost
@@ -49,11 +49,8 @@ class BlogPost implements Stringable
     #[ORM\Column(name: 'archived', type: 'boolean', nullable: false)]
     private bool $archived = false;
 
-    /**
-     * @var DateTime|null
-     */
     #[ORM\Column(name: 'publish_date', type: 'datetime', nullable: true, options: ['default' => 'now()'])]
-    private $publishDate = 'now()';
+    private DateTimeInterface $publishDate ;
 
     #[ORM\Column(name: 'is_online', type: 'boolean', nullable: false)]
     private bool $isOnline = false;
@@ -258,6 +255,4 @@ class BlogPost implements Stringable
 
         return $this;
     }
-
-
 }

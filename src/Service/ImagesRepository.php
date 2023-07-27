@@ -2,10 +2,10 @@
 
 namespace Cap\Commercio\Service;
 
-use DateTime;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Repository\CommercantGalleryRepository;
 use Cap\Commercio\Repository\CommercioCommercantHoursRepository;
+use DateTime;
 
 class ImagesRepository
 {

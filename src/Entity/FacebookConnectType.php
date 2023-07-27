@@ -13,7 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class FacebookConnectType
 {
-    
     #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
@@ -71,6 +70,4 @@ class FacebookConnectType
 
         return $this;
     }
-
-
 }

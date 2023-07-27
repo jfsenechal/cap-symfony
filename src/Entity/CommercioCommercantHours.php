@@ -2,8 +2,8 @@
 
 namespace Cap\Commercio\Entity;
 
-use DateTimeInterface;
 use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -42,15 +42,11 @@ class CommercioCommercantHours
     #[ORM\Column(name: 'morning_start', type: 'time', nullable: false)]
     private ?DateTimeInterface $morningStart = null;
 
-    /**
-     * @var DateTime|null
-     */
+    
     #[ORM\Column(name: 'morning_end', type: 'time', nullable: true)]
     private ?DateTimeInterface $morningEnd = null;
 
-    /**
-     * @var DateTime|null
-     */
+    
     #[ORM\Column(name: 'noon_start', type: 'time', nullable: true)]
     private ?DateTimeInterface $noonStart = null;
 
@@ -205,6 +201,4 @@ class CommercioCommercantHours
 
         return $this;
     }
-
-
 }

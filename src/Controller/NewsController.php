@@ -17,12 +17,11 @@ class NewsController extends AbstractController
 {
     public function __construct(
         private readonly NewsRepository $newsRepository,
-    )
-    {
+    ) {
     }
 
     #[Route('/', name: 'cap_news_index', methods: ['GET', 'POST'])]
-    public function index() : Response
+    public function index(): Response
     {
         $news = $this->newsRepository->findAllOrdered();
         return $this->render('@CapCommercio/news/index.html.twig', [
@@ -62,8 +61,7 @@ class NewsController extends AbstractController
     public function edit(
         Request  $request,
         NewsNews $news,
-    ): Response
-    {
+    ): Response {
         $form = $this->createForm(NewsType::class, $news);
         $form->handleRequest($request);
 
@@ -76,7 +74,6 @@ class NewsController extends AbstractController
                 ['id' => $news->getId()],
                 Response::HTTP_SEE_OTHER
             );
-
         }
 
         return $this->render('@CapCommercio/news/edit.html.twig', [
@@ -89,8 +86,7 @@ class NewsController extends AbstractController
     public function delete(
         Request  $request,
         NewsNews $news,
-    ): Response
-    {
+    ): Response {
         if ($this->isCsrfTokenValid('delete' . $news->getId(), $request->request->get('_token'))) {
             $this->newsRepository->remove($news);
             $this->newsRepository->flush();

@@ -11,7 +11,8 @@ trait OrmCrudTrait
      */
     protected $_em;
 
-    public function getEntityManger(): EntityManagerInterface {
+    public function getEntityManger(): EntityManagerInterface
+    {
         return $this->_em;
     }
 

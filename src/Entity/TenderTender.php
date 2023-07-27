@@ -14,7 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class TenderTender
 {
-    
     #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
@@ -237,6 +236,4 @@ class TenderTender
 
         return $this;
     }
-
-
 }

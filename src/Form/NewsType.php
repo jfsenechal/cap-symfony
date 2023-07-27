@@ -30,7 +30,6 @@ class NewsType extends AbstractType
                 'label' => 'Envoyer aux non membres (bottin)',
                 'required' => false
             ]);
-
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -39,5 +38,4 @@ class NewsType extends AbstractType
             'data_class' => NewsNews::class,
         ]);
     }
-
 }

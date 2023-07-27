@@ -2,10 +2,10 @@
 
 namespace Cap\Commercio\Entity;
 
-use Stringable;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 
 /**
  * BlogAuthor
@@ -14,7 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class BlogAuthor implements Stringable
 {
-    
     #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
@@ -46,7 +45,7 @@ class BlogAuthor implements Stringable
 
     public function __toString(): string
     {
-     return $this->firstname.' '.$this->lastname;
+        return $this->firstname . ' ' . $this->lastname;
     }
 
     public function getId(): ?string
@@ -137,6 +136,4 @@ class BlogAuthor implements Stringable
 
         return $this;
     }
-
-
 }

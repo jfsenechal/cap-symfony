@@ -36,5 +36,4 @@ class AccessDemandRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('access_demand')
             ->orderBy('access_demand.insertDate', 'DESC');
     }
-
 }

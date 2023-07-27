@@ -2,10 +2,10 @@
 
 namespace Cap\Commercio\Pdf;
 
-use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Dompdf\Dompdf;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
+use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,7 +46,7 @@ trait PdfDownloaderTrait
     public function savePdfToDisk(string $html, string $fileName, bool $debug = false): string
     {
         $html2pdf = $this->generatePdfH2Pdf($html, $debug);
-        $path = $this->parameterBag->get('CAP_PATH').'pdf-docs/'.$fileName;
+        $path = $this->parameterBag->get('CAP_PATH') . 'pdf-docs/' . $fileName;
 
         return $html2pdf->output($path, 'F');
     }
@@ -113,5 +113,4 @@ trait PdfDownloaderTrait
 
         return null;
     }
-
 }

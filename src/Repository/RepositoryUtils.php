@@ -10,8 +10,7 @@ class RepositoryUtils
     public function __construct(
         private readonly BlogTagPostRepository  $blogTagPostRepository,
         private readonly BlogCategoryPostRepository $blogCategoryPostRepository
-    )
-    {
+    ) {
     }
 
     public function setTagsToPost(BlogPost $blogPost): void

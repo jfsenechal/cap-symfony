@@ -16,5 +16,4 @@ class BlogPostSearchType extends AbstractType
                 'required' => false,
             ]);
     }
-
 }

@@ -15,7 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class Administrator
 {
-    
     #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
@@ -119,6 +118,4 @@ class Administrator
 
         return $this;
     }
-
-
 }

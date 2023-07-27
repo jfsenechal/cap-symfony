@@ -20,8 +20,7 @@ class BlogPostController extends AbstractController
     public function __construct(
         private readonly BlogPostRepository $blog_postRepository,
         private readonly RepositoryUtils    $repositoryUtils,
-    )
-    {
+    ) {
     }
 
     #[Route('/', name: 'cap_blog_post_index', methods: ['GET', 'POST'])]
@@ -77,8 +76,7 @@ class BlogPostController extends AbstractController
     public function edit(
         Request  $request,
         BlogPost $blog_post,
-    ): Response
-    {
+    ): Response {
         $this->repositoryUtils->setTagsToPost($blog_post);
         $this->repositoryUtils->setCategoriesToPost($blog_post);
 
@@ -86,7 +84,6 @@ class BlogPostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $data = $form->getData();
             foreach ($data->categories as $category) {
                 $blog_post->addBlogCategory($category);
@@ -100,7 +97,6 @@ class BlogPostController extends AbstractController
                 ['id' => $blog_post->getId()],
                 Response::HTTP_SEE_OTHER
             );
-
         }
 
         return $this->render('@CapCommercio/blog_post/edit.html.twig', [
@@ -113,8 +109,7 @@ class BlogPostController extends AbstractController
     public function delete(
         Request  $request,
         BlogPost $blogPost,
-    ): Response
-    {
+    ): Response {
         if ($this->isCsrfTokenValid('delete' . $blogPost->getId(), $request->request->get('_token'))) {
             $this->blog_postRepository->remove($blogPost);
             $this->blog_postRepository->flush();

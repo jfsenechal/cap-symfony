@@ -35,5 +35,4 @@ class FixCommand extends Command
 
         return Command::SUCCESS;
     }
-
 }

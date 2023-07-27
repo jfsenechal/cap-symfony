@@ -16,5 +16,4 @@ class UserSearchType extends AbstractType
                 'required' => false,
             ]);
     }
-
 }

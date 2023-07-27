@@ -2,11 +2,11 @@
 
 namespace Cap\Commercio\Stripe;
 
-use DateTime;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Entity\Settings;
 use Cap\Commercio\Repository\SettingRepository;
 use Cap\Commercio\Setting\SettingEnum;
+use DateTime;
 use Psr\Log\LoggerInterface;
 use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
@@ -56,7 +56,6 @@ class StripeCap
         $this->connect();
 
         return $this->stripe->customers->retrieve($id);
-
     }
 
     /**

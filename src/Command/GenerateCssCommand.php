@@ -44,7 +44,7 @@ class GenerateCssCommand extends Command
 
         $order = $this->paymentOrderRepository->find(875);
         $html = $this->pdfGenerator->generateContentForOrder($order);
-        $css = file_get_contents($this->parameterBag->get('kernel.project_dir').'/public/dist/output.css');
+        $css = file_get_contents($this->parameterBag->get('kernel.project_dir') . '/public/dist/output.css');
 
         $compiled = $cssToInlineStyles->convert($html, $css);
         echo $compiled;
@@ -54,5 +54,4 @@ class GenerateCssCommand extends Command
 
         return Command::SUCCESS;
     }
-
 }

@@ -9,13 +9,12 @@
 
 namespace Cap\Commercio\Mailer;
 
-use Mandrill;
 use Exception;
+use Mandrill;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class MandrillMail
 {
-
     public ?string $template = null;
     public array $data = [];
     //private $receiver;
@@ -31,7 +30,7 @@ class MandrillMail
     private ?string $subaccount = null;
     public array $errors = [];
 
-    public function __construct(#[Autowire(env: 'MANDRILL_API')]private readonly string $mandrillApiKey)
+    public function __construct(#[Autowire(env: 'MANDRILL_API')] private readonly string $mandrillApiKey)
     {
         $this->subaccount = defined('MANDRILL_SUBACCOUNT') ? MANDRILL_SUBACCOUNT : null;
     }
@@ -84,7 +83,6 @@ class MandrillMail
         $this->checkSendingCapabilities();
 
         if ($this->sendable) {
-
             $this->addBccReceiver();
             $template_content = [];
             $mandrill = new Mandrill($this->mandrillApiKey);
@@ -112,7 +110,6 @@ class MandrillMail
             } else {
                 $result = true;
             }
-
         } else {
             throw new Exception("Required properties are missing");
         }
@@ -137,10 +134,9 @@ class MandrillMail
     {
         $receiver = [];
         $receiver['email'] = $email;
-        $receiver['name'] = $firstname." ".$lastname;
+        $receiver['name'] = $firstname . " " . $lastname;
         $receiver['type'] = $type; //Types : to, cc, bcc
         $this->receivers[] = $receiver;
-
     }
 
     public function addBccReceiver()
@@ -165,5 +161,4 @@ class MandrillMail
 
         return $recipients;
     }
-
 }

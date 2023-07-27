@@ -2,12 +2,12 @@
 
 namespace Cap\Commercio\Bill\Generator;
 
-use Exception;
-use DateTime;
 use Cap\Commercio\Entity\PaymentBill;
 use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Pdf\PdfGenerator;
 use Cap\Commercio\Repository\PaymentBillRepository;
+use DateTime;
+use Exception;
 use Symfony\Component\Uid\Uuid;
 
 class BillGenerator
@@ -45,7 +45,7 @@ class BillGenerator
         $date = new DateTime('now');
         $last_day_of_month = $date->format('t');
 
-        $endDate = date('Y-m-'.$last_day_of_month.' 23:59:59');
+        $endDate = date('Y-m-' . $last_day_of_month . ' 23:59:59');
 
         $result = $this->billRepository->countBetweenDates($startDate, $endDate);
 
@@ -64,7 +64,6 @@ class BillGenerator
         $period = date('Ym');
         $sequence = $this->getBillNextSequenceNumber();
 
-        return $prefix.$period.$sequence;
+        return $prefix . $period . $sequence;
     }
-
 }

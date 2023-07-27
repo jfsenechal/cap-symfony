@@ -2,9 +2,9 @@
 
 namespace Cap\Commercio\Security;
 
+use Symfony\Component\PasswordHasher\Exception\InvalidPasswordException;
 use Symfony\Component\PasswordHasher\Hasher\CheckPasswordLengthTrait;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
-use Symfony\Component\PasswordHasher\Exception\InvalidPasswordException;
 
 class Md5VerySecureHasher implements PasswordHasherInterface
 {

@@ -16,9 +16,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Table(name: 'right_access')]
 #[ORM\UniqueConstraint(name: 'right_access_email_key', columns: ['email'])]
 #[ORM\Entity]
-class RightAccess implements UserInterface, PasswordHasherAwareInterface,PasswordAuthenticatedUserInterface, Stringable
+class RightAccess implements UserInterface, PasswordHasherAwareInterface, PasswordAuthenticatedUserInterface, Stringable
 {
-    
     #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]

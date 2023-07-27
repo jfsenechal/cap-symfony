@@ -17,7 +17,6 @@ class BlogCategoryType extends AbstractType
                 'label' => 'Intitule',
                 'required' => true,
             ]);
-
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -26,5 +25,4 @@ class BlogCategoryType extends AbstractType
             'data_class' => BlogCategory::class,
         ]);
     }
-
 }

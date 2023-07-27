@@ -2,10 +2,10 @@
 
 namespace Cap\Commercio\Controller;
 
-use Exception;
 use Cap\Commercio\Form\TemplateType;
 use Cap\Commercio\Mailer\MailerCap;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,7 +49,6 @@ class MandrillController extends AbstractController
         private readonly CommercioCommercantRepository $commercantRepository,
         private readonly CacheInterface $cache
     ) {
-
     }
 
     #[Route(path: '/', name: 'cap_mandrill_index', methods: ['GET'])]
@@ -81,7 +80,6 @@ class MandrillController extends AbstractController
         }
 
         return $this->redirectToRoute('cap_mandrill_index');
-
     }
 
     #[Route(path: '/messages/list', name: 'cap_commercio_mandrill_listmessages', methods: ['GET'])]
@@ -120,7 +118,7 @@ class MandrillController extends AbstractController
     #[Route(path: '/template/list', name: 'cap_commercio_mandrill_listtemplate', methods: ['GET'])]
     public function listTemplates(): Response
     {
-        $templates = $this->cache->get('mandrill_templates', fn() => $this->mailer->getTemplates());
+        $templates = $this->cache->get('mandrill_templates', fn () => $this->mailer->getTemplates());
 
         return $this->render(
             '@CapCommercio/mandrill/template_list.html.twig',
@@ -151,7 +149,6 @@ class MandrillController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $code = $form->get('code')->getData();
 
             $result = $this->mailer->templateSet($template['name'], $code);
@@ -167,6 +164,4 @@ class MandrillController extends AbstractController
             ]
         );
     }
-
-
 }

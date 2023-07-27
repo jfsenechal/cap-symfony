@@ -60,8 +60,7 @@ class BillController extends AbstractController
     public function delete(Request $request, PaymentBill $paymentBill): Response
     {
         $order = $paymentBill->getOrder();
-        if ($this->isCsrfTokenValid('delete'.$paymentBill->getId(), $request->request->get('_token'))) {
-
+        if ($this->isCsrfTokenValid('delete' . $paymentBill->getId(), $request->request->get('_token'))) {
             $this->paymentBillRepository->remove($paymentBill);
             $this->paymentBillRepository->flush();
 
@@ -70,5 +69,4 @@ class BillController extends AbstractController
 
         return $this->redirectToRoute('cap_order_show', ['id' => $order->getId()]);
     }
-
 }

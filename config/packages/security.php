@@ -6,7 +6,6 @@ use Cap\Commercio\Security\Md5VerySecureHasher;
 use Symfony\Config\SecurityConfig;
 
 return static function (SecurityConfig $security) {
-
     /* $security->passwordHasher(RightAccess::class, [
          'algorithm' => 'md5',
          'encode_as_base64' => false,

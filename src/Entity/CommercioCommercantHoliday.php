@@ -2,8 +2,8 @@
 
 namespace Cap\Commercio\Entity;
 
-use DateTimeInterface;
 use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,7 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class CommercioCommercantHoliday
 {
-    
     #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
@@ -134,6 +133,4 @@ class CommercioCommercantHoliday
 
         return $this;
     }
-
-
 }

@@ -43,7 +43,6 @@ class OpeningHoursController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $this->commercioCommercantHolidayRepository->flush();
             $this->addFlash('success', 'Le congé a été modifié');
 
@@ -69,7 +68,6 @@ class OpeningHoursController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $this->commercioCommercantHoursRepository->flush();
             $this->addFlash('success', 'L\' horaire a été modifié');
 
@@ -88,7 +86,6 @@ class OpeningHoursController extends AbstractController
     public function holidayDelete(
         Request $request,
     ): Response {
-
         $holidayId = $request->request->getInt('holidayid');
         if (0 === $holidayId) {
             $this->addFlash('danger', 'Congé non trouvé');
@@ -119,12 +116,11 @@ class OpeningHoursController extends AbstractController
         CommercioCommercantHours $hours,
     ): Response {
         $id = $hours->getCommercioCommercant()->getId();
-        if ($this->isCsrfTokenValid('delete'.$hours->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $hours->getId(), $request->request->get('_token'))) {
             $this->commercioCommercantHoursRepository->remove($hours);
             $this->commercioCommercantHoursRepository->flush();
         }
 
         return $this->redirectToRoute('cap_commercant_show', ['id' => $id], Response::HTTP_SEE_OTHER);
     }
-
 }

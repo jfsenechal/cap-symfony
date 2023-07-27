@@ -2,14 +2,14 @@
 
 namespace Cap\Commercio\Pdf;
 
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 use Cap\Commercio\Entity\PaymentBill;
 use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Repository\PaymentOrderAddressRepository;
 use Cap\Commercio\Repository\PaymentOrderLineRepository;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class PdfGenerator
 {
@@ -40,7 +40,6 @@ class PdfGenerator
             'line' => $line,
             'address' => $address,
         ]);
-
     }
 
     /**
@@ -64,5 +63,4 @@ class PdfGenerator
             'address' => $address,
         ]);
     }
-
 }

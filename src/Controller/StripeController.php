@@ -80,8 +80,7 @@ class StripeController extends AbstractController
     #[Route(path: '/{id}/new', name: 'stripe_customer_new', methods: ['POST'])]
     public function newCustomer(Request $request, CommercioCommercant $commercant): Response
     {
-        if ($this->isCsrfTokenValid('paid'.$commercant->getId(), $request->request->get('_token'))) {
-
+        if ($this->isCsrfTokenValid('paid' . $commercant->getId(), $request->request->get('_token'))) {
             if ($commercant->getStripeUserRef()) {
                 $this->addFlash('warning', 'Ce commerçant a déjà un compte stripe');
 
@@ -93,7 +92,6 @@ class StripeController extends AbstractController
                 $commercant->setStripeUserRef($customer->id);
 
                 return $this->redirectToRoute('stripe_customer_show', ['id' => $customer->id]);
-
             } catch (ApiErrorException $e) {
                 $this->addFlash('danger', $e->getMessage());
             }
@@ -108,7 +106,6 @@ class StripeController extends AbstractController
         try {
             $payments = $this->stripeCap->listPayment();
         } catch (ApiErrorException $e) {
-
             $this->addFlash('danger', $e->getMessage());
             $payments = [];
         }
@@ -120,5 +117,4 @@ class StripeController extends AbstractController
             ]
         );
     }
-
 }

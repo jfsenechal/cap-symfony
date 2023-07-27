@@ -36,6 +36,4 @@ class BlogCategoryPostRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-
 }

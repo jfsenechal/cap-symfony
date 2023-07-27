@@ -14,7 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class NewsletterMember
 {
-    
     #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
@@ -33,15 +32,11 @@ class NewsletterMember
     #[ORM\Column(name: 'sending', type: 'boolean', nullable: false, options: ['default' => '1'])]
     private bool $sending = true;
 
-    /**
-     * @var DateTime|null
-     */
+    
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: true, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
 
-    /**
-     * @var DateTime|null
-     */
+    
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: true, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
 
@@ -151,6 +146,4 @@ class NewsletterMember
 
         return $this;
     }
-
-
 }

@@ -30,9 +30,6 @@ class PaymentOrder
     #[ORM\Column(name: 'commercant_id', type: 'bigint', nullable: false)]
     private ?string $commercantId = null;
 
-    /**
-     * @var int|null
-     */
     #[ORM\Column(name: 'promo_code_id', type: 'bigint', nullable: true)]
     private ?string $promoCodeId = null;
 
@@ -260,6 +257,4 @@ class PaymentOrder
 
         return $this;
     }
-
-
 }

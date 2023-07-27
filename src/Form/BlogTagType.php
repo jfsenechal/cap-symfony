@@ -17,7 +17,6 @@ class BlogTagType extends AbstractType
                 'label' => 'Intitule',
                 'required' => true,
             ]);
-
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -26,5 +25,4 @@ class BlogTagType extends AbstractType
             'data_class' => BlogTag::class,
         ]);
     }
-
 }

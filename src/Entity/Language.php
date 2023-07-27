@@ -2,10 +2,10 @@
 
 namespace Cap\Commercio\Entity;
 
-use Stringable;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 
 /**
  * Language
@@ -15,7 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class Language implements Stringable
 {
-    
     #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
@@ -93,6 +92,4 @@ class Language implements Stringable
 
         return $this;
     }
-
-
 }

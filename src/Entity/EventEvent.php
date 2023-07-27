@@ -17,7 +17,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class EventEvent
 {
-    
     #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
@@ -42,15 +41,11 @@ class EventEvent
     #[ORM\Column(name: 'eventbrite_link', type: 'text', nullable: true)]
     private ?string $eventbriteLink = null;
 
-    /**
-     * @var DateTime|null
-     */
+    
     #[ORM\Column(name: 'begin_date', type: 'datetime', nullable: true)]
     private ?DateTimeInterface $beginDate = null;
 
-    /**
-     * @var DateTime|null
-     */
+    
     #[ORM\Column(name: 'end_date', type: 'datetime', nullable: true)]
     private ?DateTimeInterface $endDate = null;
 
@@ -95,15 +90,11 @@ class EventEvent
     #[ORM\Column(name: 'url_id', type: 'text', nullable: true)]
     private ?string $urlId = null;
 
-    /**
-     * @var DateTime|null
-     */
+    
     #[ORM\Column(name: 'time_slot_start', type: 'time', nullable: true)]
     private ?DateTimeInterface $timeSlotStart = null;
 
-    /**
-     * @var DateTime|null
-     */
+    
     #[ORM\Column(name: 'time_slot_end', type: 'time', nullable: true)]
     private ?DateTimeInterface $timeSlotEnd = null;
 
@@ -435,6 +426,4 @@ class EventEvent
 
         return $this;
     }
-
-
 }

@@ -21,7 +21,7 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/', name: 'cap_blog_category_index', methods: ['GET', 'POST'])]
-    public function index() : Response
+    public function index(): Response
     {
         $categories = $this->blog_categoryRepository->findAllOrdered();
         return $this->render('@CapCommercio/blog_category/index.html.twig', [
@@ -74,7 +74,6 @@ class CategoryController extends AbstractController
                 ['id' => $blog_category->getId()],
                 Response::HTTP_SEE_OTHER
             );
-
         }
 
         return $this->render('@CapCommercio/blog_category/edit.html.twig', [
@@ -88,7 +87,7 @@ class CategoryController extends AbstractController
         Request      $request,
         BlogCategory $category,
     ): Response {
-        if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
             $this->blog_categoryRepository->remove($category);
             $this->blog_categoryRepository->flush();
         }

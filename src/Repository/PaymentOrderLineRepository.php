@@ -54,5 +54,4 @@ class PaymentOrderLineRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
 }

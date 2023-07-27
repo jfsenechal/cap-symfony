@@ -2,15 +2,15 @@
 
 namespace Cap\Commercio\Mailer;
 
-use DateTimeInterface;
-use Mandrill;
-use Mandrill_Templates;
-use Mandrill_Messages;
-use Mandrill_Subaccounts;
-use Mandrill_Users;
-use Mandrill_Senders;
 use Cap\Commercio\Entity\CommercioCommercant;
+use DateTimeInterface;
 use Exception;
+use Mandrill;
+use Mandrill_Messages;
+use Mandrill_Senders;
+use Mandrill_Subaccounts;
+use Mandrill_Templates;
+use Mandrill_Users;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Mime\Email;
 
@@ -39,7 +39,7 @@ class MailerCap
     {
         $dateTime = $commercant->getAffiliationDate();
 
-        $templatePath = PREFIX.PREFIX_RESOURCES.TEMPLATES_PATH.TEMPLATES_FOLDER_NAME.'/';
+        $templatePath = PREFIX . PREFIX_RESOURCES . TEMPLATES_PATH . TEMPLATES_FOLDER_NAME . '/';
         if ($env == "dev") {
             $this->mandrillMail->addReceiver('jf@marche.be', 'jfs', 'senechal');
         } else {
@@ -58,19 +58,19 @@ class MailerCap
         }
         $date = $dateTime instanceof DateTimeInterface ? $dateTime->format("d/m/Y") : date('d/m/Y');
 
-        $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("PREFIX", PREFIX.PREFIX_RESOURCES));
+        $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("PREFIX", PREFIX . PREFIX_RESOURCES));
         $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("TEMPLATEPATH", $templatePath));
         $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("START_DATE", $date));
         $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("ORDER_PDF", "/admin"));
         $this->mandrillMail->template = "commercio_reminder_expired";
-        $this->mandrillMail->subject = $this->senderName." - Votre affiliation a expiré";
+        $this->mandrillMail->subject = $this->senderName . " - Votre affiliation a expiré";
         $this->mandrillMail->senderName = $this->senderName;
         $this->mandrillMail->senderEmail = $this->senderEmail;
-        $this->mandrillMail->website = PREFIX.PREFIX_RESOURCES;
+        $this->mandrillMail->website = PREFIX . PREFIX_RESOURCES;
         try {
             $this->mandrillMail->sendMe();
         } catch (Exception $exception) {
-            throw new $exception;
+            throw new $exception();
         }
     }
 
@@ -79,11 +79,11 @@ class MailerCap
         $email = 'jf@marche.be';
 
         $code = 1235;
-        $recovery_path = "/admin/renew/".$code;
+        $recovery_path = "/admin/renew/" . $code;
 
-        $templatePath = PREFIX.PREFIX_RESOURCES.TEMPLATES_PATH.TEMPLATES_FOLDER_NAME.'/';
+        $templatePath = PREFIX . PREFIX_RESOURCES . TEMPLATES_PATH . TEMPLATES_FOLDER_NAME . '/';
 
-        $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("PREFIX", PREFIX.PREFIX_RESOURCES));
+        $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("PREFIX", PREFIX . PREFIX_RESOURCES));
         $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("TEMPLATEPATH", $templatePath));
         $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("RENEW_LINK", $recovery_path));
 
@@ -92,7 +92,7 @@ class MailerCap
         $this->mandrillMail->subject = "Récupération de mot de passe."; //translator ?
         $this->mandrillMail->senderName = 'Cap sur Marche';
         $this->mandrillMail->senderEmail = $this->senderEmail;
-        $this->mandrillMail->website = PREFIX.PREFIX_RESOURCES;
+        $this->mandrillMail->website = PREFIX . PREFIX_RESOURCES;
         try {
             $this->mandrillMail->sendMe();
         } catch (Exception $exception) {
@@ -201,6 +201,5 @@ class MailerCap
         dump($mailchimp);
         dump($account->info('commercio'));
         //   dump($message->render());
-
     }
 }

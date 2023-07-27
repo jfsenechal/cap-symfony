@@ -2,13 +2,13 @@
 
 namespace Cap\Commercio\Controller;
 
-use Exception;
-use DateTime;
 use Cap\Commercio\Entity\PaymentBill;
 use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
+use DateTime;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -99,7 +99,6 @@ class CheckupController extends AbstractController
         foreach ($this->paymentOrderRepository->findAll() as $order) {
             if ($order->getPdfPath() == null) {
                 $ordersMissing[] = $order;
-
             }
             if (!is_readable($this->getAbsolutePathPdf($order))) {
                 $ordersMissing[] = $order;
@@ -129,7 +128,6 @@ class CheckupController extends AbstractController
         [$name] = explode('?', $object->getPdfPath());
         $path = $this->getParameter('CAP_PATH');
 
-        return $path.$name;
+        return $path . $name;
     }
-
 }

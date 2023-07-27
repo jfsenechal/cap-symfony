@@ -48,7 +48,7 @@ class PaymentOrderRepository extends ServiceEntityRepository
                 ->andWhere(
                     'upper(paymentOrder.orderNumber) LIKE upper(:number)'
                 )
-                ->setParameter('number', '%'.$number.'%');
+                ->setParameter('number', '%' . $number . '%');
         }
 
         if ($name) {
@@ -56,7 +56,7 @@ class PaymentOrderRepository extends ServiceEntityRepository
                 ->andWhere(
                     'upper(commercant.firstname) LIKE upper(:name) OR upper(commercant.companyName) LIKE upper(:name)'
                 )
-                ->setParameter('name', '%'.$name.'%');
+                ->setParameter('name', '%' . $name . '%');
         }
 
         if ($year) {

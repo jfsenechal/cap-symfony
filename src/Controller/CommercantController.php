@@ -2,7 +2,6 @@
 
 namespace Cap\Commercio\Controller;
 
-use Exception;
 use Cap\Commercio\Bottin\BottinUtils;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Form\CheckMemberType;
@@ -15,6 +14,7 @@ use Cap\Commercio\Repository\CommercioCommercantHoursRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -124,7 +124,6 @@ class CommercantController extends AbstractController
                 ['id' => $commercant->getId()],
                 Response::HTTP_SEE_OTHER
             );
-
         }
 
         return $this->render('@CapCommercio/commercant/edit.html.twig', [
@@ -152,7 +151,7 @@ class CommercantController extends AbstractController
                     $this->mailer->sendAffiliationExpired($commercant, $this->getParameter('kernel.environment'));
                     $this->addFlash('success', 'Le mail a bien été envoyé');
                 } catch (Exception $e) {
-                    $this->addFlash('danger', 'Erreur lors de l\'envoie du mail: '.$e->getMessage());
+                    $this->addFlash('danger', 'Erreur lors de l\'envoie du mail: ' . $e->getMessage());
                 }
             }
             $this->addFlash('success', 'Le commerçant a été modifié');
@@ -175,7 +174,7 @@ class CommercantController extends AbstractController
         Request $request,
         CommercioCommercant $commercioCommercant,
     ): Response {
-        if ($this->isCsrfTokenValid('delete'.$commercioCommercant->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $commercioCommercant->getId(), $request->request->get('_token'))) {
             $this->commercantRepository->remove($commercioCommercant);
             $this->commercantRepository->flush();
         }

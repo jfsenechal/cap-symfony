@@ -21,7 +21,7 @@ class TagController extends AbstractController
     }
 
     #[Route('/', name: 'cap_blog_tag_index', methods: ['GET', 'POST'])]
-    public function index() : Response
+    public function index(): Response
     {
         $tags = $this->blog_tagRepository->findAllOrdered();
         return $this->render('@CapCommercio/blog_tag/index.html.twig', [
@@ -74,7 +74,6 @@ class TagController extends AbstractController
                 ['id' => $blog_tag->getId()],
                 Response::HTTP_SEE_OTHER
             );
-
         }
 
         return $this->render('@CapCommercio/blog_tag/edit.html.twig', [
@@ -88,7 +87,7 @@ class TagController extends AbstractController
         Request $request,
         BlogTag $blogPost,
     ): Response {
-        if ($this->isCsrfTokenValid('delete'.$blogPost->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $blogPost->getId(), $request->request->get('_token'))) {
             $this->blog_tagRepository->remove($blogPost);
             $this->blog_tagRepository->flush();
         }

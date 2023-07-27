@@ -41,6 +41,4 @@ class CommercantGalleryRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('commercant_gallery')
             ->orderBy('commercant_gallery.name', 'ASC');
     }
-
-
 }

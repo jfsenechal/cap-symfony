@@ -39,5 +39,4 @@ class UserRepository extends ServiceEntityRepository
 
         $this->add($user, true);
     }
-
 }

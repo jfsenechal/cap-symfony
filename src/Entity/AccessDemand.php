@@ -30,10 +30,10 @@ class AccessDemand
     private ?string $email = null;
 
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
-    private DateTimeInterface $insertDate ;
+    private DateTimeInterface $insertDate;
 
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
-    private DateTimeInterface $modifyDate ;
+    private DateTimeInterface $modifyDate;
 
     #[ORM\JoinColumn(name: 'right_access_id', referencedColumnName: 'id')]
     #[ORM\ManyToOne(targetEntity: 'RightAccess')]
@@ -115,6 +115,4 @@ class AccessDemand
 
         return $this;
     }
-
-
 }

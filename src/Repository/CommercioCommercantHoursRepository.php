@@ -50,5 +50,4 @@ class CommercioCommercantHoursRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('commercio_commercant_hours')
             ->orderBy('commercio_commercant_hours.day', 'ASC');
     }
-
 }

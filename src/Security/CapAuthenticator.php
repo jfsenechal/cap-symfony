@@ -36,7 +36,7 @@ class CapAuthenticator extends AbstractLoginFormAuthenticator
         $request->getSession()->set(Security::LAST_USERNAME, $username);
 
         return new Passport(
-            new UserBadge($username, fn(string $username) => $this->rightAccessRepository->findOneBy(['email' => $username])),
+            new UserBadge($username, fn (string $username) => $this->rightAccessRepository->findOneBy(['email' => $username])),
             new PasswordCredentials($request->request->get('password', '')),
             [
                 new CsrfTokenBadge('authenticate', $request->get('_csrf_token')),

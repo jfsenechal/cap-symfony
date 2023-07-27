@@ -50,5 +50,4 @@ class CommercioCommercantHolidayRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('commercio_commercant_holiday')
             ->orderBy('commercio_commercant_holiday.beginDate', 'ASC');
     }
-
 }

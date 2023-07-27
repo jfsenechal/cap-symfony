@@ -55,5 +55,4 @@ class PaymentOrderAddressRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
-
 }

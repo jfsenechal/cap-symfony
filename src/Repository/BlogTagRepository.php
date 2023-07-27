@@ -32,5 +32,4 @@ class BlogTagRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
 }

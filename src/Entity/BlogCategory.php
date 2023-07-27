@@ -2,10 +2,10 @@
 
 namespace Cap\Commercio\Entity;
 
-use Stringable;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 
 /**
  * BlogCategory
@@ -14,7 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class BlogCategory implements Stringable
 {
-    
     #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
@@ -92,6 +91,4 @@ class BlogCategory implements Stringable
 
         return $this;
     }
-
-
 }

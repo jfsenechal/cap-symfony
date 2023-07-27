@@ -25,12 +25,11 @@ class PaymentOrderCommercantRepository extends ServiceEntityRepository
     /**
      * @return PaymentOrderCommercant[]
      */
-    public function findAllOrdered():array
+    public function findAllOrdered(): array
     {
-      return  $this->createQueryBuilder('payment_order_commercant')
-            ->orderBy('payment_order_commercant.insertDate', 'DESC')
-            ->getQuery()
-            ->getResult();
+        return $this->createQueryBuilder('payment_order_commercant')
+              ->orderBy('payment_order_commercant.insertDate', 'DESC')
+              ->getQuery()
+              ->getResult();
     }
-
 }

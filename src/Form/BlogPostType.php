@@ -57,7 +57,6 @@ class BlogPostType extends AbstractType
                 ],
             ])
             ->addEventSubscriber(new FormNewTagEvent($this->tagRepository));
-
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -66,5 +65,4 @@ class BlogPostType extends AbstractType
             'data_class' => BlogPost::class,
         ]);
     }
-
 }

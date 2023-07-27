@@ -2,12 +2,12 @@
 
 namespace Cap\Commercio\Controller;
 
-use DateTime;
-use Exception;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Entity\CommercioCommercantGallery;
 use Cap\Commercio\Form\ImageDropZoneType;
 use Cap\Commercio\Repository\CommercantGalleryRepository;
+use DateTime;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -42,12 +42,10 @@ class GalleryController extends AbstractController
         Request $request,
         CommercioCommercant $commercant
     ): Response {
-
         $form = $this->createForm(ImageDropZoneType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             /**
              * @var UploadedFile[] $data
              */
@@ -65,7 +63,6 @@ class GalleryController extends AbstractController
                 ['id' => $commercant->getId()],
                 Response::HTTP_SEE_OTHER
             );
-
         }
 
         return $this->render('@CapCommercio/gallery/edit.html.twig', [
@@ -82,10 +79,10 @@ class GalleryController extends AbstractController
         $image->setUuid(Uuid::v4());
         $image->setCommercioCommercant($commercant);
 
-        $fileName = Uuid::v4().'.'.$file->guessClientExtension();
-        $pathToCopy = $this->getParameter('CAP_PATH').'/'.$this->getParameter('CAP_FOLDER_IMAGE').'/'.$fileName;
+        $fileName = Uuid::v4() . '.' . $file->guessClientExtension();
+        $pathToCopy = $this->getParameter('CAP_PATH') . '/' . $this->getParameter('CAP_FOLDER_IMAGE') . '/' . $fileName;
 
-        $image->setMediaPath($this->getParameter('CAP_FOLDER_IMAGE').'/'.$fileName);
+        $image->setMediaPath($this->getParameter('CAP_FOLDER_IMAGE') . '/' . $fileName);
 
         try {
             $file->move(
@@ -93,7 +90,7 @@ class GalleryController extends AbstractController
                 $fileName
             );
         } catch (FileException|Exception $exception) {
-            $this->addFlash('danger', 'Erreur upload image: '.$exception->getMessage());
+            $this->addFlash('danger', 'Erreur upload image: ' . $exception->getMessage());
 
             return;
         }
@@ -105,7 +102,6 @@ class GalleryController extends AbstractController
     public function delete(
         Request $request,
     ): Response {
-
         $id = $request->request->getInt('imageid');
         if (0 === $id) {
             $this->addFlash('danger', 'Image non trouvée');

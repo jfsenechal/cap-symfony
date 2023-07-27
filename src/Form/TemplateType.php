@@ -16,9 +16,8 @@ class TemplateType extends AbstractType
                 TextareaType::class,
                 [
                     'required' => true,
-                    'attr'=>['rows'=>20]
+                    'attr' => ['rows' => 20]
                 ]
             );
     }
-
 }

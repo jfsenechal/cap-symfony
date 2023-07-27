@@ -2,9 +2,9 @@
 
 namespace Cap\Commercio\Repository;
 
-use DateTime;
 use Cap\Commercio\Doctrine\OrmCrudTrait;
 use Cap\Commercio\Entity\CommercioCommercant;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -63,7 +63,7 @@ class CommercioCommercantRepository extends ServiceEntityRepository
     {
         $qb = $this->createQb();
         $qb->andWhere('upper(commercant.legalEntity) LIKE upper(:name)')
-            ->setParameter('name', '%'.$name.'%');
+            ->setParameter('name', '%' . $name . '%');
 
         if ($isMember === 1 || $isMember === 0) {
             $qb->andWhere('commercant.isMember = :member')
@@ -71,7 +71,6 @@ class CommercioCommercantRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->getResult();
-
     }
 
     /**
@@ -93,6 +92,4 @@ class CommercioCommercantRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('commercant')
             ->orderBy('commercant.legalEntity', 'ASC');
     }
-
-
 }

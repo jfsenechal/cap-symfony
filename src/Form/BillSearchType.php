@@ -37,5 +37,4 @@ class BillSearchType extends AbstractType
                 'required' => false,
             ]);
     }
-
 }

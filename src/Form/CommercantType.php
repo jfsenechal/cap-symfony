@@ -28,7 +28,7 @@ class CommercantType extends AbstractType
             ])
             ->add('commercialWordDescription', TextareaType::class, [
                 'required' => false,
-                'attr'=>['rows'=>5]
+                'attr' => ['rows' => 5]
             ])
             ->add('legalEmail', TextType::class, [
                 'required' => true,

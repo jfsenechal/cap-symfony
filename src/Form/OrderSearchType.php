@@ -37,5 +37,4 @@ class OrderSearchType extends AbstractType
                 'required' => false,
             ]);
     }
-
 }

@@ -32,5 +32,4 @@ class NewsRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
 }

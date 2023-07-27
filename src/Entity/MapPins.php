@@ -15,7 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class MapPins
 {
-    
     #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
@@ -45,11 +44,8 @@ class MapPins
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
 
-    /**
-     * @var int|null
-     */
     #[ORM\Column(name: 'commercio_commercant_id', type: 'bigint', nullable: true)]
-    private ?string $commercioCommercantId = null;
+    private ?int $commercioCommercantId = null;
 
     #[ORM\Column(name: 'street1', type: 'text', nullable: true)]
     private ?string $street1 = '';
@@ -302,6 +298,4 @@ class MapPins
 
         return $this;
     }
-
-
 }

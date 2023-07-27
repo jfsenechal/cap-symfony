@@ -2,8 +2,8 @@
 
 namespace Cap\Commercio\Entity;
 
-use DateTimeInterface;
 use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,7 +18,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class FacebookPromoMessage
 {
-    
     #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
@@ -185,6 +184,4 @@ class FacebookPromoMessage
 
         return $this;
     }
-
-
 }

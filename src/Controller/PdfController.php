@@ -35,12 +35,12 @@ class PdfController extends AbstractController
         try {
             $html = $this->pdfGenerator->generateContentForOrder($order);
         } catch (LoaderError|RuntimeError|SyntaxError $e) {
-            $this->addFlash('danger', 'Erreur: '.$e->getMessage());
+            $this->addFlash('danger', 'Erreur: ' . $e->getMessage());
 
             return $this->redirectToRoute('cap_home');
         }
 
-        $fileName = 'commande-'.$order->getUuid().'.pdf';
+        $fileName = 'commande-' . $order->getUuid() . '.pdf';
 
         return $this->downloadPdf($html, $fileName);
     }
@@ -51,14 +51,13 @@ class PdfController extends AbstractController
         try {
             $html = $this->pdfGenerator->generateContentForBill($bill);
         } catch (LoaderError|RuntimeError|SyntaxError $e) {
-            $this->addFlash('danger', 'Erreur: '.$e->getMessage());
+            $this->addFlash('danger', 'Erreur: ' . $e->getMessage());
 
             return $this->redirectToRoute('cap_home');
         }
 
-        $fileName = 'bill-'.$bill->getUuid().'.pdf';
+        $fileName = 'bill-' . $bill->getUuid() . '.pdf';
 
         return $this->downloadPdf($html, $fileName);
     }
-
 }

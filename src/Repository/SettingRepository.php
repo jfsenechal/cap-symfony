@@ -30,5 +30,4 @@ class SettingRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
-
 }
