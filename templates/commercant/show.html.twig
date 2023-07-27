@@ -14,7 +14,7 @@
             <h4 class="text-success">Fiche d'identité</h4>
 
             <table class="table table-bordered">
-                 <tr>
+                <tr>
                     <th>LegalEmail</th>
                     <td>{{ commercant.legalEmail }}</td>
                 </tr>
@@ -103,8 +103,14 @@
                     <td>{{ commercant.modifyDate ? commercant.modifyDate|date('Y-m-d H:i:s') : '' }}</td>
                 </tr>
                 <tr>
-                    <th>StripeUserRef</th>
-                    <td>{{ commercant.stripeUserRef }}</td>
+                    <th>Stripe</th>
+                    <td>
+                        {% if commercant.stripeUserRef %}
+                            <a href="{{ path('stripe_customer_show', {'id': commercant.stripeUserRef}) }}">
+                                {{ commercant.stripeUserRef }}
+                            </a>
+                        {% endif %}
+                    </td>
                 </tr>
                 <tr>
                     <th>CommercialWordVideoPath</th>
@@ -114,7 +120,7 @@
                     <th>CanReceiveNews</th>
                     <td>{{ commercant.canReceiveNews ? 'Yes' : 'No' }}</td>
                 </tr>
-                 <tr>
+                <tr>
                     <th>Id</th>
                     <td>{{ commercant.id }}</td>
                 </tr>
