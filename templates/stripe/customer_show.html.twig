@@ -6,17 +6,30 @@
 
         <div class="card-body">
 
+            <h5 class="text-success">Informations</h5>
             <table class="table table-bordered">
                 <tr>
                     <th>Nom</th>
                     <th>Email</th>
                     <th>Id</th>
                 </tr>
-                    <tr>
-                        <td>{{ customer.description }}</td>
-                        <td>{{ customer.email }}</td>
-                        <td>{{ customer.id }}</td>
-                    </tr>
+                <tr>
+                    <td>{{ customer.description }}</td>
+                    <td>{{ customer.email }}</td>
+                    <td>{{ customer.id }}</td>
+                </tr>
+            </table>
+
+            <h5 class="text-success">Paiements</h5>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Id</th>
+                </tr>
+                {% for payment in payments %}
+                    {{ dump(payment) }}
+                {% endfor %}
             </table>
         </div>
     </div>

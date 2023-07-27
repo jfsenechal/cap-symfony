@@ -9,6 +9,7 @@ use Cap\Commercio\Setting\SettingEnum;
 use Psr\Log\LoggerInterface;
 use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
+use Stripe\PaymentIntent;
 use Stripe\Stripe;
 use Stripe\StripeClient;
 
@@ -57,62 +58,56 @@ class StripeCap
 
     }
 
-    public function createPaymentCustomer(CommercioCommercant $commercant)
+    /**
+     * @throws ApiErrorException
+     */
+    public function createCustomer(CommercioCommercant $commercant): Customer
     {
-        $result = false;
+        $stripeData = [
+            'email' => $commercant->getLegalEmail(),
+            'description' => $commercant->getLegalEntity(),
+        ];
 
-        //si le commercant possède une référence chez stripe
-        if ($commercant['stripe_user_ref']) {
-            $stripeCustomer = $this->customerDetails($commercant->getStripeUserRef());
-            $this->currentCustomer = $stripeCustomer;
-            $result = $stripeCustomer->id;
-        } else {
-            $stripeData = [];
-            $stripeData['email'] = $commercant->getLegalEmail();
-            $stripeData['description'] = $commercant->getLegalEntity();
-
-            $stripeCustomer = $this->stripe->customers->create($stripeData);
-
-            $commercant->setStripeUserRef($stripeCustomer->id);
-
-            $stripeCustomer = $this->customerDetails($stripeCustomer['id']);
-            $this->currentCustomer = $stripeCustomer;
-            $result = $stripeCustomer['id'];
-        }
-
-        return $result;
-
+        return $this->stripe->customers->create($stripeData);
     }
 
-    public function getCreditCardListForCustomer()
+    /**
+     * @param string $idClient
+     * @return PaymentIntent[]
+     * @throws ApiErrorException
+     */
+    public function listPayment(string $idClient): iterable
     {
-        $result = false;
-        if ($this->currentCustomer) {
-            $list = $this->currentCustomer->sources->all(array("object" => "card"));
-            if (isset($list['data'])) {
-                $result = $list['data'];
-            }
-        }
-
-        return $result;
+        return $this->stripe->paymentIntents->all(['customer' => $idClient]);
     }
 
-    public function deleteAllCards()
-    {
-        $result = false;
+    /**
+     * @param string $orderNumber
+     * @param float $amount
+     * @param string $description
+     * @param $createCard
+     * @param string $idClient
+     * @return PaymentIntent
+     * @throws ApiErrorException
+     */
+    public function createPayment(
+        string $orderNumber,
+        float $amount,
+        string $description,
+        $createCard,
+        string $idClient
+    ): PaymentIntent {
+        $params = [
+            'id' => $orderNumber,
+            'amount' => $amount,
+            'description' => $description,
+            'createCard' => $createCard,
+            'customer' => $idClient,
+        ];
 
-        $list = $this->getCreditCardListForCustomer();
-        if (is_array($list) & count($list) > 0) {
-            foreach ($list as $card) {
-                $card->delete();
-            }
-            $result = true;
-        } else {
-            $result = true;
-        }
-
-
-        return $result;
+        return $this->stripe->paymentIntents->create(
+            $params
+        );
     }
 
     private function connect(): void
