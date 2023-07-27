@@ -13,7 +13,7 @@ class MailerCap
     private string $api;
     private string $senderName;
 
-    public function __construct(private ParameterBagInterface $parameterBag)
+    public function __construct(private ParameterBagInterface $parameterBag, private MandrillMail $mandrillMail)
     {
         define('PREFIX', 'https://cap.marche.be'); //url site
         define('PREFIX_RESOURCES', ''); // vide
@@ -32,22 +32,21 @@ class MailerCap
      * @return void
      * @throws Exception
      */
-    public function sendAffiliationExpired(CommercioCommercant $commercant, string $env)
+    public function sendAffiliationExpired(CommercioCommercant $commercant, string $env): void
     {
         $dateTime = $commercant->getAffiliationDate();
-        $mandrillMail = new MandrillMail($this->api);
 
         $templatePath = PREFIX.PREFIX_RESOURCES.TEMPLATES_PATH.TEMPLATES_FOLDER_NAME.'/';
         if ($env == "dev") {
-            $mandrillMail->addReceiver('jf@marche.be', 'jfs', 'senechal');
+            $this->mandrillMail->addReceiver('jf@marche.be', 'jfs', 'senechal');
         } else {
-            $mandrillMail->addReceiver(
+            $this->mandrillMail->addReceiver(
                 $commercant->getLegalEmail(),
                 $commercant->getLegalFirstname(),
                 $commercant->getLegalLastname()
             );
             if ($commercant->getLegalEmail2()) {
-                $mandrillMail->addReceiver(
+                $this->mandrillMail->addReceiver(
                     $commercant->getLegalEmail2(),
                     $commercant->getLegalFirstname(),
                     $commercant->getLegalLastname()
@@ -60,44 +59,43 @@ class MailerCap
             $date = date('d/m/Y');
         }
 
-        $mandrillMail->addMailDataItem(new MandrillMailDataItem("PREFIX", PREFIX.PREFIX_RESOURCES));
-        $mandrillMail->addMailDataItem(new MandrillMailDataItem("TEMPLATEPATH", $templatePath));
-        $mandrillMail->addMailDataItem(new MandrillMailDataItem("START_DATE", $date));
-        $mandrillMail->addMailDataItem(new MandrillMailDataItem("ORDER_PDF", "/admin"));
-        $mandrillMail->template = "commercio_reminder_expired";
-        $mandrillMail->subject = $this->senderName." - Votre affiliation a expiré";
-        $mandrillMail->senderName = $this->senderName;
-        $mandrillMail->senderEmail = $this->senderEmail;
-        $mandrillMail->website = PREFIX.PREFIX_RESOURCES;
+        $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("PREFIX", PREFIX.PREFIX_RESOURCES));
+        $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("TEMPLATEPATH", $templatePath));
+        $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("START_DATE", $date));
+        $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("ORDER_PDF", "/admin"));
+        $this->mandrillMail->template = "commercio_reminder_expired";
+        $this->mandrillMail->subject = $this->senderName." - Votre affiliation a expiré";
+        $this->mandrillMail->senderName = $this->senderName;
+        $this->mandrillMail->senderEmail = $this->senderEmail;
+        $this->mandrillMail->website = PREFIX.PREFIX_RESOURCES;
         try {
-            $mandrillMail->sendMe();
+            $this->mandrillMail->sendMe();
         } catch (Exception $exception) {
-            throw $exception;
+            throw new $exception;
         }
     }
 
     public function testMandrill(): bool
     {
         $email = 'jf@marche.be';
-        $mandrillMail = new MandrillMail($this->api);
 
         $code = 1235;
         $recovery_path = "/admin/renew/".$code;
 
         $templatePath = PREFIX.PREFIX_RESOURCES.TEMPLATES_PATH.TEMPLATES_FOLDER_NAME.'/';
 
-        $mandrillMail->addMailDataItem(new MandrillMailDataItem("PREFIX", PREFIX.PREFIX_RESOURCES));
-        $mandrillMail->addMailDataItem(new MandrillMailDataItem("TEMPLATEPATH", $templatePath));
-        $mandrillMail->addMailDataItem(new MandrillMailDataItem("RENEW_LINK", $recovery_path));
+        $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("PREFIX", PREFIX.PREFIX_RESOURCES));
+        $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("TEMPLATEPATH", $templatePath));
+        $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("RENEW_LINK", $recovery_path));
 
-        $mandrillMail->addReceiver($email, "", $email);
-        $mandrillMail->template = "commercio_recovery";
-        $mandrillMail->subject = "Récupération de mot de passe."; //translator ?
-        $mandrillMail->senderName = 'Cap sur Marche';
-        $mandrillMail->senderEmail = $this->senderEmail;
-        $mandrillMail->website = PREFIX.PREFIX_RESOURCES;
+        $this->mandrillMail->addReceiver($email, "", $email);
+        $this->mandrillMail->template = "commercio_recovery";
+        $this->mandrillMail->subject = "Récupération de mot de passe."; //translator ?
+        $this->mandrillMail->senderName = 'Cap sur Marche';
+        $this->mandrillMail->senderEmail = $this->senderEmail;
+        $this->mandrillMail->website = PREFIX.PREFIX_RESOURCES;
         try {
-            $mandrillMail->sendMe();
+            $this->mandrillMail->sendMe();
         } catch (\Exception $exception) {
             dump($exception);
             throw $exception;
@@ -143,7 +141,7 @@ class MailerCap
         $mailchimp = new \Mandrill($this->api);
         $template = new \Mandrill_Templates($mailchimp);
 
-        return $template->update($name, code:$content);
+        return $template->update($name, code: $content);
     }
 
     public function templateRender(string $name, array $vars): string

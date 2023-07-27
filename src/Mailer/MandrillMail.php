@@ -9,40 +9,35 @@
 
 namespace Cap\Commercio\Mailer;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+
 class MandrillMail
 {
 
-    public $template = false;
-    public $data = false;
+    public ?string $template = null;
+    public array $data = [];
     //private $receiver;
-    public $subject = false;
-    public $senderName = false;
-    public $senderEmail = false;
-    private $receivers = array();
-    public $website = false;
-    public $track_opens = true;
-    public $track_clicks = true;
-    public $important = false;
-    private $sendable = false;
-    private $mandrillApiKey = '';
-    private $subaccount = false;
-    public $errors = array();
+    public ?string $subject = null;
+    public ?string $senderName = null;
+    public ?string $senderEmail = null;
+    private array $receivers = array();
+    public bool $website = false;
+    public bool $track_opens = true;
+    public bool $track_clicks = true;
+    public bool $important = false;
+    private bool $sendable = false;
+    private string $mandrillApiKey;
+    private ?string $subaccount;
+    public array $errors = array();
 
-    //TODO : send at???
-
-    public function __construct($api, $subAccount = false)
+    public function __construct(#[Autowire(env: 'MANDRILL_API')] $api)
     {
         $this->data = array();
-        if (!$subAccount) {
-            if (defined('MANDRILL_SUBACCOUNT')) {
-                $this->subaccount = MANDRILL_SUBACCOUNT;
-            } else {
-                $this->subaccount = null;
-            }
+        if (defined('MANDRILL_SUBACCOUNT')) {
+            $this->subaccount = MANDRILL_SUBACCOUNT;
         } else {
-            $this->subaccount = $subAccount;
+            $this->subaccount = null;
         }
-
 
         $this->mandrillApiKey = $api;
     }
@@ -60,24 +55,24 @@ class MandrillMail
         if (!defined("MANDRILL_SUBACCOUNT")) {
             exit();
         }
-        if (($this->data === false)) {
+        if ((count($this->data) == 0)) {
             exit();
         }
 
 
-        if (($this->template === false) || ($this->template == '')) {
+        if ((!$this->template) || ($this->template == '')) {
             exit();
         }
 
-        if (($this->subject === false) || ($this->subject == '')) {
+        if ((!$this->subject) || ($this->subject == '')) {
             exit();
         }
 
-        if (($this->senderName === false) || ($this->senderName == '')) {
+        if ((!$this->senderName) || ($this->senderName == '')) {
             exit();
         }
 
-        if (($this->senderEmail === false) || ($this->senderEmail == '')) {
+        if ((!$this->senderEmail) || ($this->senderEmail == '')) {
             exit();
         }
 
@@ -92,7 +87,6 @@ class MandrillMail
 
     public function sendMe()
     {
-        $result = false;
         $this->checkSendingCapabilities();
 
         if ($this->sendable) {
@@ -129,7 +123,6 @@ class MandrillMail
             if ($this->subaccount) {
                 $message['subaccount'] = $this->subaccount;
             }
-
 
             $res = $mandrill->messages->sendTemplate(
                 $this->template,
