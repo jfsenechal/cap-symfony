@@ -7,6 +7,7 @@
         <th>Affilié le</th>
         <th>Téléphone</th>
         <th>Nom</th>
+        <th>Stripe</th>
     </tr>
     </thead>
     <tbody>
@@ -30,6 +31,13 @@
             <td>{{ commercant.legalPhone }}</td>
             <td>
                 {{ commercant.legalFirstname }}  {{ commercant.legalLastname }}
+            </td>
+            <td>
+                {% if commercant.stripeUserRef %}
+                    <a href="{{ path('stripe_customer_show', {'id': commercant.stripeUserRef}) }}">
+                        {{ commercant.stripeUserRef }}
+                    </a>
+                {% endif %}
             </td>
         </tr>
     {% endfor %}

@@ -22,4 +22,13 @@ class SettingRepository extends ServiceEntityRepository
         parent::__construct($registry, Settings::class);
     }
 
+    public function findValue(string $key): ?Settings
+    {
+        return $this->createQueryBuilder('setting')
+            ->andWhere('setting.paramKey = :key')
+            ->setParameter('key', $key)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 }

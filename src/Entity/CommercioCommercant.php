@@ -85,7 +85,7 @@ class CommercioCommercant
     /**
      * @var string|null
      *
-     * @ORM\Column(name="legal_entity", type="text", nullable=true)
+     * @ORM\Column(name="legal_entity", type="text", nullable=false)
      */
     private $legalEntity;
 
@@ -162,7 +162,7 @@ class CommercioCommercant
     /**
      * @var string|null
      *
-     * @ORM\Column(name="legal_email", type="text", nullable=true)
+     * @ORM\Column(name="legal_email", type="text", nullable=false)
      */
     private $legalEmail;
 
