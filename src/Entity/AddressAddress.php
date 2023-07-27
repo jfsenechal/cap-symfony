@@ -2,101 +2,59 @@
 
 namespace Cap\Commercio\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * AddressAddress
- *
- * @ORM\Table(name="address_address", indexes={@ORM\Index(name="IDX_56AB98199EA97B0B", columns={"address_type_id"}), @ORM\Index(name="IDX_56AB9819F92F3E70", columns={"country_id"})})
- * @ORM\Entity
  */
+#[ORM\Table(name: 'address_address')]
+#[ORM\Index(name: 'IDX_56AB98199EA97B0B', columns: ['address_type_id'])]
+#[ORM\Index(name: 'IDX_56AB9819F92F3E70', columns: ['country_id'])]
+#[ORM\Entity]
 class AddressAddress
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="address_address_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'address_address_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="uuid", type="guid", nullable=false, options={"default"="uuid_generate_v4()"})
-     */
-    private $uuid = 'uuid_generate_v4()';
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    private string $uuid = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="street1", type="text", nullable=false)
-     */
-    private $street1;
+    #[ORM\Column(name: 'street1', type: 'text', nullable: false)]
+    private ?string $street1 = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="street2", type="text", nullable=true)
-     */
-    private $street2;
+    #[ORM\Column(name: 'street2', type: 'text', nullable: true)]
+    private ?string $street2 = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="zipcode", type="text", nullable=false)
-     */
-    private $zipcode;
+    #[ORM\Column(name: 'zipcode', type: 'text', nullable: false)]
+    private ?string $zipcode = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="city", type="text", nullable=false)
-     */
-    private $city;
+    #[ORM\Column(name: 'city', type: 'text', nullable: false)]
+    private ?string $city = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="archived", type="boolean", nullable=false)
-     */
-    private $archived = false;
+    #[ORM\Column(name: 'archived', type: 'boolean', nullable: false)]
+    private bool $archived = false;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $insertDate = 'now()';
+    
+    #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $insertDate;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="modify_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $modifyDate = 'now()';
+    
+    #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $modifyDate;
 
-    /**
-     * @var \AddressType
-     *
-     * @ORM\ManyToOne(targetEntity="AddressType")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="address_type_id", referencedColumnName="id")
-     * })
-     */
-    private $addressType;
+    #[ORM\JoinColumn(name: 'address_type_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'AddressType')]
+    private ?AddressType $addressType = null;
 
-    /**
-     * @var \AddressIsoCountries
-     *
-     * @ORM\ManyToOne(targetEntity="AddressIsoCountries")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
-     * })
-     */
-    private $country;
+    #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'AddressIsoCountries')]
+    private ?AddressIsoCountries $country = null;
 
     public function getId(): ?string
     {
@@ -175,24 +133,24 @@ class AddressAddress
         return $this;
     }
 
-    public function getInsertDate(): ?\DateTimeInterface
+    public function getInsertDate(): ?DateTimeInterface
     {
         return $this->insertDate;
     }
 
-    public function setInsertDate(\DateTimeInterface $insertDate): self
+    public function setInsertDate(DateTimeInterface $insertDate): self
     {
         $this->insertDate = $insertDate;
 
         return $this;
     }
 
-    public function getModifyDate(): ?\DateTimeInterface
+    public function getModifyDate(): ?DateTimeInterface
     {
         return $this->modifyDate;
     }
 
-    public function setModifyDate(\DateTimeInterface $modifyDate): self
+    public function setModifyDate(DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
 

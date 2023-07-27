@@ -6,70 +6,41 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * IsoCountries
- *
- * @ORM\Table(name="iso_countries")
- * @ORM\Entity
  */
+#[ORM\Table(name: 'iso_countries')]
+#[ORM\Entity]
 class IsoCountries
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="iso_countries_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'iso_countries_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="code", type="bigint", nullable=false)
-     */
-    private $code;
+    #[ORM\Column(name: 'code', type: 'bigint', nullable: false)]
+    private ?string $code = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="iso1", type="string", length=2, nullable=false)
-     */
-    private $iso1;
+    #[ORM\Column(name: 'iso1', type: 'string', length: 2, nullable: false)]
+    private ?string $iso1 = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="iso2", type="string", length=3, nullable=false)
-     */
-    private $iso2;
+    #[ORM\Column(name: 'iso2', type: 'string', length: 3, nullable: false)]
+    private ?string $iso2 = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="en_us", type="string", length=120, nullable=false)
-     */
-    private $enUs;
+    #[ORM\Column(name: 'en_us', type: 'string', length: 120, nullable: false)]
+    private ?string $enUs = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="fr_fr", type="string", length=120, nullable=false)
-     */
-    private $frFr;
+    #[ORM\Column(name: 'fr_fr', type: 'string', length: 120, nullable: false)]
+    private ?string $frFr = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="displayed", type="boolean", nullable=false)
-     */
-    private $displayed = false;
+    #[ORM\Column(name: 'displayed', type: 'boolean', nullable: false)]
+    private bool $displayed = false;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(name="stat_counter", type="bigint", nullable=true)
      */
-    private $statCounter = '0';
+    #[ORM\Column(name: 'stat_counter', type: 'bigint', nullable: true)]
+    private ?string $statCounter = '0';
 
     public function getId(): ?string
     {

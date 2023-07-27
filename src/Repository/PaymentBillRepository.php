@@ -2,6 +2,7 @@
 
 namespace Cap\Commercio\Repository;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Cap\Commercio\Doctrine\OrmCrudTrait;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Entity\PaymentBill;
@@ -87,9 +88,8 @@ class PaymentBillRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param PaymentOrder $order
      * @return PaymentBill|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function findOneByOrder(PaymentOrder $order): ?PaymentBill
     {
@@ -101,7 +101,6 @@ class PaymentBillRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param PaymentOrder $order
      * @return PaymentBill[]
      */
     public function findByOrder(PaymentOrder $order): array

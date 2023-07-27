@@ -16,15 +16,14 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class CategoryController extends AbstractController
 {
     public function __construct(
-        private BlogCategoryRepository $blog_categoryRepository,
+        private readonly BlogCategoryRepository $blog_categoryRepository,
     ) {
     }
 
     #[Route('/', name: 'cap_blog_category_index', methods: ['GET', 'POST'])]
-    public function index(Request $request): Response
+    public function index() : Response
     {
         $categories = $this->blog_categoryRepository->findAllOrdered();
-
         return $this->render('@CapCommercio/blog_category/index.html.twig', [
             'categories' => $categories,
         ]);

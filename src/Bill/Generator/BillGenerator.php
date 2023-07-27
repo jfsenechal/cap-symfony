@@ -2,6 +2,8 @@
 
 namespace Cap\Commercio\Bill\Generator;
 
+use Exception;
+use DateTime;
 use Cap\Commercio\Entity\PaymentBill;
 use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Pdf\PdfGenerator;
@@ -11,19 +13,19 @@ use Symfony\Component\Uid\Uuid;
 class BillGenerator
 {
     public function __construct(
-        private PaymentBillRepository $billRepository,
+        private readonly PaymentBillRepository $billRepository,
     ) {
     }
 
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function generateFromOrder(PaymentOrder $order): PaymentBill
     {
         $bill = new PaymentBill();
-        $bill->setModifyDate(new \DateTime());
-        $bill->setInsertDate(new \DateTime());
+        $bill->setModifyDate(new DateTime());
+        $bill->setInsertDate(new DateTime());
         $bill->setUuid(Uuid::v4());
         $bill->setBillNumber($this->generateBillNumber());
         $bill->setOrder($order);
@@ -40,7 +42,7 @@ class BillGenerator
     {
         $startDate = date('Y-m-01 00:00:00');
 
-        $date = new \DateTime('now');
+        $date = new DateTime('now');
         $last_day_of_month = $date->format('t');
 
         $endDate = date('Y-m-'.$last_day_of_month.' 23:59:59');
@@ -49,7 +51,7 @@ class BillGenerator
 
         $count = count($result);
         $count++;
-        $count_str = strval($count);
+        $count_str = (string) $count;
         $str = "00000";
         $length = strlen($str);
 

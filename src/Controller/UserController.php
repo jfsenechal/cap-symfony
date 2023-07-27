@@ -21,10 +21,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     public function __construct(
-        private RightAccessRepository $rightAccessRepository,
-        private AdministratorRepository $administratorRepository,
-        private CommercioCommercantRepository $commercantRepository,
-        private AccessDemandRepository $accessDemandRepository
+        private readonly RightAccessRepository $rightAccessRepository,
+        private readonly AdministratorRepository $administratorRepository,
+        private readonly CommercioCommercantRepository $commercantRepository,
+        private readonly AccessDemandRepository $accessDemandRepository
     ) {
     }
 
@@ -71,7 +71,7 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            if ($this->rightAccessRepository->checkExist($data->getEmail(), $user)) {
+            if ($this->rightAccessRepository->checkExist($data->getEmail(), $user) instanceof RightAccess) {
                 $this->addFlash('danger', 'L\'adresse email est déjà prise sur un autre compte');
             } else {
                 $this->rightAccessRepository->flush();
@@ -102,7 +102,7 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $password = md5($data->password_plain);
+            $password = md5((string) $data->password_plain);
             $user->setPassword($password);
 
             $this->rightAccessRepository->flush();
@@ -135,10 +135,9 @@ class UserController extends AbstractController
     }
 
     #[Route(path: '/access/demand', name: 'cap_access_demand', methods: ['GET'])]
-    public function accessDemand(Request $request): Response
+    public function accessDemand() : Response
     {
         $demands = $this->accessDemandRepository->findAllOrdered();
-
         return $this->render(
             '@CapCommercio/user/demands.html.twig',
             [

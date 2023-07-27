@@ -2,6 +2,7 @@
 
 namespace Cap\Commercio\Stripe;
 
+use DateTime;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Entity\Settings;
 use Cap\Commercio\Repository\SettingRepository;
@@ -15,10 +16,10 @@ use Stripe\StripeClient;
 
 class StripeCap
 {
-    private ?Settings $secret_key;
+    private readonly ?Settings $secret_key;
     private ?StripeClient $stripe = null;
 
-    public function __construct(private SettingRepository $settingRepository, private LoggerInterface $logger)
+    public function __construct(private readonly SettingRepository $settingRepository, private readonly LoggerInterface $logger)
     {
         $this->secret_key = $this->settingRepository->findValue(SettingEnum::STRIPE_SECRET_KEY->value);
     }
@@ -32,7 +33,7 @@ class StripeCap
         $this->connect();
         $customers = [];
         $years = range(2016, date('Y'));
-        $startDate = new \DateTime();
+        $startDate = new DateTime();
         foreach ($years as $year) {
             $startDate->setDate($year, 12, 32);
             $data = $this->stripe->customers->all([
@@ -73,7 +74,6 @@ class StripeCap
     }
 
     /**
-     * @param string $idClient
      * @return PaymentIntent[]
      * @throws ApiErrorException
      */
@@ -87,11 +87,7 @@ class StripeCap
     }
 
     /**
-     * @param string $orderNumber
-     * @param float $amount
-     * @param string $description
      * @param $createCard
-     * @param string $idClient
      * @return PaymentIntent
      * @throws ApiErrorException
      */
@@ -119,7 +115,7 @@ class StripeCap
 
     private function connect(): void
     {
-        if (!$this->stripe) {
+        if (!$this->stripe instanceof StripeClient) {
             Stripe::setLogger($this->logger);
             $this->stripe = new StripeClient($this->secret_key->getParamValue());
         }

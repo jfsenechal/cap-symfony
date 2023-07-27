@@ -23,8 +23,8 @@ class GenerateCssCommand extends Command
     use PdfDownloaderTrait;
 
     public function __construct(
-        private PdfGenerator $pdfGenerator,
-        private PaymentOrderRepository $paymentOrderRepository
+        private readonly PdfGenerator $pdfGenerator,
+        private readonly PaymentOrderRepository $paymentOrderRepository
     ) {
         parent::__construct();
     }

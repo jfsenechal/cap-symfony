@@ -2,60 +2,41 @@
 
 namespace Cap\Commercio\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * PartItemParams
- *
- * @ORM\Table(name="part_item_params", uniqueConstraints={@ORM\UniqueConstraint(name="part_item_params_id_key", columns={"id"})})
- * @ORM\Entity
  */
+#[ORM\Table(name: 'part_item_params')]
+#[ORM\UniqueConstraint(name: 'part_item_params_id_key', columns: ['id'])]
+#[ORM\Entity]
 class PartItemParams
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="part_item_params_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'part_item_params_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="part_item_id", type="bigint", nullable=false)
-     */
-    private $partItemId;
+    #[ORM\Column(name: 'part_item_id', type: 'bigint', nullable: false)]
+    private ?string $partItemId = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="param_key", type="string", length=250, nullable=false)
-     */
-    private $paramKey;
+    #[ORM\Column(name: 'param_key', type: 'string', length: 250, nullable: false)]
+    private ?string $paramKey = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="param_value", type="string", length=250, nullable=true)
-     */
-    private $paramValue = '';
+    #[ORM\Column(name: 'param_value', type: 'string', length: 250, nullable: true)]
+    private ?string $paramValue = '';
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $insertDate = 'now()';
+    
+    #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $insertDate;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="modify_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $modifyDate = 'now()';
+    
+    #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $modifyDate;
 
     public function getId(): ?string
     {
@@ -98,24 +79,24 @@ class PartItemParams
         return $this;
     }
 
-    public function getInsertDate(): ?\DateTimeInterface
+    public function getInsertDate(): ?DateTimeInterface
     {
         return $this->insertDate;
     }
 
-    public function setInsertDate(\DateTimeInterface $insertDate): self
+    public function setInsertDate(DateTimeInterface $insertDate): self
     {
         $this->insertDate = $insertDate;
 
         return $this;
     }
 
-    public function getModifyDate(): ?\DateTimeInterface
+    public function getModifyDate(): ?DateTimeInterface
     {
         return $this->modifyDate;
     }
 
-    public function setModifyDate(\DateTimeInterface $modifyDate): self
+    public function setModifyDate(DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
 

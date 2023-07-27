@@ -9,6 +9,8 @@
 
 namespace Cap\Commercio\Mailer;
 
+use Mandrill;
+use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class MandrillMail
@@ -20,26 +22,18 @@ class MandrillMail
     public ?string $subject = null;
     public ?string $senderName = null;
     public ?string $senderEmail = null;
-    private array $receivers = array();
+    private array $receivers = [];
     public bool $website = false;
     public bool $track_opens = true;
     public bool $track_clicks = true;
     public bool $important = false;
     private bool $sendable = false;
-    private string $mandrillApiKey;
-    private ?string $subaccount;
-    public array $errors = array();
+    private ?string $subaccount = null;
+    public array $errors = [];
 
-    public function __construct(#[Autowire(env: 'MANDRILL_API')] $api)
+    public function __construct(#[Autowire(env: 'MANDRILL_API')]private readonly string $mandrillApiKey)
     {
-        $this->data = array();
-        if (defined('MANDRILL_SUBACCOUNT')) {
-            $this->subaccount = MANDRILL_SUBACCOUNT;
-        } else {
-            $this->subaccount = null;
-        }
-
-        $this->mandrillApiKey = $api;
+        $this->subaccount = defined('MANDRILL_SUBACCOUNT') ? MANDRILL_SUBACCOUNT : null;
     }
 
     public function addMailDataItem(MandrillMailDataItem $item)
@@ -92,30 +86,9 @@ class MandrillMail
         if ($this->sendable) {
 
             $this->addBccReceiver();
-            $template_content = array();
-            $mandrill = new \Mandrill($this->mandrillApiKey);
-            $message = array(
-                "subject" => $this->subject,
-                "from_email" => $this->senderEmail,
-                "from_name" => $this->senderName,
-                "to" => $this->receivers,
-                "headers" => array('Reply-To' => $this->senderEmail),
-                "important" => $this->important,
-                "track_opens" => $this->track_opens,
-                "track_clicks" => $this->track_clicks,
-                "inline_css" => true,
-                "view_content_clink" => null,
-                "bcc_address" => 'amelie.cap@marche.be',
-                "tracking_domain" => null,
-                "signing_domain" => null,
-                "return_path_domain" => null,
-                "merge" => true,
-                "merge_vars" => $this->setMultiRecipients(),
-                "metadata" => array('website' => $this->website),
-                "recipient_metadata" => null,
-                "attachments" => null,
-                "images" => null,
-            );
+            $template_content = [];
+            $mandrill = new Mandrill($this->mandrillApiKey);
+            $message = ["subject" => $this->subject, "from_email" => $this->senderEmail, "from_name" => $this->senderName, "to" => $this->receivers, "headers" => ['Reply-To' => $this->senderEmail], "important" => $this->important, "track_opens" => $this->track_opens, "track_clicks" => $this->track_clicks, "inline_css" => true, "view_content_clink" => null, "bcc_address" => 'amelie.cap@marche.be', "tracking_domain" => null, "signing_domain" => null, "return_path_domain" => null, "merge" => true, "merge_vars" => $this->setMultiRecipients(), "metadata" => ['website' => $this->website], "recipient_metadata" => null, "attachments" => null, "images" => null];
             $async = false;
             $ip_pool = "Main Pool";
 
@@ -135,13 +108,13 @@ class MandrillMail
 
             if (isset($res[0]['reject_reason']) && $res[0]['reject_reason'] != null) {
                 $this->errors = $res[0]['reject_reason'];
-                throw new \Exception($this->errors);
+                throw new Exception($this->errors);
             } else {
                 $result = true;
             }
 
         } else {
-            throw new \Exception("Required properties are missing");
+            throw new Exception("Required properties are missing");
         }
 
         return $result;
@@ -149,9 +122,9 @@ class MandrillMail
 
     public function getSubAccounts()
     {
-        $mandrill = new \Mandrill($this->mandrillApiKey);
+        $mandrill = new Mandrill($this->mandrillApiKey);
         $list = $mandrill->subaccounts->getList();
-        $toReturn = array();
+        $toReturn = [];
         foreach ($list as $subaccount) {
             $toReturn[] = $subaccount['id'];
         }
@@ -162,7 +135,7 @@ class MandrillMail
 
     public function addReceiver($email, $firstname = "", $lastname = "", $type = "to")
     {
-        $receiver = array();
+        $receiver = [];
         $receiver['email'] = $email;
         $receiver['name'] = $firstname." ".$lastname;
         $receiver['type'] = $type; //Types : to, cc, bcc
@@ -172,7 +145,7 @@ class MandrillMail
 
     public function addBccReceiver()
     {
-        $receiver = array();
+        $receiver = [];
         $receiver['email'] = 'jf@marche.be';
         $receiver['name'] = 'jf copy';
         $receiver['type'] = 'bcc'; //Types : to, cc, bcc
@@ -181,9 +154,9 @@ class MandrillMail
 
     private function setMultiRecipients()
     {
-        $recipients = array();
+        $recipients = [];
         foreach ($this->receivers as $r) {
-            $rec = array();
+            $rec = [];
             $rec['rcpt'] = $r['email'];
             $this->addMailDataItem(new MandrillMailDataItem("RECEIVER", $r['email']));
             $rec['vars'] = $this->data;

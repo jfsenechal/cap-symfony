@@ -2,81 +2,49 @@
 
 namespace Cap\Commercio\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * PaymentOrderCommercant
- *
- * @ORM\Table(name="payment_order_commercant")
- * @ORM\Entity
  */
+#[ORM\Table(name: 'payment_order_commercant')]
+#[ORM\Entity]
 class PaymentOrderCommercant
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="payment_order_commercant_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'payment_order_commercant_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="uuid", type="guid", nullable=false, options={"default"="uuid_generate_v4()"})
-     */
-    private $uuid = 'uuid_generate_v4()';
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    private string $uuid = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="firstname", type="text", nullable=false)
-     */
-    private $firstname = '';
+    #[ORM\Column(name: 'firstname', type: 'text', nullable: false)]
+    private string $firstname = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="lastname", type="text", nullable=false)
-     */
-    private $lastname = '';
+    #[ORM\Column(name: 'lastname', type: 'text', nullable: false)]
+    private string $lastname = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="text", nullable=false)
-     */
-    private $email;
+    #[ORM\Column(name: 'email', type: 'text', nullable: false)]
+    private ?string $email = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="company_name", type="text", nullable=true)
-     */
-    private $companyName;
+    #[ORM\Column(name: 'company_name', type: 'text', nullable: true)]
+    private ?string $companyName = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="company_vat", type="text", nullable=true)
-     */
-    private $companyVat;
+    #[ORM\Column(name: 'company_vat', type: 'text', nullable: true)]
+    private ?string $companyVat = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $insertDate = 'now()';
+    
+    #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $insertDate;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="modify_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $modifyDate = 'now()';
+    
+    #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $modifyDate;
 
     public function getId(): ?string
     {
@@ -155,24 +123,24 @@ class PaymentOrderCommercant
         return $this;
     }
 
-    public function getInsertDate(): ?\DateTimeInterface
+    public function getInsertDate(): ?DateTimeInterface
     {
         return $this->insertDate;
     }
 
-    public function setInsertDate(\DateTimeInterface $insertDate): self
+    public function setInsertDate(DateTimeInterface $insertDate): self
     {
         $this->insertDate = $insertDate;
 
         return $this;
     }
 
-    public function getModifyDate(): ?\DateTimeInterface
+    public function getModifyDate(): ?DateTimeInterface
     {
         return $this->modifyDate;
     }
 
-    public function setModifyDate(\DateTimeInterface $modifyDate): self
+    public function setModifyDate(DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
 

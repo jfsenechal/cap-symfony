@@ -24,12 +24,7 @@ class Md5VerySecureHasher implements PasswordHasherInterface
         if ('' === $plainPassword || $this->isPasswordTooLong($plainPassword)) {
             return false;
         }
-
-        if ($hashedPassword === $this->hash($plainPassword)) {
-            return true;
-        }
-
-        return false;
+        return $hashedPassword === $this->hash($plainPassword);
     }
 
     public function needsRehash(string $hashedPassword): bool

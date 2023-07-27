@@ -2,6 +2,7 @@
 
 namespace Cap\Commercio\Service;
 
+use DateTime;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Repository\CommercantGalleryRepository;
 use Cap\Commercio\Repository\CommercioCommercantHoursRepository;
@@ -9,8 +10,8 @@ use Cap\Commercio\Repository\CommercioCommercantHoursRepository;
 class ImagesRepository
 {
     public function __construct(
-        private CommercantGalleryRepository $commercantGalleryRepository,
-        private CommercioCommercantHoursRepository $commercioCommercantHoursRepository,
+        private readonly CommercantGalleryRepository $commercantGalleryRepository,
+        private readonly CommercioCommercantHoursRepository $commercioCommercantHoursRepository,
     ) {
     }
 
@@ -28,7 +29,7 @@ class ImagesRepository
             $images[] = $img;
         }
         $commercant->images = $images;
-        if (count($images) > 0) {
+        if ($images !== []) {
             if (!$commercant->getProfileMediaPath()) {
                 $commercant->setProfileMediaPath($images[0]);
             }
@@ -38,16 +39,16 @@ class ImagesRepository
 
         foreach ($this->commercioCommercantHoursRepository->findByCommercerant($commercant) as $hour) {
             $hour->setCommercioCommercant(null);//bug serialize
-            if ($hour->getMorningStart() instanceof \DateTime) {
+            if ($hour->getMorningStart() instanceof DateTime) {
                 $hour->morning_start_short = $hour->getMorningStart()->format('H:i');
             }
-            if ($hour->getMorningEnd() instanceof \DateTime) {
+            if ($hour->getMorningEnd() instanceof DateTime) {
                 $hour->morning_end_short = $hour->getMorningEnd()->format('H:i');
             }
-            if ($hour->getNoonStart() instanceof \DateTime) {
+            if ($hour->getNoonStart() instanceof DateTime) {
                 $hour->noon_start_short = $hour->getNoonStart()->format('H:i');
             }
-            if ($hour->getNoonEnd() instanceof \DateTime) {
+            if ($hour->getNoonEnd() instanceof DateTime) {
                 $hour->noon_end_short = $hour->getNoonEnd()->format('H:i');
             }
             $commercant->hours[] = $hour;

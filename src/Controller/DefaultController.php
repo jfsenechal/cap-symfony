@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends AbstractController
 {
     public function __construct(
-        private SettingRepository $settingRepository,
+        private readonly SettingRepository $settingRepository,
     ) {
     }
 

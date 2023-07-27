@@ -2,53 +2,38 @@
 
 namespace Cap\Commercio\Entity;
 
+use Stringable;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * BlogTag
- *
- * @ORM\Table(name="blog_tag")
- * @ORM\Entity
  */
-class BlogTag
+#[ORM\Table(name: 'blog_tag')]
+#[ORM\Entity]
+class BlogTag implements Stringable
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="blog_tag_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'blog_tag_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="uuid", type="guid", nullable=false, options={"default"="uuid_generate_v4()"})
-     */
-    private $uuid = 'uuid_generate_v4()';
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    private string $uuid = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=60, nullable=false)
-     */
-    private $name = '';
+    #[ORM\Column(name: 'name', type: 'string', length: 60, nullable: false)]
+    private string $name = '';
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $insertDate = 'now()';
+    
+    #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $insertDate;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="modify_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $modifyDate = 'now()';
+    
+    #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $modifyDate;
 
     public function __toString(): string
     {
@@ -84,24 +69,24 @@ class BlogTag
         return $this;
     }
 
-    public function getInsertDate(): ?\DateTimeInterface
+    public function getInsertDate(): ?DateTimeInterface
     {
         return $this->insertDate;
     }
 
-    public function setInsertDate(\DateTimeInterface $insertDate): self
+    public function setInsertDate(DateTimeInterface $insertDate): self
     {
         $this->insertDate = $insertDate;
 
         return $this;
     }
 
-    public function getModifyDate(): ?\DateTimeInterface
+    public function getModifyDate(): ?DateTimeInterface
     {
         return $this->modifyDate;
     }
 
-    public function setModifyDate(\DateTimeInterface $modifyDate): self
+    public function setModifyDate(DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
 

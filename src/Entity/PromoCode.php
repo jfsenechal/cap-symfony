@@ -2,98 +2,59 @@
 
 namespace Cap\Commercio\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * PromoCode
- *
- * @ORM\Table(name="promo_code", uniqueConstraints={@ORM\UniqueConstraint(name="promo_code_code_key", columns={"code"})}, indexes={@ORM\Index(name="IDX_3D8C939EC7313306", columns={"promo_code_status_id"})})
- * @ORM\Entity
  */
+#[ORM\Table(name: 'promo_code')]
+#[ORM\Index(name: 'IDX_3D8C939EC7313306', columns: ['promo_code_status_id'])]
+#[ORM\UniqueConstraint(name: 'promo_code_code_key', columns: ['code'])]
+#[ORM\Entity]
 class PromoCode
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="promo_code_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'promo_code_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="uuid", type="guid", nullable=false, options={"default"="uuid_generate_v4()"})
-     */
-    private $uuid = 'uuid_generate_v4()';
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    private string $uuid = '';
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="emission_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
+    
+    #[ORM\Column(name: 'emission_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private $emissionDate = 'now()';
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="expiration_date", type="datetime", nullable=false)
-     */
-    private $expirationDate;
+    #[ORM\Column(name: 'expiration_date', type: 'datetime', nullable: false)]
+    private ?DateTimeInterface $expirationDate = null;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="reduction", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $reduction;
+    #[ORM\Column(name: 'reduction', type: 'float', precision: 10, scale: 0, nullable: false)]
+    private ?float $reduction = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_percent", type="boolean", nullable=false)
-     */
-    private $isPercent;
+    #[ORM\Column(name: 'is_percent', type: 'boolean', nullable: false)]
+    private ?bool $isPercent = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="archived", type="boolean", nullable=false)
-     */
-    private $archived = false;
+    #[ORM\Column(name: 'archived', type: 'boolean', nullable: false)]
+    private bool $archived = false;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $insertDate = 'now()';
+    
+    #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $insertDate;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="modify_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $modifyDate = 'now()';
+    
+    #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $modifyDate;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="code", type="string", length=30, nullable=false)
-     */
-    private $code = '';
+    #[ORM\Column(name: 'code', type: 'string', length: 30, nullable: false)]
+    private string $code = '';
 
-    /**
-     * @var \PromoCodeStatus
-     *
-     * @ORM\ManyToOne(targetEntity="PromoCodeStatus")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="promo_code_status_id", referencedColumnName="id")
-     * })
-     */
-    private $promoCodeStatus;
+    #[ORM\JoinColumn(name: 'promo_code_status_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'PromoCodeStatus')]
+    private ?PromoCodeStatus $promoCodeStatus = null;
 
     public function getId(): ?string
     {
@@ -112,24 +73,24 @@ class PromoCode
         return $this;
     }
 
-    public function getEmissionDate(): ?\DateTimeInterface
+    public function getEmissionDate(): ?DateTimeInterface
     {
         return $this->emissionDate;
     }
 
-    public function setEmissionDate(\DateTimeInterface $emissionDate): self
+    public function setEmissionDate(DateTimeInterface $emissionDate): self
     {
         $this->emissionDate = $emissionDate;
 
         return $this;
     }
 
-    public function getExpirationDate(): ?\DateTimeInterface
+    public function getExpirationDate(): ?DateTimeInterface
     {
         return $this->expirationDate;
     }
 
-    public function setExpirationDate(\DateTimeInterface $expirationDate): self
+    public function setExpirationDate(DateTimeInterface $expirationDate): self
     {
         $this->expirationDate = $expirationDate;
 
@@ -172,24 +133,24 @@ class PromoCode
         return $this;
     }
 
-    public function getInsertDate(): ?\DateTimeInterface
+    public function getInsertDate(): ?DateTimeInterface
     {
         return $this->insertDate;
     }
 
-    public function setInsertDate(\DateTimeInterface $insertDate): self
+    public function setInsertDate(DateTimeInterface $insertDate): self
     {
         $this->insertDate = $insertDate;
 
         return $this;
     }
 
-    public function getModifyDate(): ?\DateTimeInterface
+    public function getModifyDate(): ?DateTimeInterface
     {
         return $this->modifyDate;
     }
 
-    public function setModifyDate(\DateTimeInterface $modifyDate): self
+    public function setModifyDate(DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
 

@@ -2,6 +2,8 @@
 
 namespace Cap\Commercio\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
@@ -10,78 +12,48 @@ use Symfony\Component\Uid\Uuid;
 
 /**
  * CommercioCommercantGallery
- *
- * @ORM\Table(name="commercio_commercant_gallery", uniqueConstraints={@ORM\UniqueConstraint(name="commercio_commercant_gallery_uuid_key", columns={"uuid"})}, indexes={@ORM\Index(name="IDX_5497991579D40486", columns={"commercio_commercant_id"})})
- * @ORM\Entity
  */
 #[ApiResource(operations: [
     new Get(),
     new GetCollection(),
 ])
 ]
+#[ORM\Table(name: 'commercio_commercant_gallery')]
+#[ORM\Index(name: 'IDX_5497991579D40486', columns: ['commercio_commercant_id'])]
+#[ORM\UniqueConstraint(name: 'commercio_commercant_gallery_uuid_key', columns: ['uuid'])]
+#[ORM\Entity]
 class CommercioCommercantGallery
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="commercio_commercant_gallery_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'commercio_commercant_gallery_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="uuid", type="guid", nullable=false, options={"default"="uuid_generate_v4()"})
-     */
-    private $uuid;
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    private ?string $uuid = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="media_path", type="text", nullable=false)
-     */
-    private $mediaPath;
+    #[ORM\Column(name: 'media_path', type: 'text', nullable: false)]
+    private ?string $mediaPath = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $insertDate = 'now()';
+    
+    #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $insertDate;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="modify_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $modifyDate = 'now()';
+    
+    #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $modifyDate;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=500, nullable=false)
-     */
-    private $name = '';
+    #[ORM\Column(name: 'name', type: 'string', length: 500, nullable: false)]
+    private string $name = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="alt", type="text", nullable=false)
-     */
-    private $alt = '';
+    #[ORM\Column(name: 'alt', type: 'text', nullable: false)]
+    private string $alt = '';
 
-    /**
-     * @var CommercioCommercant
-     *
-     * @ORM\ManyToOne(targetEntity="CommercioCommercant")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="commercio_commercant_id", referencedColumnName="id")
-     * })
-     */
-    private $commercioCommercant;
+    #[ORM\JoinColumn(name: 'commercio_commercant_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'CommercioCommercant')]
+    private ?CommercioCommercant $commercioCommercant = null;
 
     public function getId(): ?string
     {
@@ -112,24 +84,24 @@ class CommercioCommercantGallery
         return $this;
     }
 
-    public function getInsertDate(): ?\DateTimeInterface
+    public function getInsertDate(): ?DateTimeInterface
     {
         return $this->insertDate;
     }
 
-    public function setInsertDate(\DateTimeInterface $insertDate): self
+    public function setInsertDate(DateTimeInterface $insertDate): self
     {
         $this->insertDate = $insertDate;
 
         return $this;
     }
 
-    public function getModifyDate(): ?\DateTimeInterface
+    public function getModifyDate(): ?DateTimeInterface
     {
         return $this->modifyDate;
     }
 
-    public function setModifyDate(\DateTimeInterface $modifyDate): self
+    public function setModifyDate(DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
 

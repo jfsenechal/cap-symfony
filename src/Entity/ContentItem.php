@@ -2,63 +2,42 @@
 
 namespace Cap\Commercio\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ContentItem
- *
- * @ORM\Table(name="content_item", indexes={@ORM\Index(name="IDX_D279C8DB84A0A3ED", columns={"content_id"})})
- * @ORM\Entity
  */
+#[ORM\Table(name: 'content_item')]
+#[ORM\Index(name: 'IDX_D279C8DB84A0A3ED', columns: ['content_id'])]
+#[ORM\Entity]
 class ContentItem
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="content_item_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'content_item_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="tag_type", type="string", length=50, nullable=false)
-     */
-    private $tagType = '';
+    #[ORM\Column(name: 'tag_type', type: 'string', length: 50, nullable: false)]
+    private string $tagType = '';
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="order_index", type="bigint", nullable=false, options={"default"="1"})
-     */
-    private $orderIndex = '1';
+    #[ORM\Column(name: 'order_index', type: 'bigint', nullable: false, options: ['default' => '1'])]
+    private string $orderIndex = '1';
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $insertDate = 'now()';
+    
+    #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $insertDate;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="modify_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $modifyDate = 'now()';
+    
+    #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $modifyDate;
 
-    /**
-     * @var \Content
-     *
-     * @ORM\ManyToOne(targetEntity="Content")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="content_id", referencedColumnName="id")
-     * })
-     */
-    private $content;
+    #[ORM\JoinColumn(name: 'content_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'Content')]
+    private ?Content $content = null;
 
     public function getId(): ?string
     {
@@ -89,24 +68,24 @@ class ContentItem
         return $this;
     }
 
-    public function getInsertDate(): ?\DateTimeInterface
+    public function getInsertDate(): ?DateTimeInterface
     {
         return $this->insertDate;
     }
 
-    public function setInsertDate(\DateTimeInterface $insertDate): self
+    public function setInsertDate(DateTimeInterface $insertDate): self
     {
         $this->insertDate = $insertDate;
 
         return $this;
     }
 
-    public function getModifyDate(): ?\DateTimeInterface
+    public function getModifyDate(): ?DateTimeInterface
     {
         return $this->modifyDate;
     }
 
-    public function setModifyDate(\DateTimeInterface $modifyDate): self
+    public function setModifyDate(DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
 

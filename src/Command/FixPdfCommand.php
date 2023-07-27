@@ -30,10 +30,10 @@ class FixPdfCommand extends Command
     private bool $flush = false;
 
     public function __construct(
-        private PaymentOrderRepository $paymentOrderRepository,
-        private PaymentBillRepository $paymentBillRepository,
-        private PdfGenerator $pdfGenerator,
-        private ParameterBagInterface $parameterBag
+        private readonly PaymentOrderRepository $paymentOrderRepository,
+        private readonly PaymentBillRepository $paymentBillRepository,
+        private readonly PdfGenerator $pdfGenerator,
+        private readonly ParameterBagInterface $parameterBag
     ) {
         parent::__construct();
     }
@@ -156,7 +156,7 @@ class FixPdfCommand extends Command
 
     private function getAbsolutePathPdf(PaymentBill|PaymentOrder $object): string
     {
-        list($name) = explode('?', $object->getPdfPath());
+        [$name] = explode('?', $object->getPdfPath());
 
         return $this->cap_path.$name;
     }

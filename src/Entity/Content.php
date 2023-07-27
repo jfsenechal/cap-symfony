@@ -2,70 +2,46 @@
 
 namespace Cap\Commercio\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Content
- *
- * @ORM\Table(name="content", uniqueConstraints={@ORM\UniqueConstraint(name="content_url_key", columns={"url"})}, indexes={@ORM\Index(name="IDX_FEC530A9C4663E4", columns={"page_id"})})
- * @ORM\Entity
  */
+#[ORM\Table(name: 'content')]
+#[ORM\Index(name: 'IDX_FEC530A9C4663E4', columns: ['page_id'])]
+#[ORM\UniqueConstraint(name: 'content_url_key', columns: ['url'])]
+#[ORM\Entity]
 class Content
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="content_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'content_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="url", type="string", nullable=false)
-     */
-    private $url = '';
+    #[ORM\Column(name: 'url', type: 'string', nullable: false)]
+    private string $url = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="language", type="string", length=10, nullable=false, options={"default"="FR"})
-     */
-    private $language = 'FR';
+    #[ORM\Column(name: 'language', type: 'string', length: 10, nullable: false, options: ['default' => 'FR'])]
+    private string $language = 'FR';
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $insertDate = 'now()';
+    
+    #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $insertDate;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="modify_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $modifyDate = 'now()';
+    
+    #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $modifyDate;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=200, nullable=false)
-     */
-    private $name = '';
+    #[ORM\Column(name: 'name', type: 'string', length: 200, nullable: false)]
+    private string $name = '';
 
-    /**
-     * @var \Page
-     *
-     * @ORM\ManyToOne(targetEntity="Page")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="page_id", referencedColumnName="id")
-     * })
-     */
-    private $page;
+    #[ORM\JoinColumn(name: 'page_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'Page')]
+    private ?Page $page = null;
 
     public function getId(): ?string
     {
@@ -96,24 +72,24 @@ class Content
         return $this;
     }
 
-    public function getInsertDate(): ?\DateTimeInterface
+    public function getInsertDate(): ?DateTimeInterface
     {
         return $this->insertDate;
     }
 
-    public function setInsertDate(\DateTimeInterface $insertDate): self
+    public function setInsertDate(DateTimeInterface $insertDate): self
     {
         $this->insertDate = $insertDate;
 
         return $this;
     }
 
-    public function getModifyDate(): ?\DateTimeInterface
+    public function getModifyDate(): ?DateTimeInterface
     {
         return $this->modifyDate;
     }
 
-    public function setModifyDate(\DateTimeInterface $modifyDate): self
+    public function setModifyDate(DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
 

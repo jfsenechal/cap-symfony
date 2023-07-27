@@ -2,154 +2,85 @@
 
 namespace Cap\Commercio\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * MapPins
- *
- * @ORM\Table(name="map_pins", uniqueConstraints={@ORM\UniqueConstraint(name="map_pins_uuid_key", columns={"uuid"})}, indexes={@ORM\Index(name="IDX_AC274E15F8D02414", columns={"pin_type_id"})})
- * @ORM\Entity
  */
+#[ORM\Table(name: 'map_pins')]
+#[ORM\Index(name: 'IDX_AC274E15F8D02414', columns: ['pin_type_id'])]
+#[ORM\UniqueConstraint(name: 'map_pins_uuid_key', columns: ['uuid'])]
+#[ORM\Entity]
 class MapPins
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="map_pins_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'map_pins_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="uuid", type="guid", nullable=false, options={"default"="uuid_generate_v4()"})
-     */
-    private $uuid = 'uuid_generate_v4()';
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    private string $uuid = '';
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="longitude", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $longitude;
+    #[ORM\Column(name: 'longitude', type: 'float', precision: 10, scale: 0, nullable: false)]
+    private ?float $longitude = null;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="latitude", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $latitude;
+    #[ORM\Column(name: 'latitude', type: 'float', precision: 10, scale: 0, nullable: false)]
+    private ?float $latitude = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="title", type="text", nullable=true)
-     */
-    private $title;
+    #[ORM\Column(name: 'title', type: 'text', nullable: true)]
+    private ?string $title = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="description", type="text", nullable=true)
-     */
-    private $description;
+    #[ORM\Column(name: 'description', type: 'text', nullable: true)]
+    private ?string $description = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $insertDate = 'now()';
+    
+    #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $insertDate;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="modify_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $modifyDate = 'now()';
+    
+    #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $modifyDate;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(name="commercio_commercant_id", type="bigint", nullable=true)
      */
-    private $commercioCommercantId;
+    #[ORM\Column(name: 'commercio_commercant_id', type: 'bigint', nullable: true)]
+    private ?string $commercioCommercantId = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="street1", type="text", nullable=true)
-     */
-    private $street1 = '';
+    #[ORM\Column(name: 'street1', type: 'text', nullable: true)]
+    private ?string $street1 = '';
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="zipcode", type="text", nullable=true)
-     */
-    private $zipcode = '';
+    #[ORM\Column(name: 'zipcode', type: 'text', nullable: true)]
+    private ?string $zipcode = '';
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="city", type="text", nullable=true)
-     */
-    private $city = '';
+    #[ORM\Column(name: 'city', type: 'text', nullable: true)]
+    private ?string $city = '';
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="sectors", type="string", nullable=true)
-     */
-    private $sectors;
+    #[ORM\Column(name: 'sectors', type: 'string', nullable: true)]
+    private ?string $sectors = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="sectors_name", type="string", nullable=true)
-     */
-    private $sectorsName;
+    #[ORM\Column(name: 'sectors_name', type: 'string', nullable: true)]
+    private ?string $sectorsName = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="slugname", type="text", nullable=true)
-     */
-    private $slugname;
+    #[ORM\Column(name: 'slugname', type: 'text', nullable: true)]
+    private ?string $slugname = null;
 
-    /**
-     * @var bool|null
-     *
-     * @ORM\Column(name="pmr", type="boolean", nullable=true)
-     */
-    private $pmr = false;
+    #[ORM\Column(name: 'pmr', type: 'boolean', nullable: true)]
+    private ?bool $pmr = false;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="telephone", type="text", nullable=true)
-     */
-    private $telephone = '';
+    #[ORM\Column(name: 'telephone', type: 'text', nullable: true)]
+    private ?string $telephone = '';
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="horaires", type="text", nullable=true)
-     */
-    private $horaires;
+    #[ORM\Column(name: 'horaires', type: 'text', nullable: true)]
+    private ?string $horaires = null;
 
-    /**
-     * @var \MapPinsType
-     *
-     * @ORM\ManyToOne(targetEntity="MapPinsType")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="pin_type_id", referencedColumnName="id")
-     * })
-     */
-    private $pinType;
+    #[ORM\JoinColumn(name: 'pin_type_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'MapPinsType')]
+    private ?MapPinsType $pinType = null;
 
     public function getId(): ?string
     {
@@ -216,24 +147,24 @@ class MapPins
         return $this;
     }
 
-    public function getInsertDate(): ?\DateTimeInterface
+    public function getInsertDate(): ?DateTimeInterface
     {
         return $this->insertDate;
     }
 
-    public function setInsertDate(\DateTimeInterface $insertDate): self
+    public function setInsertDate(DateTimeInterface $insertDate): self
     {
         $this->insertDate = $insertDate;
 
         return $this;
     }
 
-    public function getModifyDate(): ?\DateTimeInterface
+    public function getModifyDate(): ?DateTimeInterface
     {
         return $this->modifyDate;
     }
 
-    public function setModifyDate(\DateTimeInterface $modifyDate): self
+    public function setModifyDate(DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
 

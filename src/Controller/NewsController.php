@@ -16,16 +16,15 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class NewsController extends AbstractController
 {
     public function __construct(
-        private NewsRepository $newsRepository,
+        private readonly NewsRepository $newsRepository,
     )
     {
     }
 
     #[Route('/', name: 'cap_news_index', methods: ['GET', 'POST'])]
-    public function index(Request $request): Response
+    public function index() : Response
     {
         $news = $this->newsRepository->findAllOrdered();
-
         return $this->render('@CapCommercio/news/index.html.twig', [
             'news' => $news,
         ]);

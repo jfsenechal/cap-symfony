@@ -2,6 +2,8 @@
 
 namespace Cap\Commercio\Controller;
 
+use DateTime;
+use Exception;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Entity\CommercioCommercantGallery;
 use Cap\Commercio\Form\ImageDropZoneType;
@@ -20,7 +22,7 @@ use Symfony\Component\Uid\Uuid;
 class GalleryController extends AbstractController
 {
     public function __construct(
-        private CommercantGalleryRepository $galleryRepository,
+        private readonly CommercantGalleryRepository $galleryRepository,
     ) {
     }
 
@@ -75,8 +77,8 @@ class GalleryController extends AbstractController
     private function treatmentFile(UploadedFile $file, CommercioCommercant $commercant): void
     {
         $image = new CommercioCommercantGallery();
-        $image->setInsertDate(new \DateTime());
-        $image->setModifyDate(new \DateTime());
+        $image->setInsertDate(new DateTime());
+        $image->setModifyDate(new DateTime());
         $image->setUuid(Uuid::v4());
         $image->setCommercioCommercant($commercant);
 
@@ -90,7 +92,7 @@ class GalleryController extends AbstractController
                 $pathToCopy,
                 $fileName
             );
-        } catch (FileException|\Exception $exception) {
+        } catch (FileException|Exception $exception) {
             $this->addFlash('danger', 'Erreur upload image: '.$exception->getMessage());
 
             return;

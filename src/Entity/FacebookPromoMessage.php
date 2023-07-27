@@ -2,107 +2,64 @@
 
 namespace Cap\Commercio\Entity;
 
+use DateTimeInterface;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * FacebookPromoMessage
- *
- * @ORM\Table(name="facebook_promo_message", uniqueConstraints={@ORM\UniqueConstraint(name="facebook_promo_message_uuid_key", columns={"uuid"})}, indexes={@ORM\Index(name="IDX_D6A648EA77FBEAF", columns={"blog_post_id"}), @ORM\Index(name="IDX_D6A648E83FA6DD0", columns={"commercant_id"}), @ORM\Index(name="IDX_D6A648E4BD166F5", columns={"commercio_administrator_id"}), @ORM\Index(name="IDX_D6A648E71F7E88B", columns={"event_id"})})
- * @ORM\Entity
  */
+#[ORM\Table(name: 'facebook_promo_message')]
+#[ORM\Index(name: 'IDX_D6A648EA77FBEAF', columns: ['blog_post_id'])]
+#[ORM\Index(name: 'IDX_D6A648E83FA6DD0', columns: ['commercant_id'])]
+#[ORM\Index(name: 'IDX_D6A648E4BD166F5', columns: ['commercio_administrator_id'])]
+#[ORM\Index(name: 'IDX_D6A648E71F7E88B', columns: ['event_id'])]
+#[ORM\UniqueConstraint(name: 'facebook_promo_message_uuid_key', columns: ['uuid'])]
+#[ORM\Entity]
 class FacebookPromoMessage
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="facebook_promo_message_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'facebook_promo_message_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="uuid", type="guid", nullable=false, options={"default"="uuid_generate_v4()"})
-     */
-    private $uuid = 'uuid_generate_v4()';
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    private string $uuid = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="message_text", type="text", nullable=false)
-     */
-    private $messageText;
+    #[ORM\Column(name: 'message_text', type: 'text', nullable: false)]
+    private ?string $messageText = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="post_date", type="datetime", nullable=false)
-     */
-    private $postDate;
+    #[ORM\Column(name: 'post_date', type: 'datetime', nullable: false)]
+    private ?DateTimeInterface $postDate = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_posted", type="boolean", nullable=false)
-     */
-    private $isPosted = false;
+    #[ORM\Column(name: 'is_posted', type: 'boolean', nullable: false)]
+    private bool $isPosted = false;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $insertDate = 'now()';
+    
+    #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $insertDate;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="modify_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $modifyDate = 'now()';
+    
+    #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $modifyDate;
 
-    /**
-     * @var \BlogPost
-     *
-     * @ORM\ManyToOne(targetEntity="BlogPost")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="blog_post_id", referencedColumnName="id")
-     * })
-     */
-    private $blogPost;
+    #[ORM\JoinColumn(name: 'blog_post_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'BlogPost')]
+    private ?BlogPost $blogPost = null;
 
-    /**
-     * @var \CommercioCommercant
-     *
-     * @ORM\ManyToOne(targetEntity="CommercioCommercant")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="commercant_id", referencedColumnName="id")
-     * })
-     */
-    private $commercant;
+    #[ORM\JoinColumn(name: 'commercant_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'CommercioCommercant')]
+    private ?CommercioCommercant $commercant = null;
 
-    /**
-     * @var \CommercioAdministrator
-     *
-     * @ORM\ManyToOne(targetEntity="CommercioAdministrator")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="commercio_administrator_id", referencedColumnName="id")
-     * })
-     */
-    private $commercioAdministrator;
+    #[ORM\JoinColumn(name: 'commercio_administrator_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'CommercioAdministrator')]
+    private ?CommercioAdministrator $commercioAdministrator = null;
 
-    /**
-     * @var \EventEvent
-     *
-     * @ORM\ManyToOne(targetEntity="EventEvent")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="event_id", referencedColumnName="id")
-     * })
-     */
-    private $event;
+    #[ORM\JoinColumn(name: 'event_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'EventEvent')]
+    private ?EventEvent $event = null;
 
     public function getId(): ?string
     {
@@ -133,12 +90,12 @@ class FacebookPromoMessage
         return $this;
     }
 
-    public function getPostDate(): ?\DateTimeInterface
+    public function getPostDate(): ?DateTimeInterface
     {
         return $this->postDate;
     }
 
-    public function setPostDate(\DateTimeInterface $postDate): self
+    public function setPostDate(DateTimeInterface $postDate): self
     {
         $this->postDate = $postDate;
 
@@ -157,24 +114,24 @@ class FacebookPromoMessage
         return $this;
     }
 
-    public function getInsertDate(): ?\DateTimeInterface
+    public function getInsertDate(): ?DateTimeInterface
     {
         return $this->insertDate;
     }
 
-    public function setInsertDate(\DateTimeInterface $insertDate): self
+    public function setInsertDate(DateTimeInterface $insertDate): self
     {
         $this->insertDate = $insertDate;
 
         return $this;
     }
 
-    public function getModifyDate(): ?\DateTimeInterface
+    public function getModifyDate(): ?DateTimeInterface
     {
         return $this->modifyDate;
     }
 
-    public function setModifyDate(\DateTimeInterface $modifyDate): self
+    public function setModifyDate(DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
 

@@ -2,6 +2,8 @@
 
 namespace Cap\Commercio\Controller;
 
+use Exception;
+use DateTime;
 use Cap\Commercio\Entity\PaymentBill;
 use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
@@ -17,9 +19,9 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class CheckupController extends AbstractController
 {
     public function __construct(
-        private PaymentOrderRepository $paymentOrderRepository,
-        private PaymentBillRepository $paymentBillRepository,
-        private CommercioCommercantRepository $commercantRepository
+        private readonly PaymentOrderRepository $paymentOrderRepository,
+        private readonly PaymentBillRepository $paymentBillRepository,
+        private readonly CommercioCommercantRepository $commercantRepository
     ) {
     }
 
@@ -42,7 +44,7 @@ class CheckupController extends AbstractController
         foreach ($orders as $order) {
             try {
                 $this->paymentBillRepository->findOneByOrder($order);
-            } catch (\Exception $exception) {
+            } catch (Exception) {
                 $multiplePayments[] = $order;
             }
         }
@@ -78,7 +80,7 @@ class CheckupController extends AbstractController
     #[Route(path: '/expired', name: 'cap_checkup_expired', methods: ['GET', 'POST'])]
     public function expired(): Response
     {
-        $today = new \DateTime('-1 year');
+        $today = new DateTime('-1 year');
         $commercants = $this->commercantRepository->findExpired($today);
 
         return $this->render(
@@ -122,9 +124,9 @@ class CheckupController extends AbstractController
         );
     }
 
-    private function getAbsolutePathPdf(PaymentBill|PaymentOrder $object)
+    private function getAbsolutePathPdf(PaymentBill|PaymentOrder $object): string
     {
-        list($name) = explode('?', $object->getPdfPath());
+        [$name] = explode('?', $object->getPdfPath());
         $path = $this->getParameter('CAP_PATH');
 
         return $path.$name;

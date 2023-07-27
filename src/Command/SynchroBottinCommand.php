@@ -2,6 +2,7 @@
 
 namespace Cap\Commercio\Command;
 
+use Cap\Commercio\Entity\CommercioBottin;
 use Cap\Commercio\Repository\CommercioBottinRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -18,8 +19,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class SynchroBottinCommand extends Command
 {
     public function __construct(
-        private CommercioCommercantRepository $commercantRepository,
-        private CommercioBottinRepository $commercioBottinRepository
+        private readonly CommercioCommercantRepository $commercantRepository,
+        private readonly CommercioBottinRepository $commercioBottinRepository
     ) {
         parent::__construct();
     }
@@ -37,7 +38,7 @@ class SynchroBottinCommand extends Command
         $fix = $input->getOption('fix');
 
         foreach ($this->commercantRepository->findAllOrdered() as $commercant) {
-            if (!$this->commercioBottinRepository->findByCommercerant($commercant)) {
+            if (!$this->commercioBottinRepository->findByCommercerant($commercant) instanceof CommercioBottin) {
                 $io->writeln($commercant->getLegalEntity());
                 if ($fix) {
                     $this->commercantRepository->remove($commercant);

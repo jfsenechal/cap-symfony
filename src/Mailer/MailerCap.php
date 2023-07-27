@@ -2,6 +2,13 @@
 
 namespace Cap\Commercio\Mailer;
 
+use DateTimeInterface;
+use Mandrill;
+use Mandrill_Templates;
+use Mandrill_Messages;
+use Mandrill_Subaccounts;
+use Mandrill_Users;
+use Mandrill_Senders;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -9,11 +16,11 @@ use Symfony\Component\Mime\Email;
 
 class MailerCap
 {
-    private string $senderEmail;
-    private string $api;
-    private string $senderName;
+    private string $senderEmail = 'info@capsurmarche.com';
+    private readonly string $api;
+    private string $senderName = 'Cap sur Marche';
 
-    public function __construct(private ParameterBagInterface $parameterBag, private MandrillMail $mandrillMail)
+    public function __construct(private readonly ParameterBagInterface $parameterBag, private readonly MandrillMail $mandrillMail)
     {
         define('PREFIX', 'https://cap.marche.be'); //url site
         define('PREFIX_RESOURCES', ''); // vide
@@ -22,13 +29,9 @@ class MailerCap
         define('MANDRILL_SUBACCOUNT', 'commercio');
 
         $this->api = $this->parameterBag->get('MANDRILL_API');
-        $this->senderEmail = 'info@capsurmarche.com';
-        $this->senderName = 'Cap sur Marche';
     }
 
     /**
-     * @param CommercioCommercant $commercant
-     * @param string $env
      * @return void
      * @throws Exception
      */
@@ -53,11 +56,7 @@ class MailerCap
                 );
             }
         }
-        if ($dateTime) {
-            $date = $dateTime->format("d/m/Y");
-        } else {
-            $date = date('d/m/Y');
-        }
+        $date = $dateTime instanceof DateTimeInterface ? $dateTime->format("d/m/Y") : date('d/m/Y');
 
         $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("PREFIX", PREFIX.PREFIX_RESOURCES));
         $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("TEMPLATEPATH", $templatePath));
@@ -96,7 +95,7 @@ class MailerCap
         $this->mandrillMail->website = PREFIX.PREFIX_RESOURCES;
         try {
             $this->mandrillMail->sendMe();
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             dump($exception);
             throw $exception;
         }
@@ -111,9 +110,9 @@ class MailerCap
         $mail->from('jf@marche.be');
         $mail->subject('Coucou');
 
-        $mailchimp = new \Mandrill($this->api);
-        $template = new \Mandrill_Templates($mailchimp);
-        $message = new \Mandrill_Messages($mailchimp);
+        $mailchimp = new Mandrill($this->api);
+        $template = new Mandrill_Templates($mailchimp);
+        $message = new Mandrill_Messages($mailchimp);
         // $template->render();
         //  $message->send();
 
@@ -122,32 +121,32 @@ class MailerCap
 
     public function getTemplates(): array
     {
-        $mailchimp = new \Mandrill($this->api);
-        $template = new \Mandrill_Templates($mailchimp);
+        $mailchimp = new Mandrill($this->api);
+        $template = new Mandrill_Templates($mailchimp);
 
         return $template->getList('commercio');
     }
 
     public function templateShow(string $name): array
     {
-        $mailchimp = new \Mandrill($this->api);
-        $template = new \Mandrill_Templates($mailchimp);
+        $mailchimp = new Mandrill($this->api);
+        $template = new Mandrill_Templates($mailchimp);
 
         return $template->info($name);
     }
 
     public function templateSet(string $name, string $content): array
     {
-        $mailchimp = new \Mandrill($this->api);
-        $template = new \Mandrill_Templates($mailchimp);
+        $mailchimp = new Mandrill($this->api);
+        $template = new Mandrill_Templates($mailchimp);
 
         return $template->update($name, code: $content);
     }
 
     public function templateRender(string $name, array $vars): string
     {
-        $mailchimp = new \Mandrill($this->api);
-        $template = new \Mandrill_Templates($mailchimp);
+        $mailchimp = new Mandrill($this->api);
+        $template = new Mandrill_Templates($mailchimp);
         $content = [];
 
         return $template->render($name, $content, $vars);
@@ -155,8 +154,8 @@ class MailerCap
 
     public function getMessages(int $limit): array
     {
-        $mailchimp = new \Mandrill($this->api);
-        $message = new \Mandrill_Messages($mailchimp);
+        $mailchimp = new Mandrill($this->api);
+        $message = new Mandrill_Messages($mailchimp);
 
         return $message->search(
             limit: $limit,
@@ -168,16 +167,16 @@ class MailerCap
 
     public function getMessage(string $id)
     {
-        $mailchimp = new \Mandrill($this->api);
-        $message = new \Mandrill_Messages($mailchimp);
+        $mailchimp = new Mandrill($this->api);
+        $message = new Mandrill_Messages($mailchimp);
 
         return $message->info($id);
     }
 
     public function getMessageContent(string $id)
     {
-        $mailchimp = new \Mandrill($this->api);
-        $message = new \Mandrill_Messages($mailchimp);
+        $mailchimp = new Mandrill($this->api);
+        $message = new Mandrill_Messages($mailchimp);
 
         return $message->content($id);
     }
@@ -185,11 +184,11 @@ class MailerCap
 
     public function infos()
     {
-        $mailchimp = new \Mandrill($this->api);
-        $template = new \Mandrill_Templates($mailchimp);
-        $account = new \Mandrill_Subaccounts($mailchimp);
-        $user = new \Mandrill_Users($mailchimp);
-        $senders = new \Mandrill_Senders($mailchimp);
+        $mailchimp = new Mandrill($this->api);
+        $template = new Mandrill_Templates($mailchimp);
+        $account = new Mandrill_Subaccounts($mailchimp);
+        $user = new Mandrill_Users($mailchimp);
+        $senders = new Mandrill_Senders($mailchimp);
         //$hooks = new \Mandrill_Webhooks($mailchimp);
         //$urls = new \Mandrill_Urls(            $mailchimp        );//Due to changes to our infrastructure, we no longer support URL tracking reports in Mandrill
 

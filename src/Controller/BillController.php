@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class BillController extends AbstractController
 {
     public function __construct(
-        private PaymentBillRepository $paymentBillRepository,
+        private readonly PaymentBillRepository $paymentBillRepository,
     ) {
     }
 

@@ -25,14 +25,13 @@ class RightAccessRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string $name
      * @return array|RightAccess[]
      */
     public function search(string $name): array
     {
         $qb = $this->createQb();
 
-        if ($name) {
+        if ($name !== '' && $name !== '0') {
             $qb->andWhere('rightAccess.email LIKE :name')
                 ->setParameter('name', '%'.$name.'%');
         }

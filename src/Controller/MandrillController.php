@@ -2,6 +2,7 @@
 
 namespace Cap\Commercio\Controller;
 
+use Exception;
 use Cap\Commercio\Form\TemplateType;
 use Cap\Commercio\Mailer\MailerCap;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
@@ -17,7 +18,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 #[IsGranted('ROLE_CAP')]
 class MandrillController extends AbstractController
 {
-    const templates = [
+    final public const templates = [
         'commercio_access_demand',
         'commercio_commande',
         'commercio_commercant_contact',
@@ -44,9 +45,9 @@ class MandrillController extends AbstractController
     ];
 
     public function __construct(
-        private MailerCap $mailer,
-        private CommercioCommercantRepository $commercantRepository,
-        private CacheInterface $cache
+        private readonly MailerCap $mailer,
+        private readonly CommercioCommercantRepository $commercantRepository,
+        private readonly CacheInterface $cache
     ) {
 
     }
@@ -75,7 +76,7 @@ class MandrillController extends AbstractController
 
         try {
             $this->mailer->sendAffiliationExpired($adl, $this->getParameter('kernel.environment'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->addFlash('danger', $e->getMessage());
         }
 

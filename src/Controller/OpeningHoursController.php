@@ -19,8 +19,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class OpeningHoursController extends AbstractController
 {
     public function __construct(
-        private CommercioCommercantHoursRepository $commercioCommercantHoursRepository,
-        private CommercioCommercantHolidayRepository $commercioCommercantHolidayRepository,
+        private readonly CommercioCommercantHoursRepository $commercioCommercantHoursRepository,
+        private readonly CommercioCommercantHolidayRepository $commercioCommercantHolidayRepository,
     ) {
     }
 

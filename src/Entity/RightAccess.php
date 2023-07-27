@@ -2,6 +2,8 @@
 
 namespace Cap\Commercio\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Stringable;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
@@ -10,70 +12,42 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * RightAccess
- *
- * @ORM\Table(name="right_access", uniqueConstraints={@ORM\UniqueConstraint(name="right_access_email_key", columns={"email"})})
- * @ORM\Entity
  */
+#[ORM\Table(name: 'right_access')]
+#[ORM\UniqueConstraint(name: 'right_access_email_key', columns: ['email'])]
+#[ORM\Entity]
 class RightAccess implements UserInterface, PasswordHasherAwareInterface,PasswordAuthenticatedUserInterface, Stringable
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="right_access_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'right_access_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=200, nullable=false)
-     */
-    private $email;
+    #[ORM\Column(name: 'email', type: 'string', length: 200, nullable: false)]
+    private ?string $email = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="password", type="string", length=100, nullable=true)
-     */
-    private $password;
+    #[ORM\Column(name: 'password', type: 'string', length: 100, nullable: true)]
+    private ?string $password = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="privilege_id", type="smallint", nullable=false, options={"default"="1"})
-     */
+    
+    #[ORM\Column(name: 'privilege_id', type: 'smallint', nullable: false, options: ['default' => '1'])]
     private $privilegeId = '1';
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $insertDate = 'now()';
+    
+    #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $insertDate;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="modify_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $modifyDate = 'now()';
+    
+    #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $modifyDate;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="uuid", type="guid", nullable=false, options={"default"="uuid_generate_v4()"})
-     */
-    private $uuid = 'uuid_generate_v4()';
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    private string $uuid = '';
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="first_time", type="boolean", nullable=false)
-     */
-    private $firstTime = false;
+    #[ORM\Column(name: 'first_time', type: 'boolean', nullable: false)]
+    private bool $firstTime = false;
 
     private array $roles = ['ROLE_CAP'];
 
@@ -141,24 +115,24 @@ class RightAccess implements UserInterface, PasswordHasherAwareInterface,Passwor
         return $this;
     }
 
-    public function getInsertDate(): ?\DateTimeInterface
+    public function getInsertDate(): ?DateTimeInterface
     {
         return $this->insertDate;
     }
 
-    public function setInsertDate(\DateTimeInterface $insertDate): self
+    public function setInsertDate(DateTimeInterface $insertDate): self
     {
         $this->insertDate = $insertDate;
 
         return $this;
     }
 
-    public function getModifyDate(): ?\DateTimeInterface
+    public function getModifyDate(): ?DateTimeInterface
     {
         return $this->modifyDate;
     }
 
-    public function setModifyDate(\DateTimeInterface $modifyDate): self
+    public function setModifyDate(DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
 

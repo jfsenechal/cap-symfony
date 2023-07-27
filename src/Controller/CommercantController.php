@@ -2,6 +2,7 @@
 
 namespace Cap\Commercio\Controller;
 
+use Exception;
 use Cap\Commercio\Bottin\BottinUtils;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Form\CheckMemberType;
@@ -25,14 +26,14 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class CommercantController extends AbstractController
 {
     public function __construct(
-        private CommercioCommercantRepository $commercantRepository,
-        private BottinUtils $bottinUtils,
-        private CommercantGalleryRepository $commercantGalleryRepository,
-        private PaymentOrderRepository $paymentOrderRepository,
-        private PaymentBillRepository $paymentBillRepository,
-        private CommercioCommercantHoursRepository $commercioCommercantHoursRepository,
-        private CommercioCommercantHolidayRepository $commercioCommercantHolidayRepository,
-        private MailerCap $mailer
+        private readonly CommercioCommercantRepository $commercantRepository,
+        private readonly BottinUtils $bottinUtils,
+        private readonly CommercantGalleryRepository $commercantGalleryRepository,
+        private readonly PaymentOrderRepository $paymentOrderRepository,
+        private readonly PaymentBillRepository $paymentBillRepository,
+        private readonly CommercioCommercantHoursRepository $commercioCommercantHoursRepository,
+        private readonly CommercioCommercantHolidayRepository $commercioCommercantHolidayRepository,
+        private readonly MailerCap $mailer
     ) {
     }
 
@@ -150,7 +151,7 @@ class CommercantController extends AbstractController
                 try {
                     $this->mailer->sendAffiliationExpired($commercant, $this->getParameter('kernel.environment'));
                     $this->addFlash('success', 'Le mail a bien été envoyé');
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $this->addFlash('danger', 'Erreur lors de l\'envoie du mail: '.$e->getMessage());
                 }
             }

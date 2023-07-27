@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BlogPostType extends AbstractType
 {
-    public function __construct(private BlogTagRepository $tagRepository)
+    public function __construct(private readonly BlogTagRepository $tagRepository)
     {
     }
 

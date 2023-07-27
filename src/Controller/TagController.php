@@ -16,15 +16,14 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class TagController extends AbstractController
 {
     public function __construct(
-        private BlogTagRepository $blog_tagRepository,
+        private readonly BlogTagRepository $blog_tagRepository,
     ) {
     }
 
     #[Route('/', name: 'cap_blog_tag_index', methods: ['GET', 'POST'])]
-    public function index(Request $request): Response
+    public function index() : Response
     {
         $tags = $this->blog_tagRepository->findAllOrdered();
-
         return $this->render('@CapCommercio/blog_tag/index.html.twig', [
             'tags' => $tags,
         ]);

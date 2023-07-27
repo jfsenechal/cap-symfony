@@ -2,73 +2,48 @@
 
 namespace Cap\Commercio\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CommercioPixel
- *
- * @ORM\Table(name="commercio_pixel", uniqueConstraints={@ORM\UniqueConstraint(name="commercio_pixel_uuid_key", columns={"uuid"})}, indexes={@ORM\Index(name="IDX_E138FC5B79D40486", columns={"commercio_commercant_id"}), @ORM\Index(name="IDX_E138FC5B1D25D02A", columns={"pixel_type_id"})})
- * @ORM\Entity
  */
+#[ORM\Table(name: 'commercio_pixel')]
+#[ORM\Index(name: 'IDX_E138FC5B79D40486', columns: ['commercio_commercant_id'])]
+#[ORM\Index(name: 'IDX_E138FC5B1D25D02A', columns: ['pixel_type_id'])]
+#[ORM\UniqueConstraint(name: 'commercio_pixel_uuid_key', columns: ['uuid'])]
+#[ORM\Entity]
 class CommercioPixel
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="commercio_pixel_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'commercio_pixel_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="uuid", type="guid", nullable=false, options={"default"="uuid_generate_v4()"})
-     */
-    private $uuid = 'uuid_generate_v4()';
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    private string $uuid = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="pixel_id", type="text", nullable=false)
-     */
-    private $pixelId;
+    #[ORM\Column(name: 'pixel_id', type: 'text', nullable: false)]
+    private ?string $pixelId = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $insertDate = 'now()';
+    
+    #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $insertDate;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="modify_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $modifyDate = 'now()';
+    
+    #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $modifyDate;
 
-    /**
-     * @var CommercioCommercant
-     *
-     * @ORM\ManyToOne(targetEntity="CommercioCommercant")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="commercio_commercant_id", referencedColumnName="id")
-     * })
-     */
-    private $commercioCommercant;
+    #[ORM\JoinColumn(name: 'commercio_commercant_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'CommercioCommercant')]
+    private ?CommercioCommercant $commercioCommercant = null;
 
-    /**
-     * @var CommercioPixelType
-     *
-     * @ORM\ManyToOne(targetEntity="CommercioPixelType")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="pixel_type_id", referencedColumnName="id")
-     * })
-     */
-    private $pixelType;
+    #[ORM\JoinColumn(name: 'pixel_type_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'CommercioPixelType')]
+    private ?CommercioPixelType $pixelType = null;
 
     public function getId(): ?string
     {
@@ -99,24 +74,24 @@ class CommercioPixel
         return $this;
     }
 
-    public function getInsertDate(): ?\DateTimeInterface
+    public function getInsertDate(): ?DateTimeInterface
     {
         return $this->insertDate;
     }
 
-    public function setInsertDate(\DateTimeInterface $insertDate): self
+    public function setInsertDate(DateTimeInterface $insertDate): self
     {
         $this->insertDate = $insertDate;
 
         return $this;
     }
 
-    public function getModifyDate(): ?\DateTimeInterface
+    public function getModifyDate(): ?DateTimeInterface
     {
         return $this->modifyDate;
     }
 
-    public function setModifyDate(\DateTimeInterface $modifyDate): self
+    public function setModifyDate(DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
 

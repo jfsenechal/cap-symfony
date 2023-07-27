@@ -17,7 +17,7 @@ use Symfony\Component\Form\FormEvents;
  */
 class FormNewTagEvent implements EventSubscriberInterface
 {
-    public function __construct(private BlogTagRepository $tagRepository)
+    public function __construct(private readonly BlogTagRepository $tagRepository)
     {
     }
 
@@ -74,7 +74,7 @@ class FormNewTagEvent implements EventSubscriberInterface
                     $this->tagRepository->flush();
                     $tagsSave[] = $tag->getId();
                 }
-            } catch (NonUniqueResultException $e) {
+            } catch (NonUniqueResultException) {
             }
         }
 

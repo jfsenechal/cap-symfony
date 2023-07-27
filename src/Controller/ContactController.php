@@ -14,8 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class ContactController extends AbstractController
 {
     public function __construct(
-        private ContactRepository $contactRepository,
-        private ContactParamsRepository $contactParamsRepository
+        private readonly ContactRepository $contactRepository,
+        private readonly ContactParamsRepository $contactParamsRepository
     ) {
     }
 

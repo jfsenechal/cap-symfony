@@ -2,6 +2,8 @@
 
 namespace Cap\Commercio\Controller;
 
+use Cap\Commercio\Entity\CommercioBottin;
+use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Repository\CommercioBottinRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Service\ImagesRepository;
@@ -13,9 +15,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class ApiController extends AbstractController
 {
     public function __construct(
-        private CommercioCommercantRepository $commercioCommercantRepository,
-        private CommercioBottinRepository $commercioBottinRepository,
-        private ImagesRepository $imagesRepository
+        private readonly CommercioCommercantRepository $commercioCommercantRepository,
+        private readonly CommercioBottinRepository $commercioBottinRepository,
+        private readonly ImagesRepository $imagesRepository
     ) {
     }
 
@@ -29,10 +31,10 @@ class ApiController extends AbstractController
     #[Route('/shop/{id}', name: 'cap_api_shop', methods: ['GET'])]
     public function shop(int $id): JsonResponse
     {
-        if ($commercioBottin = $this->commercioBottinRepository->findOneBy(['commercantId' => $id])) {
-            if (!$commercant = $this->commercioCommercantRepository->findByIdCommercant(
+        if (($commercioBottin = $this->commercioBottinRepository->findOneBy(['commercantId' => $id])) instanceof CommercioBottin) {
+            if (!($commercant = $this->commercioCommercantRepository->findByIdCommercant(
                 $commercioBottin->getCommercantId()
-            )) {
+            )) instanceof CommercioCommercant) {
                 return $this->json(null);
             }
             $commercant->bottin_id = $commercant->getId();
@@ -54,7 +56,7 @@ class ApiController extends AbstractController
     public function images(int $id): JsonResponse
     {
         $commercant = $this->commercioCommercantRepository->find($id);
-        if (!$commercant) {
+        if (!$commercant instanceof CommercioCommercant) {
             return $this->json([]);
         }
         $images = $this->imagesRepository->set($commercant);

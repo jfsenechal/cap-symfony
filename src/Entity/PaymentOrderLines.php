@@ -2,98 +2,57 @@
 
 namespace Cap\Commercio\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * PaymentOrderLines
- *
- * @ORM\Table(name="payment_order_lines", indexes={@ORM\Index(name="IDX_3A1328B18D9F6D38", columns={"order_id"})})
- * @ORM\Entity
  */
+#[ORM\Table(name: 'payment_order_lines')]
+#[ORM\Index(name: 'IDX_3A1328B18D9F6D38', columns: ['order_id'])]
+#[ORM\Entity]
 class PaymentOrderLines
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="payment_order_lines_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'payment_order_lines_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="uuid", type="guid", nullable=false, options={"default"="uuid_generate_v4()"})
-     */
-    private $uuid = 'uuid_generate_v4()';
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    private string $uuid = '';
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="reference", type="text", nullable=true)
-     */
-    private $reference;
+    #[ORM\Column(name: 'reference', type: 'text', nullable: true)]
+    private ?string $reference = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="label", type="text", nullable=false)
-     */
-    private $label;
+    #[ORM\Column(name: 'label', type: 'text', nullable: false)]
+    private ?string $label = null;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="price_evat", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $priceEvat;
+    #[ORM\Column(name: 'price_evat', type: 'float', precision: 10, scale: 0, nullable: false)]
+    private ?float $priceEvat = null;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="total_price_evat", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $totalPriceEvat;
+    #[ORM\Column(name: 'total_price_evat', type: 'float', precision: 10, scale: 0, nullable: false)]
+    private ?float $totalPriceEvat = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="quantity", type="integer", nullable=false)
-     */
-    private $quantity;
+    #[ORM\Column(name: 'quantity', type: 'integer', nullable: false)]
+    private ?int $quantity = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="quantity_label", type="text", nullable=false)
-     */
-    private $quantityLabel;
+    #[ORM\Column(name: 'quantity_label', type: 'text', nullable: false)]
+    private ?string $quantityLabel = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $insertDate = 'now()';
+    
+    #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $insertDate;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="modify_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $modifyDate = 'now()';
+    
+    #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $modifyDate;
 
-    /**
-     * @var PaymentOrder
-     *
-     * @ORM\ManyToOne(targetEntity="PaymentOrder")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="order_id", referencedColumnName="id")
-     * })
-     */
-    private $order;
+    #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'PaymentOrder')]
+    private ?PaymentOrder $order = null;
 
     public function getId(): ?string
     {
@@ -184,24 +143,24 @@ class PaymentOrderLines
         return $this;
     }
 
-    public function getInsertDate(): ?\DateTimeInterface
+    public function getInsertDate(): ?DateTimeInterface
     {
         return $this->insertDate;
     }
 
-    public function setInsertDate(\DateTimeInterface $insertDate): self
+    public function setInsertDate(DateTimeInterface $insertDate): self
     {
         $this->insertDate = $insertDate;
 
         return $this;
     }
 
-    public function getModifyDate(): ?\DateTimeInterface
+    public function getModifyDate(): ?DateTimeInterface
     {
         return $this->modifyDate;
     }
 
-    public function setModifyDate(\DateTimeInterface $modifyDate): self
+    public function setModifyDate(DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
 

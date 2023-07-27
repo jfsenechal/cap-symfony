@@ -2,6 +2,7 @@
 
 namespace Cap\Commercio\Repository;
 
+use DateTime;
 use Cap\Commercio\Doctrine\OrmCrudTrait;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -76,7 +77,7 @@ class CommercioCommercantRepository extends ServiceEntityRepository
     /**
      * @return CommercioCommercant[]
      */
-    public function findExpired(\DateTime $today): array
+    public function findExpired(DateTime $today): array
     {
         return $this->createQb()
             ->andWhere('commercant.affiliationDate < :date')

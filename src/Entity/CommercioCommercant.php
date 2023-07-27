@@ -2,255 +2,132 @@
 
 namespace Cap\Commercio\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CommercioCommercant
- *
- * @ORM\Table(name="commercio_commercant", uniqueConstraints={@ORM\UniqueConstraint(name="commercio_commercant_uuid_key", columns={"uuid"})}, indexes={@ORM\Index(name="IDX_F8F60C85296A161C", columns={"cta_id"}), @ORM\Index(name="IDX_F8F60C8561835A4B", columns={"hours_type_id"}), @ORM\Index(name="IDX_F8F60C85A95B5196", columns={"right_access_id"})})
- * @ORM\Entity
  */
+#[ORM\Table(name: 'commercio_commercant')]
+#[ORM\Index(name: 'IDX_F8F60C85296A161C', columns: ['cta_id'])]
+#[ORM\Index(name: 'IDX_F8F60C8561835A4B', columns: ['hours_type_id'])]
+#[ORM\Index(name: 'IDX_F8F60C85A95B5196', columns: ['right_access_id'])]
+#[ORM\UniqueConstraint(name: 'commercio_commercant_uuid_key', columns: ['uuid'])]
+#[ORM\Entity]
 class CommercioCommercant
 {
     public array $images = [];
     public array $hours=[];
     public int $bottin_id = 0;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="commercio_commercant_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'commercio_commercant_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
+
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    private string $uuid = '';
+
+    #[ORM\Column(name: 'profile_media_path', type: 'text', nullable: true)]
+    private ?string $profileMediaPath = null;
+
+    #[ORM\Column(name: 'media_path', type: 'text', nullable: true)]
+    private ?string $mediaPath = null;
+
+    #[ORM\Column(name: 'can_receive_tender', type: 'boolean', nullable: false, options: ['default' => '1'])]
+    private bool $canReceiveTender = true;
+
+    #[ORM\Column(name: 'facebook_id', type: 'text', nullable: true)]
+    private ?string $facebookId = null;
+
+    #[ORM\Column(name: 'open_sunday', type: 'boolean', nullable: true)]
+    private ?bool $openSunday = false;
+
+    #[ORM\Column(name: 'commercial_word_title', type: 'string', length: 100, nullable: true)]
+    private ?string $commercialWordTitle = null;
+
+    #[ORM\Column(name: 'commercial_word_media_path', type: 'text', nullable: true)]
+    private ?string $commercialWordMediaPath = null;
+
+    #[ORM\Column(name: 'legal_entity', type: 'text', nullable: false)]
+    private ?string $legalEntity = null;
+
+    #[ORM\Column(name: 'vat_number', type: 'text', nullable: true)]
+    private ?string $vatNumber = null;
+
+    #[ORM\Column(name: 'phone', type: 'text', nullable: true)]
+    private ?string $phone = null;
+
+    #[ORM\Column(name: 'is_member', type: 'boolean', nullable: false)]
+    private bool $isMember = false;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="uuid", type="guid", nullable=false, options={"default"="uuid_generate_v4()"})
+     * @var DateTime|null
      */
-    private $uuid = 'uuid_generate_v4()';
+    #[ORM\Column(name: 'affiliation_date', type: 'datetime', nullable: true)]
+    private ?DateTimeInterface $affiliationDate = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="profile_media_path", type="text", nullable=true)
-     */
-    private $profileMediaPath;
+    #[ORM\Column(name: 'archived', type: 'boolean', nullable: false)]
+    private bool $archived = false;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="media_path", type="text", nullable=true)
-     */
-    private $mediaPath;
+    
+    #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $insertDate;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="can_receive_tender", type="boolean", nullable=false, options={"default"="1"})
-     */
-    private $canReceiveTender = true;
+    
+    #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $modifyDate;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="facebook_id", type="text", nullable=true)
-     */
-    private $facebookId;
+    #[ORM\Column(name: 'stripe_user_ref', type: 'text', nullable: true)]
+    private ?string $stripeUserRef = null;
 
-    /**
-     * @var bool|null
-     *
-     * @ORM\Column(name="open_sunday", type="boolean", nullable=true)
-     */
-    private $openSunday = false;
+    #[ORM\Column(name: 'commercial_word_video_path', type: 'text', nullable: true)]
+    private ?string $commercialWordVideoPath = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="commercial_word_title", type="string", length=100, nullable=true)
-     */
-    private $commercialWordTitle;
+    #[ORM\Column(name: 'commercial_word_description', type: 'string', length: 1000, nullable: true)]
+    private ?string $commercialWordDescription = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="commercial_word_media_path", type="text", nullable=true)
-     */
-    private $commercialWordMediaPath;
+    #[ORM\Column(name: 'legal_email', type: 'text', nullable: false)]
+    private ?string $legalEmail = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="legal_entity", type="text", nullable=false)
-     */
-    private $legalEntity;
+    #[ORM\Column(name: 'legal_phone', type: 'text', nullable: true)]
+    private ?string $legalPhone = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="vat_number", type="text", nullable=true)
-     */
-    private $vatNumber;
+    #[ORM\Column(name: 'legal_firstname', type: 'text', nullable: true)]
+    private ?string $legalFirstname = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="phone", type="text", nullable=true)
-     */
-    private $phone;
+    #[ORM\Column(name: 'legal_lastname', type: 'text', nullable: true)]
+    private ?string $legalLastname = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_member", type="boolean", nullable=false)
-     */
-    private $isMember = false;
+    #[ORM\Column(name: 'can_receive_news', type: 'boolean', nullable: false, options: ['default' => '1'])]
+    private bool $canReceiveNews = true;
 
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="affiliation_date", type="datetime", nullable=true)
-     */
-    private $affiliationDate;
+    #[ORM\Column(name: 'legal_email_2', type: 'text', nullable: true)]
+    private ?string $legalEmail2 = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="archived", type="boolean", nullable=false)
-     */
-    private $archived = false;
+    #[ORM\Column(name: 'facebook_link', type: 'text', nullable: true)]
+    private ?string $facebookLink = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $insertDate = 'now()';
+    #[ORM\Column(name: 'twitter_link', type: 'text', nullable: true)]
+    private ?string $twitterLink = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="modify_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $modifyDate = 'now()';
+    #[ORM\Column(name: 'linkedin_link', type: 'text', nullable: true)]
+    private ?string $linkedinLink = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="stripe_user_ref", type="text", nullable=true)
-     */
-    private $stripeUserRef;
+    #[ORM\JoinColumn(name: 'cta_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'CommercioCta')]
+    private ?CommercioCta $cta = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="commercial_word_video_path", type="text", nullable=true)
-     */
-    private $commercialWordVideoPath;
+    #[ORM\JoinColumn(name: 'hours_type_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'CommercioCommercantHoursType')]
+    private ?CommercioCommercantHoursType $hoursType = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="commercial_word_description", type="string", length=1000, nullable=true)
-     */
-    private $commercialWordDescription;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="legal_email", type="text", nullable=false)
-     */
-    private $legalEmail;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="legal_phone", type="text", nullable=true)
-     */
-    private $legalPhone;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="legal_firstname", type="text", nullable=true)
-     */
-    private $legalFirstname;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="legal_lastname", type="text", nullable=true)
-     */
-    private $legalLastname;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="can_receive_news", type="boolean", nullable=false, options={"default"="1"})
-     */
-    private $canReceiveNews = true;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="legal_email_2", type="text", nullable=true)
-     */
-    private $legalEmail2;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="facebook_link", type="text", nullable=true)
-     */
-    private $facebookLink;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="twitter_link", type="text", nullable=true)
-     */
-    private $twitterLink;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="linkedin_link", type="text", nullable=true)
-     */
-    private $linkedinLink;
-
-    /**
-     * @var CommercioCta
-     *
-     * @ORM\ManyToOne(targetEntity="CommercioCta")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="cta_id", referencedColumnName="id")
-     * })
-     */
-    private $cta;
-
-    /**
-     * @var CommercioCommercantHoursType
-     *
-     * @ORM\ManyToOne(targetEntity="CommercioCommercantHoursType")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="hours_type_id", referencedColumnName="id")
-     * })
-     */
-    private $hoursType;
-
-    /**
-     * @var RightAccess
-     *
-     * @ORM\ManyToOne(targetEntity="RightAccess")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="right_access_id", referencedColumnName="id")
-     * })
-     */
-    private $rightAccess;
+    #[ORM\JoinColumn(name: 'right_access_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'RightAccess')]
+    private ?RightAccess $rightAccess = null;
 
     public bool $sendMailExpired = false;
 
@@ -403,12 +280,12 @@ class CommercioCommercant
         return $this;
     }
 
-    public function getAffiliationDate(): ?\DateTimeInterface
+    public function getAffiliationDate(): ?DateTimeInterface
     {
         return $this->affiliationDate;
     }
 
-    public function setAffiliationDate(?\DateTimeInterface $affiliationDate): self
+    public function setAffiliationDate(?DateTimeInterface $affiliationDate): self
     {
         $this->affiliationDate = $affiliationDate;
 
@@ -427,24 +304,24 @@ class CommercioCommercant
         return $this;
     }
 
-    public function getInsertDate(): ?\DateTimeInterface
+    public function getInsertDate(): ?DateTimeInterface
     {
         return $this->insertDate;
     }
 
-    public function setInsertDate(\DateTimeInterface $insertDate): self
+    public function setInsertDate(DateTimeInterface $insertDate): self
     {
         $this->insertDate = $insertDate;
 
         return $this;
     }
 
-    public function getModifyDate(): ?\DateTimeInterface
+    public function getModifyDate(): ?DateTimeInterface
     {
         return $this->modifyDate;
     }
 
-    public function setModifyDate(\DateTimeInterface $modifyDate): self
+    public function setModifyDate(DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
 

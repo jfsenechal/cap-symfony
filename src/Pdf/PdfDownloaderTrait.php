@@ -2,6 +2,7 @@
 
 namespace Cap\Commercio\Pdf;
 
+use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Dompdf\Dompdf;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
@@ -28,11 +29,8 @@ trait PdfDownloaderTrait
     }
 
     /**
-     * @param string $html
-     * @param string $fileName
-     * @param bool $debug
      * @return string
-     * @throws \Spipu\Html2Pdf\Exception\Html2PdfException
+     * @throws Html2PdfException
      */
     public function downloadPdf(string $html, string $fileName, bool $debug = false): Response
     {
@@ -42,11 +40,8 @@ trait PdfDownloaderTrait
     }
 
     /**
-     * @param string $html
-     * @param string $fileName
-     * @param bool $debug
      * @return string
-     * @throws \Spipu\Html2Pdf\Exception\Html2PdfException
+     * @throws Html2PdfException
      */
     public function savePdfToDisk(string $html, string $fileName, bool $debug = false): string
     {

@@ -3,16 +3,12 @@
 namespace Cap\Commercio\Mailer;
 
 class MandrillMailDataItem{
-    private $name;
-    private $content;
-
-    public function __construct($name, $content){
-        $this->name = $name;
-        $this->content = $content;
+    public function __construct(private $name, private $content)
+    {
     }
 
     public function toArray(){
-        return array("name"=>$this->name, "content"=>$this->content);
+        return ["name"=>$this->name, "content"=>$this->content];
     }
 
 

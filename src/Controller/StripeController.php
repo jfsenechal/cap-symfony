@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class StripeController extends AbstractController
 {
     public function __construct(
-        private StripeCap $stripeCap
+        private readonly StripeCap $stripeCap
     ) {
     }
 

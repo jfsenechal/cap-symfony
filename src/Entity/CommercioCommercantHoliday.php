@@ -2,77 +2,49 @@
 
 namespace Cap\Commercio\Entity;
 
+use DateTimeInterface;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CommercioCommercantHoliday
- *
- * @ORM\Table(name="commercio_commercant_holiday", uniqueConstraints={@ORM\UniqueConstraint(name="commercio_commercant_holiday_uuid_key", columns={"uuid"}), @ORM\UniqueConstraint(name="commercio_commercant_holiday_commercio_commercant_id_key", columns={"commercio_commercant_id"})})
- * @ORM\Entity
  */
+#[ORM\Table(name: 'commercio_commercant_holiday')]
+#[ORM\UniqueConstraint(name: 'commercio_commercant_holiday_uuid_key', columns: ['uuid'])]
+#[ORM\UniqueConstraint(name: 'commercio_commercant_holiday_commercio_commercant_id_key', columns: ['commercio_commercant_id'])]
+#[ORM\Entity]
 class CommercioCommercantHoliday
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="commercio_commercant_holiday_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'commercio_commercant_holiday_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="uuid", type="guid", nullable=false, options={"default"="uuid_generate_v4()"})
-     */
-    private $uuid = 'uuid_generate_v4()';
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    private string $uuid = '';
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="begin_date", type="datetime", nullable=false)
-     */
-    private $beginDate;
+    #[ORM\Column(name: 'begin_date', type: 'datetime', nullable: false)]
+    private ?DateTimeInterface $beginDate = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="end_date", type="datetime", nullable=false)
-     */
-    private $endDate;
+    #[ORM\Column(name: 'end_date', type: 'datetime', nullable: false)]
+    private ?DateTimeInterface $endDate = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="note", type="string", length=200, nullable=true)
-     */
-    private $note;
+    #[ORM\Column(name: 'note', type: 'string', length: 200, nullable: true)]
+    private ?string $note = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $insertDate = 'now()';
+    
+    #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $insertDate;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="modify_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $modifyDate = 'now()';
+    
+    #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $modifyDate;
 
-    /**
-     * @var \CommercioCommercant
-     *
-     * @ORM\ManyToOne(targetEntity="CommercioCommercant")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="commercio_commercant_id", referencedColumnName="id")
-     * })
-     */
-    private $commercioCommercant;
+    #[ORM\JoinColumn(name: 'commercio_commercant_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'CommercioCommercant')]
+    private ?CommercioCommercant $commercioCommercant = null;
 
     public function getId(): ?string
     {
@@ -91,24 +63,24 @@ class CommercioCommercantHoliday
         return $this;
     }
 
-    public function getBeginDate(): ?\DateTimeInterface
+    public function getBeginDate(): ?DateTimeInterface
     {
         return $this->beginDate;
     }
 
-    public function setBeginDate(\DateTimeInterface $beginDate): self
+    public function setBeginDate(DateTimeInterface $beginDate): self
     {
         $this->beginDate = $beginDate;
 
         return $this;
     }
 
-    public function getEndDate(): ?\DateTimeInterface
+    public function getEndDate(): ?DateTimeInterface
     {
         return $this->endDate;
     }
 
-    public function setEndDate(\DateTimeInterface $endDate): self
+    public function setEndDate(DateTimeInterface $endDate): self
     {
         $this->endDate = $endDate;
 
@@ -127,24 +99,24 @@ class CommercioCommercantHoliday
         return $this;
     }
 
-    public function getInsertDate(): ?\DateTimeInterface
+    public function getInsertDate(): ?DateTimeInterface
     {
         return $this->insertDate;
     }
 
-    public function setInsertDate(\DateTimeInterface $insertDate): self
+    public function setInsertDate(DateTimeInterface $insertDate): self
     {
         $this->insertDate = $insertDate;
 
         return $this;
     }
 
-    public function getModifyDate(): ?\DateTimeInterface
+    public function getModifyDate(): ?DateTimeInterface
     {
         return $this->modifyDate;
     }
 
-    public function setModifyDate(\DateTimeInterface $modifyDate): self
+    public function setModifyDate(DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
 

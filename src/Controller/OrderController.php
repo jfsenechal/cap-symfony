@@ -2,6 +2,7 @@
 
 namespace Cap\Commercio\Controller;
 
+use Exception;
 use Cap\Commercio\Bill\Generator\BillGenerator;
 use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Form\OrderSearchType;
@@ -26,12 +27,12 @@ use Twig\Error\SyntaxError;
 class OrderController extends AbstractController
 {
     public function __construct(
-        private PaymentOrderRepository $paymentOrderRepository,
-        private PaymentBillRepository $paymentBillRepository,
-        private PaymentOrderLineRepository $paymentOrderLineRepository,
-        private PaymentOrderAddressRepository $paymentOrderAddressRepository,
-        private BillGenerator $billGenerator,
-        private PdfGenerator $pdfGenerator,
+        private readonly PaymentOrderRepository $paymentOrderRepository,
+        private readonly PaymentBillRepository $paymentBillRepository,
+        private readonly PaymentOrderLineRepository $paymentOrderLineRepository,
+        private readonly PaymentOrderAddressRepository $paymentOrderAddressRepository,
+        private readonly BillGenerator $billGenerator,
+        private readonly PdfGenerator $pdfGenerator,
     ) {
     }
 
@@ -56,7 +57,7 @@ class OrderController extends AbstractController
         foreach ($orders as $order) {
             try {
                 $order->bill = $this->paymentBillRepository->findOneByOrder($order);
-            } catch (NonUniqueResultException $e) {
+            } catch (NonUniqueResultException) {
                 $order->bill = null;
                 $this->addFlash('danger', 'Le bon de commande a plusieurs paiements '.$order->getOrderNumber());
             }
@@ -80,10 +81,10 @@ class OrderController extends AbstractController
         $bills = [];
         try {
             $bill = $this->paymentBillRepository->findOneByOrder($paymentOrder);
-        } catch (NonUniqueResultException $e) {
+        } catch (NonUniqueResultException) {
             $bill = null;
             $bills = $this->paymentBillRepository->findByOrder($paymentOrder);
-            if (count($bills) > 0) {
+            if ($bills !== []) {
                 $this->addFlash('danger', 'Attention plusieurs paiements pour cette facture');
             }
         }
@@ -123,12 +124,12 @@ class OrderController extends AbstractController
                     $bill->setPdfPath('pdf-docs/'.$fileName);
                     $this->paymentBillRepository->flush();
 
-                } catch (LoaderError|RuntimeError|SyntaxError|\Exception $e) {
-                    throw new \Exception($e->getMessage());
+                } catch (LoaderError|RuntimeError|SyntaxError|Exception $e) {
+                    throw new Exception($e->getMessage(), $e->getCode(), $e);
                 }
 
                 return $this->redirectToRoute('cap_bill_show', ['id' => $bill->getId()]);
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 $this->addFlash('danger', 'Une erreur est survenue '.$exception->getMessage());
             }
         }

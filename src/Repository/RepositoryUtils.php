@@ -8,8 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 class RepositoryUtils
 {
     public function __construct(
-        private BlogTagPostRepository  $blogTagPostRepository,
-        private BlogCategoryPostRepository $blogCategoryPostRepository
+        private readonly BlogTagPostRepository  $blogTagPostRepository,
+        private readonly BlogCategoryPostRepository $blogCategoryPostRepository
     )
     {
     }

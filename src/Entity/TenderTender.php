@@ -2,123 +2,68 @@
 
 namespace Cap\Commercio\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * TenderTender
- *
- * @ORM\Table(name="tender_tender", uniqueConstraints={@ORM\UniqueConstraint(name="tender_tender_uuid_key", columns={"uuid"})})
- * @ORM\Entity
  */
+#[ORM\Table(name: 'tender_tender')]
+#[ORM\UniqueConstraint(name: 'tender_tender_uuid_key', columns: ['uuid'])]
+#[ORM\Entity]
 class TenderTender
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="tender_tender_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'tender_tender_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="uuid", type="guid", nullable=false, options={"default"="uuid_generate_v4()"})
-     */
-    private $uuid = 'uuid_generate_v4()';
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    private string $uuid = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="title", type="text", nullable=false)
-     */
-    private $title;
+    #[ORM\Column(name: 'title', type: 'text', nullable: false)]
+    private ?string $title = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text", nullable=false)
-     */
-    private $description;
+    #[ORM\Column(name: 'description', type: 'text', nullable: false)]
+    private ?string $description = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="mail", type="text", nullable=false)
-     */
-    private $mail;
+    #[ORM\Column(name: 'mail', type: 'text', nullable: false)]
+    private ?string $mail = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="firstname", type="text", nullable=false)
-     */
-    private $firstname;
+    #[ORM\Column(name: 'firstname', type: 'text', nullable: false)]
+    private ?string $firstname = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="lastname", type="text", nullable=false)
-     */
-    private $lastname;
+    #[ORM\Column(name: 'lastname', type: 'text', nullable: false)]
+    private ?string $lastname = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="phone", type="text", nullable=false)
-     */
-    private $phone;
+    #[ORM\Column(name: 'phone', type: 'text', nullable: false)]
+    private ?string $phone = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_send", type="boolean", nullable=false)
-     */
-    private $isSend = false;
+    #[ORM\Column(name: 'is_send', type: 'boolean', nullable: false)]
+    private bool $isSend = false;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $insertDate = 'now()';
+    
+    #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $insertDate;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="modify_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $modifyDate = 'now()';
+    
+    #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $modifyDate;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="sub_sector_id", type="bigint", nullable=false)
-     */
-    private $subSectorId;
+    #[ORM\Column(name: 'sub_sector_id', type: 'bigint', nullable: false)]
+    private ?string $subSectorId = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="address", type="text", nullable=false)
-     */
-    private $address;
+    #[ORM\Column(name: 'address', type: 'text', nullable: false)]
+    private ?string $address = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="zipcode", type="text", nullable=false)
-     */
-    private $zipcode;
+    #[ORM\Column(name: 'zipcode', type: 'text', nullable: false)]
+    private ?string $zipcode = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="city", type="text", nullable=false)
-     */
-    private $city;
+    #[ORM\Column(name: 'city', type: 'text', nullable: false)]
+    private ?string $city = null;
 
     public function getId(): ?string
     {
@@ -221,24 +166,24 @@ class TenderTender
         return $this;
     }
 
-    public function getInsertDate(): ?\DateTimeInterface
+    public function getInsertDate(): ?DateTimeInterface
     {
         return $this->insertDate;
     }
 
-    public function setInsertDate(\DateTimeInterface $insertDate): self
+    public function setInsertDate(DateTimeInterface $insertDate): self
     {
         $this->insertDate = $insertDate;
 
         return $this;
     }
 
-    public function getModifyDate(): ?\DateTimeInterface
+    public function getModifyDate(): ?DateTimeInterface
     {
         return $this->modifyDate;
     }
 
-    public function setModifyDate(\DateTimeInterface $modifyDate): self
+    public function setModifyDate(DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
 

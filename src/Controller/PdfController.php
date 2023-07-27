@@ -23,9 +23,9 @@ class PdfController extends AbstractController
     use PdfDownloaderTrait;
 
     public function __construct(
-        private PdfGenerator $pdfGenerator,
-        private PaymentOrderRepository $orderRepository,
-        private PaymentBillRepository $billRepository
+        private readonly PdfGenerator $pdfGenerator,
+        private readonly PaymentOrderRepository $orderRepository,
+        private readonly PaymentBillRepository $billRepository
     ) {
     }
 

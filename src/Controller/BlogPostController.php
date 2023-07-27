@@ -18,8 +18,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class BlogPostController extends AbstractController
 {
     public function __construct(
-        private BlogPostRepository $blog_postRepository,
-        private RepositoryUtils    $repositoryUtils,
+        private readonly BlogPostRepository $blog_postRepository,
+        private readonly RepositoryUtils    $repositoryUtils,
     )
     {
     }

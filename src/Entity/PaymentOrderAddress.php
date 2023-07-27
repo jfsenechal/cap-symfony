@@ -2,98 +2,57 @@
 
 namespace Cap\Commercio\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * PaymentOrderAddress
- *
- * @ORM\Table(name="payment_order_address", indexes={@ORM\Index(name="IDX_630CF078D9F6D38", columns={"order_id"})})
- * @ORM\Entity
  */
+#[ORM\Table(name: 'payment_order_address')]
+#[ORM\Index(name: 'IDX_630CF078D9F6D38', columns: ['order_id'])]
+#[ORM\Entity]
 class PaymentOrderAddress
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="payment_order_address_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'payment_order_address_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="uuid", type="guid", nullable=false, options={"default"="uuid_generate_v4()"})
-     */
-    private $uuid = 'uuid_generate_v4()';
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    private string $uuid = '';
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="address_type_id", type="bigint", nullable=false)
-     */
-    private $addressTypeId;
+    #[ORM\Column(name: 'address_type_id', type: 'bigint', nullable: false)]
+    private ?string $addressTypeId = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="street1", type="text", nullable=false)
-     */
-    private $street1;
+    #[ORM\Column(name: 'street1', type: 'text', nullable: false)]
+    private ?string $street1 = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="street2", type="text", nullable=true)
-     */
-    private $street2;
+    #[ORM\Column(name: 'street2', type: 'text', nullable: true)]
+    private ?string $street2 = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="zipcode", type="text", nullable=false)
-     */
-    private $zipcode;
+    #[ORM\Column(name: 'zipcode', type: 'text', nullable: false)]
+    private ?string $zipcode = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="city", type="text", nullable=false)
-     */
-    private $city;
+    #[ORM\Column(name: 'city', type: 'text', nullable: false)]
+    private ?string $city = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="country_id", type="bigint", nullable=false)
-     */
-    private $countryId;
+    #[ORM\Column(name: 'country_id', type: 'bigint', nullable: false)]
+    private ?string $countryId = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $insertDate = 'now()';
+    
+    #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $insertDate;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="modify_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $modifyDate = 'now()';
+    
+    #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $modifyDate;
 
-    /**
-     * @var PaymentOrder
-     *
-     * @ORM\ManyToOne(targetEntity="PaymentOrder")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="order_id", referencedColumnName="id")
-     * })
-     */
-    private $order;
+    #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'PaymentOrder')]
+    private ?PaymentOrder $order = null;
 
     public function getId(): ?string
     {
@@ -184,24 +143,24 @@ class PaymentOrderAddress
         return $this;
     }
 
-    public function getInsertDate(): ?\DateTimeInterface
+    public function getInsertDate(): ?DateTimeInterface
     {
         return $this->insertDate;
     }
 
-    public function setInsertDate(\DateTimeInterface $insertDate): self
+    public function setInsertDate(DateTimeInterface $insertDate): self
     {
         $this->insertDate = $insertDate;
 
         return $this;
     }
 
-    public function getModifyDate(): ?\DateTimeInterface
+    public function getModifyDate(): ?DateTimeInterface
     {
         return $this->modifyDate;
     }
 
-    public function setModifyDate(\DateTimeInterface $modifyDate): self
+    public function setModifyDate(DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
 

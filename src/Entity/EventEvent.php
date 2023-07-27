@@ -2,216 +2,122 @@
 
 namespace Cap\Commercio\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * EventEvent
- *
- * @ORM\Table(name="event_event", uniqueConstraints={@ORM\UniqueConstraint(name="event_event_uuid_key", columns={"uuid"})}, indexes={@ORM\Index(name="IDX_7AB5BB8B4BD166F5", columns={"commercio_administrator_id"}), @ORM\Index(name="IDX_7AB5BB8B79D40486", columns={"commercio_commercant_id"}), @ORM\Index(name="IDX_7AB5BB8B401B253C", columns={"event_type_id"})})
- * @ORM\Entity
  */
+#[ORM\Table(name: 'event_event')]
+#[ORM\Index(name: 'IDX_7AB5BB8B4BD166F5', columns: ['commercio_administrator_id'])]
+#[ORM\Index(name: 'IDX_7AB5BB8B79D40486', columns: ['commercio_commercant_id'])]
+#[ORM\Index(name: 'IDX_7AB5BB8B401B253C', columns: ['event_type_id'])]
+#[ORM\UniqueConstraint(name: 'event_event_uuid_key', columns: ['uuid'])]
+#[ORM\Entity]
 class EventEvent
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="event_event_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'event_event_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
+
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    private string $uuid = '';
+
+    #[ORM\Column(name: 'title', type: 'text', nullable: true)]
+    private ?string $title = null;
+
+    #[ORM\Column(name: 'description', type: 'text', nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\Column(name: 'media_path', type: 'text', nullable: true)]
+    private ?string $mediaPath = null;
+
+    #[ORM\Column(name: 'pdf_path', type: 'text', nullable: true)]
+    private ?string $pdfPath = null;
+
+    #[ORM\Column(name: 'eventbrite_link', type: 'text', nullable: true)]
+    private ?string $eventbriteLink = null;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="uuid", type="guid", nullable=false, options={"default"="uuid_generate_v4()"})
+     * @var DateTime|null
      */
-    private $uuid = 'uuid_generate_v4()';
+    #[ORM\Column(name: 'begin_date', type: 'datetime', nullable: true)]
+    private ?DateTimeInterface $beginDate = null;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="title", type="text", nullable=true)
+     * @var DateTime|null
      */
-    private $title;
+    #[ORM\Column(name: 'end_date', type: 'datetime', nullable: true)]
+    private ?DateTimeInterface $endDate = null;
+
+    #[ORM\Column(name: 'is_facebook', type: 'boolean', nullable: false)]
+    private bool $isFacebook = false;
+
+    #[ORM\Column(name: 'is_newletter', type: 'boolean', nullable: false)]
+    private bool $isNewletter = false;
+
+    #[ORM\Column(name: 'visible', type: 'boolean', nullable: false)]
+    private bool $visible = false;
+
+    #[ORM\Column(name: 'tab_name', type: 'text', nullable: true)]
+    private ?string $tabName = null;
+
+    #[ORM\Column(name: 'archived', type: 'boolean', nullable: false)]
+    private bool $archived = false;
+
+    
+    #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $insertDate;
+
+    
+    #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $modifyDate;
+
+    #[ORM\Column(name: 'is_entire_day', type: 'boolean', nullable: false)]
+    private bool $isEntireDay = false;
+
+    #[ORM\Column(name: 'is_time_slot', type: 'boolean', nullable: false)]
+    private bool $isTimeSlot = false;
+
+    #[ORM\Column(name: 'external_link', type: 'text', nullable: true)]
+    private ?string $externalLink = null;
+
+    #[ORM\Column(name: 'price', type: 'text', nullable: true)]
+    private ?string $price = null;
+
+    #[ORM\Column(name: 'location', type: 'text', nullable: true)]
+    private ?string $location = null;
+
+    #[ORM\Column(name: 'url_id', type: 'text', nullable: true)]
+    private ?string $urlId = null;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="description", type="text", nullable=true)
+     * @var DateTime|null
      */
-    private $description;
+    #[ORM\Column(name: 'time_slot_start', type: 'time', nullable: true)]
+    private ?DateTimeInterface $timeSlotStart = null;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="media_path", type="text", nullable=true)
+     * @var DateTime|null
      */
-    private $mediaPath;
+    #[ORM\Column(name: 'time_slot_end', type: 'time', nullable: true)]
+    private ?DateTimeInterface $timeSlotEnd = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="pdf_path", type="text", nullable=true)
-     */
-    private $pdfPath;
+    #[ORM\JoinColumn(name: 'commercio_administrator_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'CommercioAdministrator')]
+    private ?CommercioAdministrator $commercioAdministrator = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="eventbrite_link", type="text", nullable=true)
-     */
-    private $eventbriteLink;
+    #[ORM\JoinColumn(name: 'commercio_commercant_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'CommercioCommercant')]
+    private ?CommercioCommercant $commercioCommercant = null;
 
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="begin_date", type="datetime", nullable=true)
-     */
-    private $beginDate;
-
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="end_date", type="datetime", nullable=true)
-     */
-    private $endDate;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_facebook", type="boolean", nullable=false)
-     */
-    private $isFacebook = false;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_newletter", type="boolean", nullable=false)
-     */
-    private $isNewletter = false;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="visible", type="boolean", nullable=false)
-     */
-    private $visible = false;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="tab_name", type="text", nullable=true)
-     */
-    private $tabName;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="archived", type="boolean", nullable=false)
-     */
-    private $archived = false;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $insertDate = 'now()';
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="modify_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $modifyDate = 'now()';
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_entire_day", type="boolean", nullable=false)
-     */
-    private $isEntireDay = false;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_time_slot", type="boolean", nullable=false)
-     */
-    private $isTimeSlot = false;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="external_link", type="text", nullable=true)
-     */
-    private $externalLink;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="price", type="text", nullable=true)
-     */
-    private $price;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="location", type="text", nullable=true)
-     */
-    private $location;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="url_id", type="text", nullable=true)
-     */
-    private $urlId;
-
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="time_slot_start", type="time", nullable=true)
-     */
-    private $timeSlotStart;
-
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="time_slot_end", type="time", nullable=true)
-     */
-    private $timeSlotEnd;
-
-    /**
-     * @var \CommercioAdministrator
-     *
-     * @ORM\ManyToOne(targetEntity="CommercioAdministrator")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="commercio_administrator_id", referencedColumnName="id")
-     * })
-     */
-    private $commercioAdministrator;
-
-    /**
-     * @var \CommercioCommercant
-     *
-     * @ORM\ManyToOne(targetEntity="CommercioCommercant")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="commercio_commercant_id", referencedColumnName="id")
-     * })
-     */
-    private $commercioCommercant;
-
-    /**
-     * @var \EventType
-     *
-     * @ORM\ManyToOne(targetEntity="EventType")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="event_type_id", referencedColumnName="id")
-     * })
-     */
-    private $eventType;
+    #[ORM\JoinColumn(name: 'event_type_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'EventType')]
+    private ?EventType $eventType = null;
 
     public function getId(): ?string
     {
@@ -290,24 +196,24 @@ class EventEvent
         return $this;
     }
 
-    public function getBeginDate(): ?\DateTimeInterface
+    public function getBeginDate(): ?DateTimeInterface
     {
         return $this->beginDate;
     }
 
-    public function setBeginDate(?\DateTimeInterface $beginDate): self
+    public function setBeginDate(?DateTimeInterface $beginDate): self
     {
         $this->beginDate = $beginDate;
 
         return $this;
     }
 
-    public function getEndDate(): ?\DateTimeInterface
+    public function getEndDate(): ?DateTimeInterface
     {
         return $this->endDate;
     }
 
-    public function setEndDate(?\DateTimeInterface $endDate): self
+    public function setEndDate(?DateTimeInterface $endDate): self
     {
         $this->endDate = $endDate;
 
@@ -374,24 +280,24 @@ class EventEvent
         return $this;
     }
 
-    public function getInsertDate(): ?\DateTimeInterface
+    public function getInsertDate(): ?DateTimeInterface
     {
         return $this->insertDate;
     }
 
-    public function setInsertDate(\DateTimeInterface $insertDate): self
+    public function setInsertDate(DateTimeInterface $insertDate): self
     {
         $this->insertDate = $insertDate;
 
         return $this;
     }
 
-    public function getModifyDate(): ?\DateTimeInterface
+    public function getModifyDate(): ?DateTimeInterface
     {
         return $this->modifyDate;
     }
 
-    public function setModifyDate(\DateTimeInterface $modifyDate): self
+    public function setModifyDate(DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
 
@@ -470,24 +376,24 @@ class EventEvent
         return $this;
     }
 
-    public function getTimeSlotStart(): ?\DateTimeInterface
+    public function getTimeSlotStart(): ?DateTimeInterface
     {
         return $this->timeSlotStart;
     }
 
-    public function setTimeSlotStart(?\DateTimeInterface $timeSlotStart): self
+    public function setTimeSlotStart(?DateTimeInterface $timeSlotStart): self
     {
         $this->timeSlotStart = $timeSlotStart;
 
         return $this;
     }
 
-    public function getTimeSlotEnd(): ?\DateTimeInterface
+    public function getTimeSlotEnd(): ?DateTimeInterface
     {
         return $this->timeSlotEnd;
     }
 
-    public function setTimeSlotEnd(?\DateTimeInterface $timeSlotEnd): self
+    public function setTimeSlotEnd(?DateTimeInterface $timeSlotEnd): self
     {
         $this->timeSlotEnd = $timeSlotEnd;
 

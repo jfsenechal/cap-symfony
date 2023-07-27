@@ -2,6 +2,9 @@
 
 namespace Cap\Commercio\Pdf;
 
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Cap\Commercio\Entity\PaymentBill;
 use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Repository\PaymentOrderAddressRepository;
@@ -13,18 +16,17 @@ class PdfGenerator
     use PdfDownloaderTrait;
 
     public function __construct(
-        private Environment $environment,
-        private PaymentOrderLineRepository $paymentOrderLineRepository,
-        private PaymentOrderAddressRepository $paymentOrderAddressRepository
+        private readonly Environment $environment,
+        private readonly PaymentOrderLineRepository $paymentOrderLineRepository,
+        private readonly PaymentOrderAddressRepository $paymentOrderAddressRepository
     ) {
     }
 
     /**
-     * @param PaymentOrder $order
      * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function generateContentForOrder(PaymentOrder $order): string
     {
@@ -42,11 +44,10 @@ class PdfGenerator
     }
 
     /**
-     * @param PaymentBill $bill
      * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function generateContentForBill(PaymentBill $bill): string
     {

@@ -2,81 +2,50 @@
 
 namespace Cap\Commercio\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Page
- *
- * @ORM\Table(name="page")
- * @ORM\Entity
  */
+#[ORM\Table(name: 'page')]
+#[ORM\Entity]
 class Page
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="page_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'page_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="name", type="string", nullable=true)
-     */
-    private $name = '';
+    #[ORM\Column(name: 'name', type: 'string', nullable: true)]
+    private ?string $name = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="template_type", type="string", length=130, nullable=false)
-     */
-    private $templateType;
+    #[ORM\Column(name: 'template_type', type: 'string', length: 130, nullable: false)]
+    private ?string $templateType = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $insertDate = 'now()';
+    
+    #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $insertDate;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="modify_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $modifyDate = 'now()';
+    
+    #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $modifyDate;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="menu_order_index", type="smallint", nullable=false)
-     */
+    
+    #[ORM\Column(name: 'menu_order_index', type: 'smallint', nullable: false)]
     private $menuOrderIndex = '0';
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="in_menu", type="boolean", nullable=false)
-     */
-    private $inMenu = false;
+    #[ORM\Column(name: 'in_menu', type: 'boolean', nullable: false)]
+    private bool $inMenu = false;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="is_cachable", type="boolean", nullable=false, options={"default"="1"})
-     */
-    private $isCachable = true;
+    #[ORM\Column(name: 'is_cachable', type: 'boolean', nullable: false, options: ['default' => '1'])]
+    private bool $isCachable = true;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="title", type="string", length=200, nullable=false)
-     */
-    private $title = '';
+    #[ORM\Column(name: 'title', type: 'string', length: 200, nullable: false)]
+    private string $title = '';
 
     public function getId(): ?string
     {
@@ -107,24 +76,24 @@ class Page
         return $this;
     }
 
-    public function getInsertDate(): ?\DateTimeInterface
+    public function getInsertDate(): ?DateTimeInterface
     {
         return $this->insertDate;
     }
 
-    public function setInsertDate(\DateTimeInterface $insertDate): self
+    public function setInsertDate(DateTimeInterface $insertDate): self
     {
         $this->insertDate = $insertDate;
 
         return $this;
     }
 
-    public function getModifyDate(): ?\DateTimeInterface
+    public function getModifyDate(): ?DateTimeInterface
     {
         return $this->modifyDate;
     }
 
-    public function setModifyDate(\DateTimeInterface $modifyDate): self
+    public function setModifyDate(DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
 

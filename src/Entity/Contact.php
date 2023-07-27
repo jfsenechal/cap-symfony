@@ -2,74 +2,46 @@
 
 namespace Cap\Commercio\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Contact
- *
- * @ORM\Table(name="contact")
- * @ORM\Entity
  */
+#[ORM\Table(name: 'contact')]
+#[ORM\Entity]
 class Contact
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="contact_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
+    
+    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'contact_id_seq', allocationSize: 1, initialValue: 1)]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="firstname", type="string", length=100, nullable=false)
-     */
-    private $firstname = '';
+    #[ORM\Column(name: 'firstname', type: 'string', length: 100, nullable: false)]
+    private string $firstname = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="lastname", type="string", length=100, nullable=false)
-     */
-    private $lastname = '';
+    #[ORM\Column(name: 'lastname', type: 'string', length: 100, nullable: false)]
+    private string $lastname = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=200, nullable=false)
-     */
-    private $email = '';
+    #[ORM\Column(name: 'email', type: 'string', length: 200, nullable: false)]
+    private string $email = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="phone", type="string", length=100, nullable=false)
-     */
-    private $phone = '';
+    #[ORM\Column(name: 'phone', type: 'string', length: 100, nullable: false)]
+    private string $phone = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="message", type="text", nullable=false)
-     */
-    private $message = '';
+    #[ORM\Column(name: 'message', type: 'text', nullable: false)]
+    private string $message = '';
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $insertDate = 'now()';
+    
+    #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $insertDate;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="modify_date", type="datetime", nullable=false, options={"default"="now()"})
-     */
-    private $modifyDate = 'now()';
+    
+    #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
+    private \DateTimeInterface $modifyDate;
 
     public function getId(): ?string
     {
@@ -136,24 +108,24 @@ class Contact
         return $this;
     }
 
-    public function getInsertDate(): ?\DateTimeInterface
+    public function getInsertDate(): ?DateTimeInterface
     {
         return $this->insertDate;
     }
 
-    public function setInsertDate(\DateTimeInterface $insertDate): self
+    public function setInsertDate(DateTimeInterface $insertDate): self
     {
         $this->insertDate = $insertDate;
 
         return $this;
     }
 
-    public function getModifyDate(): ?\DateTimeInterface
+    public function getModifyDate(): ?DateTimeInterface
     {
         return $this->modifyDate;
     }
 
-    public function setModifyDate(\DateTimeInterface $modifyDate): self
+    public function setModifyDate(DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
 

@@ -13,7 +13,7 @@ use Symfony\Component\Form\FormEvents;
  */
 class TagsEventSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private BlogTagRepository $tagRepository)
+    public function __construct(private readonly BlogTagRepository $tagRepository)
     {
     }
 
