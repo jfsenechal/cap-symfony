@@ -16,7 +16,7 @@ use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
 #[AsCommand(
     name: 'cap:css',
-    description: 'Add a short description for your command',
+    description: 'Test compilation css',
 )]
 class GenerateCssCommand extends Command
 {
@@ -44,7 +44,7 @@ class GenerateCssCommand extends Command
 
         $order = $this->paymentOrderRepository->find(875);
         $html = $this->pdfGenerator->generateContentForOrder($order);
-        $css = file_get_contents($this->parameterBag->get('kernel.project_dir') . '/public/dist/output.css');
+        $css = file_get_contents($this->parameterBag->get('kernel.project_dir').'/public/dist/output.css');
 
         $compiled = $cssToInlineStyles->convert($html, $css);
         echo $compiled;

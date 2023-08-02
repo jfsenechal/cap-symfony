@@ -12,9 +12,12 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * Supprime de la db de cap, les commerçants qui ne sont plus dans le bottin
+ */
 #[AsCommand(
     name: 'cap:fix-synchro',
-    description: 'Synchro avec le bottin',
+    description: 'Synchronisation avec le bottin',
 )]
 class SynchroBottinCommand extends Command
 {

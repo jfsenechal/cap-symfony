@@ -29,10 +29,13 @@ trait PdfDownloaderTrait
     }
 
     /**
+     * @param string $html
+     * @param string $fileName
+     * @param bool $debug
      * @return string
      * @throws Html2PdfException
      */
-    public function downloadPdf(string $html, string $fileName, bool $debug = false): Response
+    public function downloadPdf(string $html, string $fileName, bool $debug = false): string|Response
     {
         $html2pdf = $this->generatePdfH2Pdf($html, $debug);
 
@@ -40,13 +43,16 @@ trait PdfDownloaderTrait
     }
 
     /**
+     * @param string $html
+     * @param string $fileName
+     * @param bool $debug
      * @return string
      * @throws Html2PdfException
      */
     public function savePdfToDisk(string $html, string $fileName, bool $debug = false): string
     {
         $html2pdf = $this->generatePdfH2Pdf($html, $debug);
-        $path = $this->parameterBag->get('CAP_PATH') . 'pdf-docs/' . $fileName;
+        $path = $this->parameterBag->get('CAP_PATH').'pdf-docs/'.$fileName;
 
         return $html2pdf->output($path, 'F');
     }

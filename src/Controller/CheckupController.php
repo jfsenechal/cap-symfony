@@ -8,7 +8,6 @@ use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
 use DateTime;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -42,10 +41,9 @@ class CheckupController extends AbstractController
         $orders = $this->paymentOrderRepository->findAllOrdered();
         $multiplePayments = [];
         foreach ($orders as $order) {
-            try {
-                $this->paymentBillRepository->findOneByOrder($order);
-            } catch (Exception) {
-                $multiplePayments[] = $order;
+            $payments = $this->paymentBillRepository->findByOrder($order);
+            if (count($payments) > 1) {
+                $multiplePayments[] = ['order' => $order, 'payments' => $payments];
             }
         }
 
@@ -128,6 +126,6 @@ class CheckupController extends AbstractController
         [$name] = explode('?', $object->getPdfPath());
         $path = $this->getParameter('CAP_PATH');
 
-        return $path . $name;
+        return $path.$name;
     }
 }

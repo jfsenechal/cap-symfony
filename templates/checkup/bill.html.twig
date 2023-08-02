@@ -14,23 +14,29 @@
                     <th>Crée le</th>
                     <th>Montant TVAC</th>
                     <th>Payé ?</th>
+                    <th>Paiements</th>
                 </tr>
-                {% for order in orders %}
+                {% for data in orders %}
                     <tr>
                         <td>
-                             <a href="{{ path('cap_order_show', {'id': order.id}) }}">
-                                {{ order.orderNumber }}
+                            <a href="{{ path('cap_order_show', {'id': data.order.id}) }}">
+                                {{ data.order.orderNumber }}
                             </a>
                         </td>
                         <td>
-                                {{ order.orderCommercant.companyName }}
+                            {{ data.order.orderCommercant.companyName }}
                         </td>
                         <td>
-                            {{ order.orderCommercant.firstname }} {{ order.orderCommercant.lastname }}
+                            {{ data.order.orderCommercant.firstname }} {{ data.order.orderCommercant.lastname }}
                         </td>
-                        <td>{{ order.insertDate|format_date('full') }}</td>
-                        <td>{{ order.priceVat|format_currency('euro') }}</td>
-                        <td>{{ order.isPaid ? 'Oui' : 'Non' }}</td>
+                        <td>{{ data.order.insertDate|format_date('full') }}</td>
+                        <td>{{ data.order.priceVat|format_currency('euro') }}</td>
+                        <td>{{ data.order.isPaid ? 'Oui' : 'Non' }}</td>
+                        <td>
+                            {% for paiement in data.payments %}
+                                <a href="{{ path('cap_bill_show', {'id': paiement.id}) }}">{{ paiement.billNumber }}</a>
+                            {% endfor %}
+                        </td>
                     </tr>
                 {% endfor %}
             </table>
