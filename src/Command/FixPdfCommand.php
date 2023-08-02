@@ -57,14 +57,14 @@ class FixPdfCommand extends Command
 
         foreach ($this->paymentOrderRepository->findAll() as $order) {
             if ($order->getPdfPath() == null) {
-                $this->io->writeln('Order Pas de path en db ' . $order->getId());
+                $this->io->writeln('Order Pas de path en db '.$order->getId());
                 if ($fix) {
                     $this->fixMissingPdf($order);
                 }
                 continue;
             }
             if (!is_readable($this->getAbsolutePathPdf($order))) {
-                $this->io->writeln('Order Pdf non lisable ' . $this->getAbsolutePathPdf($order));
+                $this->io->writeln('Order Pdf non lisable '.$this->getAbsolutePathPdf($order));
                 if ($fix) {
                     $this->fixMissingPdf($order);
                 }
@@ -78,14 +78,14 @@ class FixPdfCommand extends Command
         $this->io->section('Paiements');
         foreach ($this->paymentBillRepository->findAll() as $bill) {
             if ($bill->getPdfPath() == null) {
-                $this->io->writeln('Bill Pas de path en db ' . $bill->getId());
+                $this->io->writeln('Bill Pas de path en db '.$bill->getId());
                 if ($fix) {
                     $this->fixMissingPdf($bill);
                 }
                 continue;
             }
             if (!is_readable($this->getAbsolutePathPdf($bill))) {
-                $this->io->writeln('Bill Pdf non lisable ' . $this->getAbsolutePathPdf($bill));
+                $this->io->writeln('Bill Pdf non lisable '.$this->getAbsolutePathPdf($bill));
                 if ($fix) {
                     $this->fixMissingPdf($bill);
                 }
@@ -93,9 +93,6 @@ class FixPdfCommand extends Command
             }
             if ($this->isAbsolutePath($bill->getPdfPath())) {
                 $this->io->writeln($bill->getPdfPath());
-                if ($fix) {
-                    $this->fixPath($bill);
-                }
             }
         }
 
@@ -109,32 +106,32 @@ class FixPdfCommand extends Command
             try {
                 $html = $this->pdfGenerator->generateContentForOrder($object);
             } catch (LoaderError|RuntimeError|SyntaxError $e) {
-                $this->io->error('Content error ' . $e->getMessage());
+                $this->io->error('Content error '.$e->getMessage());
 
                 return;
             }
-            $fileName = 'order-' . $object->getUuid() . '.pdf';
+            $fileName = 'order-'.$object->getUuid().'.pdf';
         }
 
         if ($object instanceof PaymentBill) {
             try {
                 $html = $this->pdfGenerator->generateContentForBill($object);
             } catch (LoaderError|RuntimeError|SyntaxError $e) {
-                $this->io->error('Content error ' . $e->getMessage());
+                $this->io->error('Content error '.$e->getMessage());
 
                 return;
             }
-            $fileName = 'bill-' . $object->getUuid() . '.pdf';
+            $fileName = 'bill-'.$object->getUuid().'.pdf';
         }
 
         try {
             $this->pdfGenerator->savePdfToDisk($html, $fileName);
         } catch (Html2PdfException $e) {
-            $this->io->error('Not save disk ' . $e->getMessage());
+            $this->io->error('Not save disk '.$e->getMessage());
 
             return;
         }
-        $object->setPdfPath('pdf-docs/' . $fileName);
+        $object->setPdfPath('pdf-docs/'.$fileName);
 
         if ($this->flush) {
             $this->paymentBillRepository->flush();
@@ -143,21 +140,13 @@ class FixPdfCommand extends Command
 
     private function isAbsolutePath(string $path): bool
     {
-        return str_contains($path, $this->cap_path);
-    }
-
-    private function fixPath(PaymentBill $bill): void
-    {
-        if ($this->isAbsolutePath($bill->getPdfPath())) {
-            $newPath = str_replace($this->cap_path, "", $bill->getPdfPath());
-            $bill->setPdfPath($newPath);
-        }
+        return str_contains($path, 'var/www');
     }
 
     private function getAbsolutePathPdf(PaymentBill|PaymentOrder $object): string
     {
         [$name] = explode('?', $object->getPdfPath());
 
-        return $this->cap_path . $name;
+        return $this->cap_path.$name;
     }
 }
