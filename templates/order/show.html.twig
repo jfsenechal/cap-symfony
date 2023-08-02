@@ -8,7 +8,7 @@
 
             {% include '@CapCommercio/order/_actions.html.twig' %}
 
-            <h4 class="text-success">Facture</h4>
+            <h4 class="text-success">Détail de la commande</h4>
             <table class="table table-bordered">
                 <tr>
                     <th>Nom</th>
@@ -25,6 +25,22 @@
                 <tr>
                     <th>Vat</th>
                     <td>{{ orderCommercant.companyVat }}</td>
+                </tr>
+                <tr>
+                    <th>Label</th>
+                    <td>{{ line.label }}</td>
+                </tr>
+                <tr>
+                    <th>Prix TvaH</th>
+                    <td>{{ line.totalPriceEvat|format_currency('euro') }}</td>
+                </tr>
+                <tr>
+                    <th>Référence</th>
+                    <td>{{ line.reference }}</td>
+                </tr>
+                <tr>
+                    <th>Quantité</th>
+                    <td>{{ line.quantityLabel }} {{ line.quantity }}</td>
                 </tr>
                 <tr>
                     <th>Ajouté le</th>
@@ -46,26 +62,6 @@
                 {% else %}
                     <p>Aucun paiement</p>
             {% endif %}
-
-            <h4 class="text-success">Détails</h4>
-            <table class="table table-bordered">
-                <tr>
-                    <th>Label</th>
-                    <td>{{ line.label }}</td>
-                </tr>
-                <tr>
-                    <th>Prix TvaH</th>
-                    <td>{{ line.totalPriceEvat|format_currency('euro') }}</td>
-                </tr>
-                <tr>
-                    <th>Référence</th>
-                    <td>{{ line.reference }}</td>
-                </tr>
-                <tr>
-                    <th>Quantité</th>
-                    <td>{{ line.quantityLabel }} {{ line.quantity }}</td>
-                </tr>
-            </table>
 
             <h4 class="text-success">Adresse</h4>
             {% for address in addresses %}

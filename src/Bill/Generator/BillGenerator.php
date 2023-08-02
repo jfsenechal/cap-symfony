@@ -4,7 +4,6 @@ namespace Cap\Commercio\Bill\Generator;
 
 use Cap\Commercio\Entity\PaymentBill;
 use Cap\Commercio\Entity\PaymentOrder;
-use Cap\Commercio\Pdf\PdfGenerator;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use DateTime;
 use Exception;
@@ -17,12 +16,14 @@ class BillGenerator
     ) {
     }
 
-
     /**
      * @throws Exception
      */
     public function generateFromOrder(PaymentOrder $order): PaymentBill
     {
+        if ($bill = $this->billRepository->findOneByOrder($order)) {
+            return $bill;
+        }
         $bill = new PaymentBill();
         $bill->setModifyDate(new DateTime());
         $bill->setInsertDate(new DateTime());
@@ -33,6 +34,7 @@ class BillGenerator
         $bill->setPriceVat($order->getPriceVat());
         $bill->setVat($order->getVat());
         $bill->setVatAmount($order->getVatAmount());
+        $this->billRepository->persist($bill);
         $this->billRepository->flush();
 
         return $bill;
@@ -45,13 +47,13 @@ class BillGenerator
         $date = new DateTime('now');
         $last_day_of_month = $date->format('t');
 
-        $endDate = date('Y-m-' . $last_day_of_month . ' 23:59:59');
+        $endDate = date('Y-m-'.$last_day_of_month.' 23:59:59');
 
         $result = $this->billRepository->countBetweenDates($startDate, $endDate);
 
         $count = count($result);
         $count++;
-        $count_str = (string) $count;
+        $count_str = (string)$count;
         $str = "00000";
         $length = strlen($str);
 
@@ -64,6 +66,6 @@ class BillGenerator
         $period = date('Ym');
         $sequence = $this->getBillNextSequenceNumber();
 
-        return $prefix . $period . $sequence;
+        return $prefix.$period.$sequence;
     }
 }

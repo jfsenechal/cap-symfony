@@ -4,11 +4,11 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="paidModalLabel">Générer une facture</h5>
+                <h5 class="modal-title" id="paidModalLabel">Payer la commande</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Le pdf sera généré
+                Le paiement sera enregistré en db et un pdf sera généré
             </div>
             <div class="modal-footer">
                 <form method="post" action="{{ path('cap_order_paid', {'id': order.id}) }}">
@@ -16,7 +16,7 @@
                     <button type="button" class="btn btn-secondary"
                             data-bs-dismiss="modal">Annuler
                     </button>
-                    <button type="submit" class="btn btn-primary">Générer la facture</button>
+                    <button type="submit" class="btn btn-primary">Payer la facture</button>
                 </form>
             </div>
         </div>

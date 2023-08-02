@@ -6,9 +6,6 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * PaymentBill
- */
 #[ORM\Table(name: 'payment_bill')]
 #[ORM\Index(name: 'IDX_5BA28E978D9F6D38', columns: ['order_id'])]
 #[ORM\Entity]
@@ -16,7 +13,7 @@ class PaymentBill
 {
     #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\GeneratedValue()]
     #[ORM\SequenceGenerator(sequenceName: 'payment_bill_id_seq', allocationSize: 1, initialValue: 1)]
     private int $id;
 

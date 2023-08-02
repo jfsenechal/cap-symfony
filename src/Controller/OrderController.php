@@ -59,7 +59,7 @@ class OrderController extends AbstractController
                 $order->bill = $this->paymentBillRepository->findOneByOrder($order);
             } catch (NonUniqueResultException) {
                 $order->bill = null;
-                $this->addFlash('danger', 'Le bon de commande a plusieurs paiements ' . $order->getOrderNumber());
+                $this->addFlash('danger', 'Le bon de commande a plusieurs paiements '.$order->getOrderNumber());
             }
         }
 
@@ -105,7 +105,7 @@ class OrderController extends AbstractController
     #[Route(path: '/paid/{id}', name: 'cap_order_paid', methods: ['POST'])]
     public function paid(Request $request, PaymentOrder $paymentOrder): Response
     {
-        if ($this->isCsrfTokenValid('paid' . $paymentOrder->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('paid'.$paymentOrder->getId(), $request->request->get('_token'))) {
             if ($bill = $this->paymentBillRepository->findByOrder($paymentOrder)) {
                 $this->addFlash('danger', 'Cette commande a déjà une facture liée');
 
@@ -118,9 +118,9 @@ class OrderController extends AbstractController
 
                 try {
                     $html = $this->pdfGenerator->generateContentForBill($bill);
-                    $fileName = 'bill-' . $bill->getUuid() . '.pdf';
+                    $fileName = 'bill-'.$bill->getUuid().'.pdf';
                     $this->pdfGenerator->savePdfToDisk($html, $fileName);
-                    $bill->setPdfPath('pdf-docs/' . $fileName);
+                    $bill->setPdfPath('pdf-docs/'.$fileName);
                     $this->paymentBillRepository->flush();
                 } catch (LoaderError|RuntimeError|SyntaxError|Exception $e) {
                     throw new Exception($e->getMessage(), $e->getCode(), $e);
@@ -128,7 +128,7 @@ class OrderController extends AbstractController
 
                 return $this->redirectToRoute('cap_bill_show', ['id' => $bill->getId()]);
             } catch (Exception $exception) {
-                $this->addFlash('danger', 'Une erreur est survenue ' . $exception->getMessage());
+                $this->addFlash('danger', 'Une erreur est survenue '.$exception->getMessage());
             }
         }
 
@@ -138,7 +138,7 @@ class OrderController extends AbstractController
     #[Route(path: '/delete/{id}', name: 'cap_order_delete', methods: ['POST'])]
     public function delete(Request $request, PaymentOrder $paymentOrder): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $paymentOrder->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$paymentOrder->getId(), $request->request->get('_token'))) {
             $orderCommercant = $paymentOrder->getOrderCommercant();
             $line = $this->paymentOrderLineRepository->findOneByOrder($paymentOrder);
             $addresses = $this->paymentOrderAddressRepository->findByOrder($paymentOrder);

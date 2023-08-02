@@ -3,11 +3,12 @@
 {% block body %}
 
     <div class="card">
-        <h3 class="card-header">Factures payées, mais sans paiement encodés</h3>
+        <h3 class="card-header">Commande avec le statut payé, mais sans paiement encodé dans la db</h3>
 
         <div class="card-body">
             <table class="table table-bordered mt-3">
                 <tr>
+                    <th>Numéro</th>
                     <th>Commerce</th>
                     <th>Au nom de</th>
                     <th>Crée le</th>
@@ -18,8 +19,11 @@
                     <tr>
                         <td>
                             <a href="{{ path('cap_order_show', {'id': order.id}) }}">
-                                {{ order.orderCommercant.companyName }}
+                                {{ order.orderNumber }}
                             </a>
+                        </td>
+                        <td>
+                            {{ order.orderCommercant.companyName }}
                         </td>
                         <td>
                             {{ order.orderCommercant.firstname }} {{ order.orderCommercant.lastname }}

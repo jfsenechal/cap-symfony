@@ -2,22 +2,15 @@
 
 namespace Cap\Commercio\Entity;
 
-use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * PaymentOrder
- */
 #[ORM\Table(name: 'payment_order')]
 #[ORM\Index(name: 'IDX_A260A52A2E992502', columns: ['order_commercant_id'])]
 #[ORM\Index(name: 'IDX_A260A52AD7707B45', columns: ['order_status_id'])]
 #[ORM\Entity]
 class PaymentOrder
 {
-    public ?PaymentBill $bill = null;
-
-    
     #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
@@ -51,11 +44,9 @@ class PaymentOrder
     #[ORM\Column(name: 'is_paid', type: 'boolean', nullable: false)]
     private ?bool $isPaid = null;
 
-    
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
 
-    
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
 
@@ -72,6 +63,8 @@ class PaymentOrder
     #[ORM\JoinColumn(name: 'order_status_id', referencedColumnName: 'id')]
     #[ORM\ManyToOne(targetEntity: 'PaymentOrderStatus')]
     private ?PaymentOrderStatus $orderStatus = null;
+
+    public ?PaymentBill $bill = null;
 
     public function getId(): ?string
     {
