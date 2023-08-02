@@ -27,7 +27,6 @@ class FixPdfCommand extends Command
 {
     private string $cap_path;
     private SymfonyStyle $io;
-    private bool $flush = false;
 
     public function __construct(
         private readonly PaymentOrderRepository $paymentOrderRepository,
@@ -41,8 +40,7 @@ class FixPdfCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addOption('fix', null, InputOption::VALUE_NONE, 'Option description')
-            ->addOption('flush', null, InputOption::VALUE_NONE, 'Option description');
+            ->addOption('fix', null, InputOption::VALUE_NONE, 'Option description');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -50,7 +48,6 @@ class FixPdfCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
 
         $fix = $input->getOption('fix');
-        $this->flush = (bool)$input->getOption('flush');
         $this->cap_path = $this->parameterBag->get('CAP_PATH');
 
         $this->io->section('Commandes');
@@ -133,9 +130,7 @@ class FixPdfCommand extends Command
         }
         $object->setPdfPath('pdf-docs/'.$fileName);
 
-        if ($this->flush) {
-            $this->paymentBillRepository->flush();
-        }
+        $this->paymentBillRepository->flush();
     }
 
     private function isAbsolutePath(string $path): bool
