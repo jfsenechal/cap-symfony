@@ -67,6 +67,7 @@ class FixPdfAbsoluteCommand extends Command
         if ($this->isAbsolutePath($bill->getPdfPath())) {
             list($a, $b) = explode('pdf-docs', $bill->getPdfPath());
             $newPath = 'pdf-docs'.$b;
+            $this->io->success($newPath);
             $bill->setPdfPath($newPath);
         }
     }
