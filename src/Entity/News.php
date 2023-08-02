@@ -2,25 +2,25 @@
 
 namespace Cap\Commercio\Entity;
 
-use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * NewsNews
- */
 #[ORM\Table(name: 'news_news')]
 #[ORM\UniqueConstraint(name: 'news_news_uuid_key', columns: ['uuid'])]
 #[ORM\Entity]
-class NewsNews
+class News
 {
+    use UuidTrait;
+
     #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
     #[ORM\SequenceGenerator(sequenceName: 'news_news_id_seq', allocationSize: 1, initialValue: 1)]
     private int $id;
 
-    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false)]
     private string $uuid = '';
 
     #[ORM\Column(name: 'title', type: 'text', nullable: false)]
@@ -38,11 +38,9 @@ class NewsNews
     #[ORM\Column(name: 'is_send', type: 'boolean', nullable: false)]
     private bool $isSend = false;
 
-    
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
 
-    
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
 
@@ -51,6 +49,9 @@ class NewsNews
 
     #[ORM\Column(name: 'send_to_bottin', type: 'boolean', nullable: false)]
     private bool $sendToBottin = false;
+
+    #[Assert\Image()]
+    public UploadedFile $image;
 
     public function getId(): ?string
     {

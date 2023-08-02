@@ -29,6 +29,10 @@
                 </tr>
             </table>
 
+            {% if news.mediaPath %}
+                <img src="{{ asset(news.mediaPath) }}" alt="img">
+            {% endif %}
+
         </div>
     </div>
     {{ include('@CapCommercio/news/_delete_form.html.twig') }}

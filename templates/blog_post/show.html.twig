@@ -63,6 +63,12 @@
 
              {{ include('@CapCommercio/blog_post/_tags.html.twig') }}
              {{ include('@CapCommercio/blog_post/_categories.html.twig') }}
+
+
+            {% if post.mediaPath %}
+                <img src="{{ asset(post.mediaPath) }}" alt="img">
+            {% endif %}
+
         </div>
     </div>
     {{ include('@CapCommercio/blog_post/_delete_form.html.twig') }}

@@ -7,6 +7,7 @@ use Cap\Commercio\Form\BlogPostSearchType;
 use Cap\Commercio\Form\BlogPostType;
 use Cap\Commercio\Repository\BlogPostRepository;
 use Cap\Commercio\Repository\RepositoryUtils;
+use Cap\Commercio\Service\ImageService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +20,8 @@ class BlogPostController extends AbstractController
 {
     public function __construct(
         private readonly BlogPostRepository $blog_postRepository,
-        private readonly RepositoryUtils    $repositoryUtils,
+        private readonly RepositoryUtils $repositoryUtils,
+        private readonly ImageService $imageService
     ) {
     }
 
@@ -50,8 +52,19 @@ class BlogPostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->blog_postRepository->persist($blogPost);
-            $this->blog_postRepository->flush();
+            try {
+                $imageName = $this->imageService->upload($blogPost->image);
+                $blogPost->setUuid($blogPost->generateUuid());
+                $blogPost->setMediaPath($imageName);
+                $blogPost->setInsertDate(new \DateTime());
+                $blogPost->setModifyDate(new \DateTime());
+                $blogPost->setPublishDate(new \DateTime());
+
+                $this->blog_postRepository->persist($blogPost);
+                $this->blog_postRepository->flush();
+            } catch (\Exception $exception) {
+                $this->addFlash('danger', $exception->getMessage());
+            }
 
             return $this->redirectToRoute('cap_blog_post_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -67,6 +80,7 @@ class BlogPostController extends AbstractController
     {
         $this->repositoryUtils->setTagsToPost($blog_post);
         $this->repositoryUtils->setCategoriesToPost($blog_post);
+
         return $this->render('@CapCommercio/blog_post/show.html.twig', [
             'post' => $blog_post,
         ]);
@@ -74,7 +88,7 @@ class BlogPostController extends AbstractController
 
     #[Route('/{id}/edit', name: 'cap_blog_post_edit', methods: ['GET', 'POST'])]
     public function edit(
-        Request  $request,
+        Request $request,
         BlogPost $blog_post,
     ): Response {
         $this->repositoryUtils->setTagsToPost($blog_post);
@@ -107,10 +121,10 @@ class BlogPostController extends AbstractController
 
     #[Route('/{id}', name: 'cap_blog_post_delete', methods: ['POST'])]
     public function delete(
-        Request  $request,
+        Request $request,
         BlogPost $blogPost,
     ): Response {
-        if ($this->isCsrfTokenValid('delete' . $blogPost->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$blogPost->getId(), $request->request->get('_token'))) {
             $this->blog_postRepository->remove($blogPost);
             $this->blog_postRepository->flush();
         }

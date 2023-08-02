@@ -10,10 +10,12 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Image as ImageConstraint;
 
 class BlogPostType extends AbstractType
 {
@@ -54,6 +56,13 @@ class BlogPostType extends AbstractType
             ->add('tags', TagsAutocompleteField::class, [
                 'constraints' => [
                     // new Count(min: 1, minMessage: 'We need to eat *something*'),
+                ],
+            ])
+            ->add('image', FileType::class, [
+                'label' => 'Image',
+                'required' => true,
+                'constraints' => [
+                    new ImageConstraint()
                 ],
             ])
             ->addEventSubscriber(new FormNewTagEvent($this->tagRepository));

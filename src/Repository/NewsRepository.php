@@ -3,15 +3,15 @@
 namespace Cap\Commercio\Repository;
 
 use Cap\Commercio\Doctrine\OrmCrudTrait;
-use Cap\Commercio\Entity\NewsNews;
+use Cap\Commercio\Entity\News;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method NewsNews|null find($id, $lockMode = null, $lockVersion = null)
- * @method NewsNews|null findOneBy(array $criteria, array $orderBy = null)
- * @method NewsNews[]    findAll()
- * @method NewsNews[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method News|null find($id, $lockMode = null, $lockVersion = null)
+ * @method News|null findOneBy(array $criteria, array $orderBy = null)
+ * @method News[]    findAll()
+ * @method News[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class NewsRepository extends ServiceEntityRepository
 {
@@ -19,11 +19,11 @@ class NewsRepository extends ServiceEntityRepository
 
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, NewsNews::class);
+        parent::__construct($registry, News::class);
     }
 
     /**
-     * @return NewsNews[]
+     * @return News[]
      */
     public function findAllOrdered(): array
     {

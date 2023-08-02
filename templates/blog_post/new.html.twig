@@ -2,20 +2,18 @@
 
 {% block body %}
 
-    {% block body %}
+    <div class="card">
+        <h3 class="card-header">Nouvel article</h3>
 
-        <div class="card">
-            <h3 class="card-header">Nouvel article</h3>
-
-            <div class="card-body">
-                     {% include '@CapCommercio/blog_post/_form.html.twig' %}
-            </div>
-            <div class="card-footer text-end">
-                <a href="{{ path('cap_blog_post_show', {'id': post.id}) }}" class="btn btn-secondary">
-                    <i class="fa fa-arrow-left"></i> Annuler
-                </a>
-            </div>
+        <div class="card-body">
+            {% include '@CapCommercio/blog_post/_form.html.twig' %}
         </div>
+        <div class="card-footer text-end">
+            <a href="{{ path('cap_blog_post_index') }}" class="btn btn-secondary">
+                <i class="fa fa-arrow-left"></i> Annuler
+            </a>
+        </div>
+    </div>
 
-    {% endblock %}
+{% endblock %}
 

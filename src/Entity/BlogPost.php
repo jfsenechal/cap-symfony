@@ -2,31 +2,29 @@
 
 namespace Cap\Commercio\Entity;
 
-use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Stringable;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * BlogPost
- */
 #[ORM\Table(name: 'blog_post')]
 #[ORM\Index(name: 'IDX_BA5AE01D82F1BAF4', columns: ['language_id'])]
 #[ORM\Index(name: 'IDX_BA5AE01DF675F31B', columns: ['author_id'])]
 #[ORM\Entity]
 class BlogPost implements Stringable
 {
-    use TagTrait,CategoriesTrait;
+    use TagTrait, CategoriesTrait, UuidTrait;
 
-    
+
     #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
     #[ORM\SequenceGenerator(sequenceName: 'blog_post_id_seq', allocationSize: 1, initialValue: 1)]
     private int $id;
 
-    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false)]
     private string $uuid = '';
 
     #[ORM\Column(name: 'title', type: 'string', length: 150, nullable: false)]
@@ -38,11 +36,9 @@ class BlogPost implements Stringable
     #[ORM\Column(name: 'post_text', type: 'text', nullable: false)]
     private string $postText = '';
 
-    
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
 
-    
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
 
@@ -50,7 +46,7 @@ class BlogPost implements Stringable
     private bool $archived = false;
 
     #[ORM\Column(name: 'publish_date', type: 'datetime', nullable: true, options: ['default' => 'now()'])]
-    private DateTimeInterface $publishDate ;
+    private DateTimeInterface $publishDate;
 
     #[ORM\Column(name: 'is_online', type: 'boolean', nullable: false)]
     private bool $isOnline = false;
@@ -71,6 +67,11 @@ class BlogPost implements Stringable
     #[ORM\JoinColumn(name: 'author_id', referencedColumnName: 'id')]
     #[ORM\ManyToOne(targetEntity: 'BlogAuthor')]
     private ?BlogAuthor $author = null;
+
+    #[Assert\Image(
+
+    )]
+    public UploadedFile $image;
 
     public function __construct()
     {
