@@ -32,4 +32,17 @@ class NewsRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @return News[]
+     */
+    public function findNotSended(): array
+    {
+        return $this->createQueryBuilder('news')
+            ->andWhere('news.isSend = false')
+            ->andWhere('news.sendByMail = true')
+            ->orderBy('news.insertDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -47,6 +47,32 @@ class CommercioCommercantRepository extends ServiceEntityRepository
     /**
      * @return CommercioCommercant[]
      */
+    public function findCanReceiveNews(): array
+    {
+        return $this->createQb()
+            ->andWhere('commercant.canReceiveNews = :receive')
+            ->setParameter('receive', 1)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return CommercioCommercant[]
+     */
+    public function findMemberAndCanReceiveNews(): array
+    {
+        return $this->createQb()
+            ->andWhere('commercant.isMember = :member')
+            ->setParameter('member', 1)
+            ->andWhere('commercant.canReceiveNews = :receive')
+            ->setParameter('receive', 1)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return CommercioCommercant[]
+     */
     public function membres(): array
     {
         return $this->createQb()
@@ -63,7 +89,7 @@ class CommercioCommercantRepository extends ServiceEntityRepository
     {
         $qb = $this->createQb();
         $qb->andWhere('upper(commercant.legalEntity) LIKE upper(:name)')
-            ->setParameter('name', '%' . $name . '%');
+            ->setParameter('name', '%'.$name.'%');
 
         if ($isMember === 1 || $isMember === 0) {
             $qb->andWhere('commercant.isMember = :member')
