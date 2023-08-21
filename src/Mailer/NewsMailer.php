@@ -36,7 +36,6 @@ class NewsMailer
         try {
 
             $allNews = $this->newsRepository->findNotSended();
-            dump($allNews);
             foreach ($allNews as $news) {
 
                 if (!$news->isSendByMail()) {

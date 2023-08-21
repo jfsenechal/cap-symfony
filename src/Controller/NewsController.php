@@ -19,7 +19,6 @@ class NewsController extends AbstractController
 {
     public function __construct(
         private readonly NewsRepository $newsRepository,
-        private readonly NewsMailer $newsMailer,
         private readonly ImageService $imageService
     ) {
     }
@@ -28,7 +27,6 @@ class NewsController extends AbstractController
     public function index(): Response
     {
         $news = $this->newsRepository->findAllOrdered();
-        $this->newsMailer->send();
 
         return $this->render('@CapCommercio/news/index.html.twig', [
             'news' => $news,
