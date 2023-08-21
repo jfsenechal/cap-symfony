@@ -160,7 +160,7 @@ class MandrillController extends AbstractController
             '@CapCommercio/mandrill/template_edit.html.twig',
             [
                 'template' => $template,
-                'form' => $form->createView(),
+                'form' => $form,
             ]
         );
     }

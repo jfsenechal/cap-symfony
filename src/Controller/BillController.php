@@ -37,7 +37,7 @@ class BillController extends AbstractController
             '@CapCommercio/bill/index.html.twig',
             [
                 'bills' => $bills,
-                'form' => $form->createView(),
+                'form' => $form,
             ]
         );
     }

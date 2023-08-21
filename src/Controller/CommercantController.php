@@ -52,7 +52,7 @@ class CommercantController extends AbstractController
 
         return $this->render('@CapCommercio/commercant/index.html.twig', [
             'commercants' => $commercants,
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 

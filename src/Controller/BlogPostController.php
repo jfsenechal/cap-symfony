@@ -40,7 +40,7 @@ class BlogPostController extends AbstractController
 
         return $this->render('@CapCommercio/blog_post/index.html.twig', [
             'posts' => $posts,
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 
