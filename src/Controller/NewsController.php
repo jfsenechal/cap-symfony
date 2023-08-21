@@ -4,6 +4,7 @@ namespace Cap\Commercio\Controller;
 
 use Cap\Commercio\Entity\News;
 use Cap\Commercio\Form\NewsType;
+use Cap\Commercio\Mailer\NewsMailer;
 use Cap\Commercio\Repository\NewsRepository;
 use Cap\Commercio\Service\ImageService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,6 +19,7 @@ class NewsController extends AbstractController
 {
     public function __construct(
         private readonly NewsRepository $newsRepository,
+        private readonly NewsMailer $newsMailer,
         private readonly ImageService $imageService
     ) {
     }
@@ -26,6 +28,7 @@ class NewsController extends AbstractController
     public function index(): Response
     {
         $news = $this->newsRepository->findAllOrdered();
+        $this->newsMailer->send();
 
         return $this->render('@CapCommercio/news/index.html.twig', [
             'news' => $news,
@@ -66,8 +69,11 @@ class NewsController extends AbstractController
     #[Route('/{id}', name: 'cap_news_show', methods: ['GET'])]
     public function show(News $news): Response
     {
+        $mark = $this->markdownHelper->markdownToHtml($news->getDescription());
+
         return $this->render('@CapCommercio/news/show.html.twig', [
             'news' => $news,
+            'mark' => $mark,
         ]);
     }
 

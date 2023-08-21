@@ -6,9 +6,6 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * CommercioBottin
- */
 #[ORM\Table(name: 'commercio_bottin')]
 #[ORM\Entity]
 class CommercioBottin
@@ -22,11 +19,9 @@ class CommercioBottin
     #[ORM\Column(name: 'bottin', type: 'json', nullable: false)]
     private ?array $bottin = null;
 
-    
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
 
-    
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
 
