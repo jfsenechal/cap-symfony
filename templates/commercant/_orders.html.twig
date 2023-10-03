@@ -8,11 +8,13 @@
     </tr>
     {% for order in orders %}
         <tr>
-            <td>{{ order.orderNumber }}</td>
             <td>
                 <a href="{{ path('cap_order_show', {'id': order.id}) }}">
-                    {{ order.modifyDate|format_date('full') }}
+                    {{ order.orderNumber }}
                 </a>
+            </td>
+            <td>
+                {{ order.modifyDate|format_date('full') }}
             </td>
             <td>{{ order.isPaid ? 'Oui' : 'Non' }}</td>
             <td>{{ order.priceVat|format_currency('eur') }}</td>
