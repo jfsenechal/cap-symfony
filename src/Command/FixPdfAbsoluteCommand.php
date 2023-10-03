@@ -13,7 +13,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'cap:fix-pdf-absolute',
-    description: 'Parcours les paiements pour vérifier les pdfs',
+    description: 'Renomme le chemin du pdf en relatif',
 )]
 class FixPdfAbsoluteCommand extends Command
 {
