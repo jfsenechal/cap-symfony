@@ -10,19 +10,12 @@ use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * RightAccess
- */
 #[ORM\Table(name: 'right_access')]
 #[ORM\UniqueConstraint(name: 'right_access_email_key', columns: ['email'])]
 #[ORM\Entity]
 class RightAccess implements UserInterface, PasswordHasherAwareInterface, PasswordAuthenticatedUserInterface, Stringable
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'right_access_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'email', type: 'string', length: 200, nullable: false)]
     private ?string $email = null;

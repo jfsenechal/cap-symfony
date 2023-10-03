@@ -7,19 +7,12 @@ use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Stringable;
 
-/**
- * Language
- */
 #[ORM\Table(name: 'language')]
 #[ORM\UniqueConstraint(name: 'language_code_key', columns: ['code'])]
 #[ORM\Entity]
 class Language implements Stringable
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'language_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'code', type: 'string', length: 3, nullable: false)]
     private ?string $code = null;

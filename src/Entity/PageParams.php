@@ -6,19 +6,12 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * PageParams
- */
 #[ORM\Table(name: 'page_params')]
 #[ORM\Index(name: 'IDX_E018F8EDC4663E4', columns: ['page_id'])]
 #[ORM\Entity]
 class PageParams
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'page_params_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'param_key', type: 'text', nullable: false)]
     private ?string $paramKey = null;

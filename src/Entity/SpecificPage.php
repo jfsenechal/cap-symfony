@@ -6,18 +6,11 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * SpecificPage
- */
 #[ORM\Table(name: 'specific_page')]
 #[ORM\Entity]
 class SpecificPage
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'specific_page_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'module_name', type: 'string', length: 25, nullable: true)]
     private ?string $moduleName = null;
@@ -25,11 +18,9 @@ class SpecificPage
     #[ORM\Column(name: 'entry', type: 'string', length: 50, nullable: true)]
     private ?string $entry = null;
 
-    
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
 
-    
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
 

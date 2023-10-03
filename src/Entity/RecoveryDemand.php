@@ -6,18 +6,11 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * RecoveryDemand
- */
 #[ORM\Table(name: 'recovery_demand')]
 #[ORM\Entity]
 class RecoveryDemand
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'recovery_demand_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'email', type: 'string', length: 100, nullable: false)]
     private ?string $email = null;

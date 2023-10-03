@@ -6,9 +6,6 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Settings
- */
 #[ORM\Table(name: 'settings')]
 #[ORM\Entity]
 class Settings
@@ -26,10 +23,8 @@ class Settings
     #[ORM\Column(name: 'param_value', type: 'text', nullable: false)]
     private ?string $paramValue = null;
 
-
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private DateTimeInterface $insertDate;
-
 
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private DateTimeInterface $modifyDate;

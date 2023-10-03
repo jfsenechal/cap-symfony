@@ -6,9 +6,6 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * CommercioCommercantAddress
- */
 #[ORM\Table(name: 'commercio_commercant_address')]
 #[ORM\Index(name: 'IDX_1EF28EAEF5B7AF75', columns: ['address_id'])]
 #[ORM\Index(name: 'IDX_1EF28EAE79D40486', columns: ['commercio_commercant_id'])]
@@ -16,11 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class CommercioCommercantAddress
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'commercio_commercant_address_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
     private string $uuid = '';

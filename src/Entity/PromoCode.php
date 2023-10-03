@@ -6,25 +6,17 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * PromoCode
- */
 #[ORM\Table(name: 'promo_code')]
 #[ORM\Index(name: 'IDX_3D8C939EC7313306', columns: ['promo_code_status_id'])]
 #[ORM\UniqueConstraint(name: 'promo_code_code_key', columns: ['code'])]
 #[ORM\Entity]
 class PromoCode
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'promo_code_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
     private string $uuid = '';
 
-    
     #[ORM\Column(name: 'emission_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private $emissionDate = 'now()';
 

@@ -2,23 +2,15 @@
 
 namespace Cap\Commercio\Entity;
 
-use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * CommercioBottinLog
- */
 #[ORM\Table(name: 'commercio_bottin_log')]
 #[ORM\UniqueConstraint(name: 'commercio_bottin_log_uuid_key', columns: ['uuid'])]
 #[ORM\Entity]
 class CommercioBottinLog
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'commercio_bottin_log_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
     private string $uuid = '';
@@ -29,11 +21,11 @@ class CommercioBottinLog
     #[ORM\Column(name: 'type', type: 'text', nullable: false)]
     private ?string $type = null;
 
-    
+
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
 
-    
+
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
 

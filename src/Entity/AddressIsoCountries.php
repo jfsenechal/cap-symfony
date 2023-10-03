@@ -4,18 +4,11 @@ namespace Cap\Commercio\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * AddressIsoCountries
- */
 #[ORM\Table(name: 'address_iso_countries')]
 #[ORM\Entity]
 class AddressIsoCountries
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'address_iso_countries_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'code', type: 'bigint', nullable: false)]
     private ?string $code = null;

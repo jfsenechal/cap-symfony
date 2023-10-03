@@ -6,20 +6,13 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * BlogTagPost
- */
 #[ORM\Table(name: 'blog_tag_post')]
 #[ORM\Index(name: 'IDX_C0D8F71C4B89032C', columns: ['post_id'])]
 #[ORM\Index(name: 'IDX_C0D8F71CBAD26311', columns: ['tag_id'])]
 #[ORM\Entity]
 class BlogTagPost
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'blog_tag_post_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
     private string $uuid = '';

@@ -10,11 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class CommercioBottin
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'commercio_bottin_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'bottin', type: 'json', nullable: false)]
     private ?array $bottin = null;

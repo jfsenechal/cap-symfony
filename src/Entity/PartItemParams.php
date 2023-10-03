@@ -6,19 +6,12 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * PartItemParams
- */
 #[ORM\Table(name: 'part_item_params')]
 #[ORM\UniqueConstraint(name: 'part_item_params_id_key', columns: ['id'])]
 #[ORM\Entity]
 class PartItemParams
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'part_item_params_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'part_item_id', type: 'bigint', nullable: false)]
     private ?string $partItemId = null;

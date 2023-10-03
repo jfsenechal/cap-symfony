@@ -6,9 +6,6 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * BlogCategoryPost
- */
 #[ORM\Table(name: 'blog_category_post')]
 #[ORM\Index(name: 'IDX_A297DCA612469DE2', columns: ['category_id'])]
 #[ORM\Index(name: 'IDX_A297DCA64B89032C', columns: ['post_id'])]
@@ -16,11 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class BlogCategoryPost
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'blog_category_post_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
     private string $uuid = '';

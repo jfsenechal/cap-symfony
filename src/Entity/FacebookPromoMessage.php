@@ -6,9 +6,6 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * FacebookPromoMessage
- */
 #[ORM\Table(name: 'facebook_promo_message')]
 #[ORM\Index(name: 'IDX_D6A648EA77FBEAF', columns: ['blog_post_id'])]
 #[ORM\Index(name: 'IDX_D6A648E83FA6DD0', columns: ['commercant_id'])]
@@ -18,11 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class FacebookPromoMessage
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'facebook_promo_message_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
     private string $uuid = '';

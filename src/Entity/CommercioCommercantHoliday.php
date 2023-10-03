@@ -6,20 +6,13 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * CommercioCommercantHoliday
- */
 #[ORM\Table(name: 'commercio_commercant_holiday')]
 #[ORM\UniqueConstraint(name: 'commercio_commercant_holiday_uuid_key', columns: ['uuid'])]
 #[ORM\UniqueConstraint(name: 'commercio_commercant_holiday_commercio_commercant_id_key', columns: ['commercio_commercant_id'])]
 #[ORM\Entity]
 class CommercioCommercantHoliday
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'commercio_commercant_holiday_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
     private string $uuid = '';

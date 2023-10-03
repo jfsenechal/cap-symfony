@@ -7,18 +7,11 @@ use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Stringable;
 
-/**
- * BlogCategory
- */
 #[ORM\Table(name: 'blog_category')]
 #[ORM\Entity]
 class BlogCategory implements Stringable
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'blog_category_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
     private string $uuid = '';

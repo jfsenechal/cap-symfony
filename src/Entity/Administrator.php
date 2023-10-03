@@ -6,20 +6,13 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Administrator
- */
 #[ORM\Table(name: 'administrator')]
 #[ORM\Index(name: 'IDX_58DF0651A95B5196', columns: ['right_access_id'])]
 #[ORM\UniqueConstraint(name: 'administrator_uuid_key', columns: ['uuid'])]
 #[ORM\Entity]
 class Administrator
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'administrator_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
     private string $uuid = '';

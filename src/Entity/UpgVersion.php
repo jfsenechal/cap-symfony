@@ -6,18 +6,11 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * UpgVersion
- */
 #[ORM\Table(name: 'upg_version')]
 #[ORM\Entity]
 class UpgVersion
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'upg_version_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'version', type: 'string', length: 10, nullable: false)]
     private ?string $version = null;
@@ -25,11 +18,9 @@ class UpgVersion
     #[ORM\Column(name: 'description', type: 'string', length: 255, nullable: true)]
     private ?string $description = '';
 
-    
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
 
-    
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
 

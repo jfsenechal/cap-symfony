@@ -6,9 +6,6 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * CommercioCommercant
- */
 #[ORM\Table(name: 'commercio_commercant')]
 #[ORM\Index(name: 'IDX_F8F60C85296A161C', columns: ['cta_id'])]
 #[ORM\Index(name: 'IDX_F8F60C8561835A4B', columns: ['hours_type_id'])]
@@ -17,16 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class CommercioCommercant
 {
-    public array $images = [];
-    public array $hours = [];
-    public int $bottin_id = 0;
-
-    
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'commercio_commercant_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
     private string $uuid = '';
@@ -127,6 +115,9 @@ class CommercioCommercant
     private ?RightAccess $rightAccess = null;
 
     public bool $sendMailExpired = false;
+    public array $images = [];
+    public array $hours = [];
+    public int $bottin_id = 0;
 
     public function getId(): ?string
     {

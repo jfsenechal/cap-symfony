@@ -6,20 +6,13 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * AddressAddress
- */
 #[ORM\Table(name: 'address_address')]
 #[ORM\Index(name: 'IDX_56AB98199EA97B0B', columns: ['address_type_id'])]
 #[ORM\Index(name: 'IDX_56AB9819F92F3E70', columns: ['country_id'])]
 #[ORM\Entity]
 class AddressAddress
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'address_address_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
     private string $uuid = '';

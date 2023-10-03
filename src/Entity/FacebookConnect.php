@@ -6,9 +6,6 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * FacebookConnect
- */
 #[ORM\Table(name: 'facebook_connect')]
 #[ORM\Index(name: 'IDX_2F4E56483FA6DD0', columns: ['commercant_id'])]
 #[ORM\Index(name: 'IDX_2F4E5644BD166F5', columns: ['commercio_administrator_id'])]
@@ -16,11 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class FacebookConnect
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'facebook_connect_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'token', type: 'text', nullable: false)]
     private string $token = '';

@@ -6,19 +6,12 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * NewsletterMember
- */
 #[ORM\Table(name: 'newsletter_member')]
 #[ORM\UniqueConstraint(name: 'newsletter_member_email_key', columns: ['email'])]
 #[ORM\Entity]
 class NewsletterMember
 {
-    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'newsletter_member_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'lastname', type: 'text', nullable: true)]
     private ?string $lastname = null;

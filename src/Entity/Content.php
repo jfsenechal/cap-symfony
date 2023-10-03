@@ -6,20 +6,13 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Content
- */
 #[ORM\Table(name: 'content')]
 #[ORM\Index(name: 'IDX_FEC530A9C4663E4', columns: ['page_id'])]
 #[ORM\UniqueConstraint(name: 'content_url_key', columns: ['url'])]
 #[ORM\Entity]
 class Content
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'content_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'url', type: 'string', nullable: false)]
     private string $url = '';

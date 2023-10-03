@@ -11,11 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class PaymentBill
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue()]
-    #[ORM\SequenceGenerator(sequenceName: 'payment_bill_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
     private string $uuid = '';

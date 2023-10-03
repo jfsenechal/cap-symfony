@@ -6,19 +6,12 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * ContentItem
- */
 #[ORM\Table(name: 'content_item')]
 #[ORM\Index(name: 'IDX_D279C8DB84A0A3ED', columns: ['content_id'])]
 #[ORM\Entity]
 class ContentItem
 {
-    #[ORM\Column(name: 'id', type: 'bigint', nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
-    #[ORM\SequenceGenerator(sequenceName: 'content_item_id_seq', allocationSize: 1, initialValue: 1)]
-    private int $id;
+    use IdTrait;
 
     #[ORM\Column(name: 'tag_type', type: 'string', length: 50, nullable: false)]
     private string $tagType = '';
