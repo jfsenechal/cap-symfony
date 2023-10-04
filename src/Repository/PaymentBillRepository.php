@@ -42,7 +42,7 @@ class PaymentBillRepository extends ServiceEntityRepository
     public function findByCommercant(CommercioCommercant $commercant): array
     {
         return $this->createQb()
-            ->andWhere('orderCap.orderCommercant = :commercant')
+            ->andWhere('orderCap.commercantId = :commercant')
             ->setParameter('commercant', $commercant)
             ->getQuery()
             ->getResult();
