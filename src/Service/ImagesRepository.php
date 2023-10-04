@@ -31,7 +31,7 @@ class ImagesRepository
         $commercant->images = $images;
         if ($images !== []) {
             if (!$commercant->getProfileMediaPath()) {
-                $commercant->setProfileMediaPath($images[0]);
+                $commercant->setProfileMediaPath($images[0]['path']);
             }
         } else {
             $commercant->setProfileMediaPath(null);
