@@ -8,7 +8,14 @@
             Pas de chemin pdf !
         {% endif %}
     </div>
-    <div class="col-auto"><a href="{{ path('cap_bill_all') }}" class="btn btn-primary" role='button'><i
+    <div class="col-auto">
+        <a href="{{ path('cap_commercant_show',{'id':bill.order.commercantId}) }}" class="btn btn-primary" role='button'><i
+                    class="fas fa-arrow-left"></i>
+            Retour au magasin
+        </a>
+    </div>
+    <div class="col-auto">
+        <a href="{{ path('cap_bill_all') }}" class="btn btn-primary" role='button'><i
                     class="fas fa-list"></i>
             Retour à la Liste</a>
     </div>
