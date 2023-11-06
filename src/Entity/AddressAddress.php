@@ -13,8 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 class AddressAddress
 {
     use IdTrait;
+    use UuidTrait;
 
-    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false)]
     private string $uuid = '';
 
     #[ORM\Column(name: 'street1', type: 'text', nullable: false)]
@@ -32,37 +33,23 @@ class AddressAddress
     #[ORM\Column(name: 'archived', type: 'boolean', nullable: false)]
     private bool $archived = false;
 
-    
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
 
-    
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
 
     #[ORM\JoinColumn(name: 'address_type_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'AddressType')]
+    #[ORM\ManyToOne(targetEntity: AddressType::class)]
     private ?AddressType $addressType = null;
 
     #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'AddressIsoCountries')]
+    #[ORM\ManyToOne(targetEntity: AddressIsoCountries::class)]
     private ?AddressIsoCountries $country = null;
 
     public function getId(): ?string
     {
         return $this->id;
-    }
-
-    public function getUuid(): ?string
-    {
-        return $this->uuid;
-    }
-
-    public function setUuid(string $uuid): self
-    {
-        $this->uuid = $uuid;
-
-        return $this;
     }
 
     public function getStreet1(): ?string

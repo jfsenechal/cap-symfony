@@ -13,7 +13,7 @@ class CommercioBottin
     use IdTrait;
 
     #[ORM\Column(name: 'bottin', type: 'json', nullable: false)]
-    private ?array $bottin = null;
+    private null|array|\stdClass $bottin = null;
 
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
@@ -34,7 +34,7 @@ class CommercioBottin
         return $this->bottin;
     }
 
-    public function setBottin(array $bottin): self
+    public function setBottin(array|\stdClass $bottin): self
     {
         $this->bottin = $bottin;
 

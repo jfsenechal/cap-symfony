@@ -56,16 +56,6 @@ class CommercantController extends AbstractController
         ]);
     }
 
-    #[Route('/membres', name: 'cap_commercant_membres', methods: ['GET', 'POST'])]
-    public function membres(): Response
-    {
-        $commercants = $this->commercantRepository->membres();
-
-        return $this->render('@CapCommercio/commercant/members.html.twig', [
-            'commercants' => $commercants,
-        ]);
-    }
-
     #[Route('/new', name: 'cap_commercant_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
@@ -132,51 +122,15 @@ class CommercantController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/member', name: 'cap_commercant_member', methods: ['GET', 'POST'])]
-    public function member(
-        Request $request,
-        CommercioCommercant $commercant
-    ): Response {
-        $form = $this->createForm(CheckMemberType::class, $commercant);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            if ($data->isIsMember() === false) {
-                $commercant->setAffiliationDate(null);
-            }
-            $this->commercantRepository->flush();
-            if ($data->sendMailExpired) {
-                try {
-                    $this->mailer->sendAffiliationExpired($commercant, $this->getParameter('kernel.environment'));
-                    $this->addFlash('success', 'Le mail a bien été envoyé');
-                } catch (Exception $e) {
-                    $this->addFlash('danger', 'Erreur lors de l\'envoie du mail: ' . $e->getMessage());
-                }
-            }
-            $this->addFlash('success', 'Le commerçant a été modifié');
-
-            return $this->redirectToRoute(
-                'cap_commercant_show',
-                ['id' => $commercant->getId()],
-                Response::HTTP_SEE_OTHER
-            );
-        }
-
-        return $this->render('@CapCommercio/commercant/member.html.twig', [
-            'commercant' => $commercant,
-            'form' => $form,
-        ]);
-    }
-
     #[Route('/{id}', name: 'cap_commercant_delete', methods: ['POST'])]
     public function delete(
         Request $request,
         CommercioCommercant $commercioCommercant,
     ): Response {
-        if ($this->isCsrfTokenValid('delete' . $commercioCommercant->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$commercioCommercant->getId(), $request->request->get('_token'))) {
             $this->commercantRepository->remove($commercioCommercant);
             $this->commercantRepository->flush();
+            $this->addFlash('success', 'Le commerçant a bien été supprimé');
         }
 
         return $this->redirectToRoute('cap_commercant_index', [], Response::HTTP_SEE_OTHER);

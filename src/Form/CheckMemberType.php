@@ -17,6 +17,7 @@ class CheckMemberType extends AbstractType
             ->add('isMember', CheckboxType::class, [
                 'required' => false,
                 'label' => 'Est-il affilié à Cap ?',
+                'help' => 'Cochez pour oui',
             ])
             ->add('affiliationDate', DateType::class, [
                 'required' => false,

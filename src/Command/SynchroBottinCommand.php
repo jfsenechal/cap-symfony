@@ -2,6 +2,7 @@
 
 namespace Cap\Commercio\Command;
 
+use Cap\Commercio\Bottin\BottinApiRepository;
 use Cap\Commercio\Entity\CommercioBottin;
 use Cap\Commercio\Repository\CommercioBottinRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
@@ -13,17 +14,21 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
+ * Parcours la liste des commerces de la db de cap et vérifie s'il existe toujours dans le bottin
+ * Si oui mets à jour la db commercio_bottin
  * Supprime de la db de cap, les commerçants qui ne sont plus dans le bottin
  */
 #[AsCommand(
-    name: 'cap:fix-synchro',
+    name: 'cap:synchro',
     description: 'Synchronisation avec le bottin',
 )]
 class SynchroBottinCommand extends Command
 {
     public function __construct(
         private readonly CommercioCommercantRepository $commercantRepository,
-        private readonly CommercioBottinRepository $commercioBottinRepository
+        private readonly CommercioBottinRepository $commercioBottinRepository,
+        private readonly CommercioCommercantRepository $commercioCommercantRepository,
+        private readonly BottinApiRepository $bottinApiRepository
     ) {
         parent::__construct();
     }
@@ -40,8 +45,35 @@ class SynchroBottinCommand extends Command
 
         $fix = $input->getOption('fix');
 
+        foreach ($this->commercioCommercantRepository->findAllOrdered() as $commercant) {
+            try {
+                $fiche = $this->bottinApiRepository->findCommerceById($commercant->getId());
+            } catch (\Exception $e) {
+                $io->error('Impossible d\'obtenir le detail du commerce'.$commercant->getLegalEntity());
+
+                continue;
+            }
+            if (isset($fiche->error)) {
+                $io->error('Error '.$fiche->error.' => '.$commercant->getLegalEntity());
+
+                continue;
+            }
+            if (!$commercioBottin = $this->commercioBottinRepository->findByFicheId($fiche->id)) {
+                $commercioBottin = new CommercioBottin();
+                $commercioBottin->setCommercantId($fiche->id);
+                $commercioBottin->setInsertDate(new \DateTime());
+            }
+            $commercioBottin->setBottin($fiche);
+            $commercioBottin->setModifyDate(new \DateTime());
+        }
+        if ($fix) {
+            $this->commercioBottinRepository->flush();
+        }
+        /**
+         * Remove if no more in bottin
+         */
         foreach ($this->commercantRepository->findAllOrdered() as $commercant) {
-            if (!$this->commercioBottinRepository->findByCommercerant($commercant) instanceof CommercioBottin) {
+            if (!$this->commercioBottinRepository->findByFicheId($commercant->getId()) instanceof CommercioBottin) {
                 $io->writeln($commercant->getLegalEntity());
                 if ($fix) {
                     $this->commercantRepository->remove($commercant);

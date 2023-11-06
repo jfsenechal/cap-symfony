@@ -1,0 +1,9 @@
+{% if  commercant.isMember %}
+    <div class="alert alert-info">
+        Membre depuis {{ commercant.affiliationDate|format_date('full') }}
+    </div>
+    {% else %}
+    <div class="alert alert-warning">
+        N'est pas membre
+    </div>
+{% endif %}

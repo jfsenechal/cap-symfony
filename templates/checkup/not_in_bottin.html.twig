@@ -1,0 +1,30 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">N'existe plus dans le bottin de Marche</h3>
+        <div class="card-body">
+            <table class="table table-bordered mt-3">
+                <tr>
+                    <th>Commerce</th>
+                    <th>Bottin</th>
+                </tr>
+                {% for commercant in commercants %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('cap_commercant_show', {'id': commercant.id}) }}">
+                                {{ commercant.legalEntity }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ commercant.urlBottin }}" target="_blank">
+                                {{ commercant.id }}
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
+

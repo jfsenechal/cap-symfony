@@ -14,15 +14,14 @@ use Doctrine\ORM\Mapping as ORM;
 class CommercioCommercantAddress
 {
     use IdTrait;
+    use UuidTrait;
 
-    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false)]
     private string $uuid = '';
 
-    
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
 
-    
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
 

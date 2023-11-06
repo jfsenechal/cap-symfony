@@ -1,0 +1,12 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">Nouveau membre: <strong>{{ fiche.societe }}</strong></h3>
+
+        <div class="card-body">
+            {% include '@CapCommercio/member/_form.html.twig' %}
+        </div>
+    </div>
+
+{% endblock %}

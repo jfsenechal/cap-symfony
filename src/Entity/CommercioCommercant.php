@@ -2,7 +2,6 @@
 
 namespace Cap\Commercio\Entity;
 
-use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -15,8 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
 class CommercioCommercant
 {
     use IdTrait;
+    use UuidTrait;
 
-    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false)]
     private string $uuid = '';
 
     #[ORM\Column(name: 'profile_media_path', type: 'text', nullable: true)]
@@ -58,11 +58,9 @@ class CommercioCommercant
     #[ORM\Column(name: 'archived', type: 'boolean', nullable: false)]
     private bool $archived = false;
 
-    
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
 
-    
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
 
@@ -118,22 +116,12 @@ class CommercioCommercant
     public array $images = [];
     public array $hours = [];
     public int $bottin_id = 0;
+    public AddressAddress $address;
+    public ?string $urlBottin = null;
 
     public function getId(): ?string
     {
         return $this->id;
-    }
-
-    public function getUuid(): ?string
-    {
-        return $this->uuid;
-    }
-
-    public function setUuid(string $uuid): self
-    {
-        $this->uuid = $uuid;
-
-        return $this;
     }
 
     public function getProfileMediaPath(): ?string

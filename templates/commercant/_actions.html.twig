@@ -1,6 +1,6 @@
 <div class="row gy-2 gx-1 align-items-center d-print-none mb-3">
     <div class="col-auto">
-        <a href="{{ path('cap_commercant_member',{'id':commercant.id}) }}" class="btn btn-primary" role='button'>
+        <a href="{{ path('cap_member_set',{'id':commercant.id}) }}" class="btn btn-primary" role='button'>
             <i class="fas fa-people-group"></i>
             Membre Cap ?
         </a>
@@ -34,5 +34,10 @@
             </a>
         </div>
     {% endif %}
+    <div class="col-auto">
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+            <i class="fas fa-trash"></i> Supprimer
+        </button>
+    </div>
 </div>
 

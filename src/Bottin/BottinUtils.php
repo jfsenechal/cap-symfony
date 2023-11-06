@@ -2,27 +2,71 @@
 
 namespace Cap\Commercio\Bottin;
 
+use Cap\Commercio\Entity\AddressAddress;
 use Cap\Commercio\Entity\CommercioBottin;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Repository\CommercioBottinRepository;
+use Cap\Commercio\Repository\CommercioCommercantRepository;
 
 class BottinUtils
 {
-    public function __construct(private readonly CommercioBottinRepository $commercioBottinRepository)
-    {
+    public function __construct(
+        private readonly CommercioBottinRepository $commercioBottinRepository,
+        private readonly CommercioCommercantRepository $commercioCommercantRepository
+    ) {
     }
 
     public function urlCap(CommercioCommercant $commercant): ?string
     {
-        if (($ficheBottin = $this->commercioBottinRepository->findByCommercerant($commercant)) instanceof CommercioBottin) {
+        if (($ficheBottin = $this->commercioBottinRepository->findByFicheId(
+                $commercant->getId()
+            )) instanceof CommercioBottin) {
             $bottin = $ficheBottin->getBottin();
             if (!$bottin) {
                 return null;
             }
             $classement = $bottin['classements'][0]['slugname'];
-            return 'https://cap.marche.be/commerces-et-entreprises/' . $classement . '/' . $bottin['slugname'];
+
+            return 'https://cap.marche.be/commerces-et-entreprises/'.$classement.'/'.$bottin['slugname'];
         }
 
         return null;
+    }
+
+    public static function urlBottin(int $id): string
+    {
+        return 'https://bottin.marche.be/admin/fiche/'.$id;
+    }
+
+
+    public function newFromBottin(\stdClass $fiche): CommercioCommercant
+    {
+        $commercioBottin = $this->commercioBottinRepository->findByFicheId($fiche->id);
+
+        if (!$commercioCommercant = $this->commercioCommercantRepository->findByIdCommercant($fiche->id)) {
+            $commercioCommercant = new CommercioCommercant();
+        }
+        $commercioCommercant->setUuid($commercioCommercant->generateUuid());
+        $commercioCommercant->setLegalEntity($fiche->societe);
+        $commercioCommercant->setLegalEmail($fiche->email);
+        $commercioCommercant->setLegalEmail2($fiche->contact_email);
+        $commercioCommercant->setLegalFirstname($fiche->prenom);
+        $commercioCommercant->setLegalLastname($fiche->nom);
+        $commercioCommercant->setLegalPhone($fiche->telephone);
+        $commercioCommercant->setInsertDate(new \DateTime());
+        $commercioCommercant->setModifyDate(new \DateTime());
+        // $commercioCommercant->setVatNumber($fiche->numero_tva);
+
+        $address = new AddressAddress();
+        $address->setUuid($address->generateUuid());
+        $address->setStreet1($fiche->rue);
+        $address->setZipcode($fiche->cp);
+        $address->setCity($fiche->localite);
+        $address->setInsertDate(new \DateTime());
+        $address->setModifyDate(new \DateTime());
+
+        $commercioCommercant->address = $address;
+
+        return $commercioCommercant;
     }
 }

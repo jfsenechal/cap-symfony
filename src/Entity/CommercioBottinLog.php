@@ -11,8 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
 class CommercioBottinLog
 {
     use IdTrait;
+    use UuidTrait;
 
-    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false)]
     private string $uuid = '';
 
     #[ORM\Column(name: 'time', type: 'float', precision: 10, scale: 0, nullable: false)]
@@ -21,10 +22,8 @@ class CommercioBottinLog
     #[ORM\Column(name: 'type', type: 'text', nullable: false)]
     private ?string $type = null;
 
-
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
-
 
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
@@ -32,18 +31,6 @@ class CommercioBottinLog
     public function getId(): ?string
     {
         return $this->id;
-    }
-
-    public function getUuid(): ?string
-    {
-        return $this->uuid;
-    }
-
-    public function setUuid(string $uuid): self
-    {
-        $this->uuid = $uuid;
-
-        return $this;
     }
 
     public function getTime(): ?float

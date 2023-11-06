@@ -2,6 +2,8 @@
 
 namespace Cap\Commercio\Controller;
 
+use Cap\Commercio\Bottin\BottinApiRepository;
+use Cap\Commercio\Bottin\BottinUtils;
 use Cap\Commercio\Entity\PaymentBill;
 use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
@@ -20,7 +22,9 @@ class CheckupController extends AbstractController
     public function __construct(
         private readonly PaymentOrderRepository $paymentOrderRepository,
         private readonly PaymentBillRepository $paymentBillRepository,
-        private readonly CommercioCommercantRepository $commercantRepository
+        private readonly CommercioCommercantRepository $commercantRepository,
+        private readonly BottinApiRepository $bottinApiRepository,
+        private readonly CommercioCommercantRepository $commercioCommercantRepository
     ) {
     }
 
@@ -117,6 +121,32 @@ class CheckupController extends AbstractController
             [
                 'ordersMissing' => $ordersMissing,
                 'billsMissing' => $billsMissing,
+            ]
+        );
+    }
+
+    #[Route(path: '/noinbottin', name: 'cap_checkup_no_in_obttin', methods: ['GET', 'POST'])]
+    public function noMoreInBottin(): Response
+    {
+        $commercants = [];
+        foreach ($this->commercioCommercantRepository->findAllOrdered() as $commercant) {
+            try {
+                $fiche = $this->bottinApiRepository->findCommerceById($commercant->getId());
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Impossible d\'obtenir le detail du commerce'.$commercant->getLegalEntity());
+
+                continue;
+            }
+            if (isset($fiche->error)) {
+                $commercant->urlBottin = BottinUtils::urlBottin($commercant->getId());
+                $commercants[] = $commercant;
+            }
+        }
+
+        return $this->render(
+            '@CapCommercio/checkup/not_in_bottin.html.twig',
+            [
+                'commercants' => $commercants,
             ]
         );
     }

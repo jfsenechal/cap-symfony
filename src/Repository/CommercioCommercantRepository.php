@@ -24,7 +24,6 @@ class CommercioCommercantRepository extends ServiceEntityRepository
         parent::__construct($registry, CommercioCommercant::class);
     }
 
-
     public function findByIdCommercant(int $id): ?CommercioCommercant
     {
         return $this->createQb()
