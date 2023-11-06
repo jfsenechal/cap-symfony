@@ -5,7 +5,6 @@ namespace Cap\Commercio\Controller;
 use Cap\Commercio\Bill\Generator\BillGenerator;
 use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Form\OrderSearchType;
-use Cap\Commercio\Form\PaidOrderType;
 use Cap\Commercio\Pdf\PdfGenerator;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderAddressRepository;

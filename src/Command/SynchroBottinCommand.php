@@ -6,6 +6,7 @@ use Cap\Commercio\Bottin\BottinApiRepository;
 use Cap\Commercio\Entity\CommercioBottin;
 use Cap\Commercio\Repository\CommercioBottinRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
+use Cap\Commercio\Shop\ShopHandler;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,7 +29,8 @@ class SynchroBottinCommand extends Command
         private readonly CommercioCommercantRepository $commercantRepository,
         private readonly CommercioBottinRepository $commercioBottinRepository,
         private readonly CommercioCommercantRepository $commercioCommercantRepository,
-        private readonly BottinApiRepository $bottinApiRepository
+        private readonly BottinApiRepository $bottinApiRepository,
+        private readonly ShopHandler $shopHandler
     ) {
         parent::__construct();
     }
@@ -44,7 +46,7 @@ class SynchroBottinCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $fix = $input->getOption('fix');
-
+/*
         foreach ($this->commercioCommercantRepository->findAllOrdered() as $commercant) {
             try {
                 $fiche = $this->bottinApiRepository->findCommerceById($commercant->getId());
@@ -68,22 +70,19 @@ class SynchroBottinCommand extends Command
         }
         if ($fix) {
             $this->commercioBottinRepository->flush();
-        }
+        }*/
         /**
          * Remove if no more in bottin
          */
+        $io->section('Shop to delete. Add --fix to command');
         foreach ($this->commercantRepository->findAllOrdered() as $commercant) {
             if (!$this->commercioBottinRepository->findByFicheId($commercant->getId()) instanceof CommercioBottin) {
                 $io->writeln($commercant->getLegalEntity());
                 if ($fix) {
-                    $this->commercantRepository->remove($commercant);
+                    $this->shopHandler->removeCommercant($commercant);
                 }
             }
         }
-        if ($fix) {
-            $this->commercantRepository->flush();
-        }
-
         return Command::SUCCESS;
     }
 }

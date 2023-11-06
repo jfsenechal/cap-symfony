@@ -37,7 +37,7 @@ class CommercioCommercantHoursRepository extends ServiceEntityRepository
     /**
      * @return CommercioCommercantHours[]
      */
-    public function findByCommercerant(CommercioCommercant $commercioCommercant): array
+    public function findByCommercant(CommercioCommercant $commercioCommercant): array
     {
         return $this->createQb()
             ->andWhere('commercio_commercant_hours.commercioCommercant = :commercant')

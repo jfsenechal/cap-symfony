@@ -37,7 +37,7 @@ class CommercioCommercantHolidayRepository extends ServiceEntityRepository
     /**
      * @return CommercioCommercantHoliday[]
      */
-    public function findByCommercerant(CommercioCommercant $commercioCommercant): array
+    public function findByCommercant(CommercioCommercant $commercioCommercant): array
     {
         return $this->createQb()
             ->andWhere('commercio_commercant_holiday.commercioCommercant = :commercant')

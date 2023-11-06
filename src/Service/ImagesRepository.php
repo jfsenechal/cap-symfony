@@ -37,7 +37,7 @@ class ImagesRepository
             $commercant->setProfileMediaPath(null);
         }
 
-        foreach ($this->commercioCommercantHoursRepository->findByCommercerant($commercant) as $hour) {
+        foreach ($this->commercioCommercantHoursRepository->findByCommercant($commercant) as $hour) {
             $hour->setCommercioCommercant(null);//bug serialize
             if ($hour->getMorningStart() instanceof DateTime) {
                 $hour->morning_start_short = $hour->getMorningStart()->format('H:i');

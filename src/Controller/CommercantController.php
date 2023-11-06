@@ -14,6 +14,7 @@ use Cap\Commercio\Repository\CommercioCommercantHoursRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
+use Cap\Commercio\Shop\ShopHandler;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,6 +34,7 @@ class CommercantController extends AbstractController
         private readonly PaymentBillRepository $paymentBillRepository,
         private readonly CommercioCommercantHoursRepository $commercioCommercantHoursRepository,
         private readonly CommercioCommercantHolidayRepository $commercioCommercantHolidayRepository,
+        private readonly ShopHandler $shopHandler,
         private readonly MailerCap $mailer
     ) {
     }
@@ -82,8 +84,8 @@ class CommercantController extends AbstractController
         $gallery = $this->commercantGalleryRepository->findByCommercant($commercant);
         $orders = $this->paymentOrderRepository->findByCommercantId($commercant->getId());
         $bills = $this->paymentBillRepository->findByCommercant($commercant);
-        $hours = $this->commercioCommercantHoursRepository->findByCommercerant($commercant);
-        $holidays = $this->commercioCommercantHolidayRepository->findByCommercerant($commercant);
+        $hours = $this->commercioCommercantHoursRepository->findByCommercant($commercant);
+        $holidays = $this->commercioCommercantHolidayRepository->findByCommercant($commercant);
         $urlCap = $this->bottinUtils->urlCap($commercant);
 
         return $this->render('@CapCommercio/commercant/show.html.twig', [
@@ -128,8 +130,7 @@ class CommercantController extends AbstractController
         CommercioCommercant $commercioCommercant,
     ): Response {
         if ($this->isCsrfTokenValid('delete'.$commercioCommercant->getId(), $request->request->get('_token'))) {
-            $this->commercantRepository->remove($commercioCommercant);
-            $this->commercantRepository->flush();
+            $this->shopHandler->removeCommercant($commercioCommercant);
             $this->addFlash('success', 'Le commerçant a bien été supprimé');
         }
 

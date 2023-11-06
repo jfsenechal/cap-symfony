@@ -34,11 +34,9 @@ class EventEvent
     #[ORM\Column(name: 'eventbrite_link', type: 'text', nullable: true)]
     private ?string $eventbriteLink = null;
 
-    
     #[ORM\Column(name: 'begin_date', type: 'datetime', nullable: true)]
     private ?DateTimeInterface $beginDate = null;
 
-    
     #[ORM\Column(name: 'end_date', type: 'datetime', nullable: true)]
     private ?DateTimeInterface $endDate = null;
 
@@ -57,11 +55,9 @@ class EventEvent
     #[ORM\Column(name: 'archived', type: 'boolean', nullable: false)]
     private bool $archived = false;
 
-    
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
 
-    
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
 
@@ -83,11 +79,9 @@ class EventEvent
     #[ORM\Column(name: 'url_id', type: 'text', nullable: true)]
     private ?string $urlId = null;
 
-    
     #[ORM\Column(name: 'time_slot_start', type: 'time', nullable: true)]
     private ?DateTimeInterface $timeSlotStart = null;
 
-    
     #[ORM\Column(name: 'time_slot_end', type: 'time', nullable: true)]
     private ?DateTimeInterface $timeSlotEnd = null;
 

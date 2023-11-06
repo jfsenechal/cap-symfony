@@ -33,7 +33,7 @@ class RightAccessRepository extends ServiceEntityRepository
 
         if ($name !== '' && $name !== '0') {
             $qb->andWhere('rightAccess.email LIKE :name')
-                ->setParameter('name', '%' . $name . '%');
+                ->setParameter('name', '%'.$name.'%');
         }
 
         return $qb->getQuery()->getResult();
@@ -59,7 +59,7 @@ class RightAccessRepository extends ServiceEntityRepository
     {
         return $this->createQb()
             ->andWhere('rightAccess.uuid = :uid')
-            ->setParameter('uid', $commercant->getRightAccess())
+            ->setParameter('uid', $commercant->getUuid())
             ->getQuery()->getOneOrNullResult();
     }
 }

@@ -6,9 +6,6 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * CommercioCta
- */
 #[ORM\Table(name: 'commercio_cta')]
 #[ORM\UniqueConstraint(name: 'commercio_cta_uuid_key', columns: ['uuid'])]
 #[ORM\Entity]

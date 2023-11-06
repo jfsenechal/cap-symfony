@@ -23,19 +23,16 @@ class RightAccess implements UserInterface, PasswordHasherAwareInterface, Passwo
     #[ORM\Column(name: 'password', type: 'string', length: 100, nullable: true)]
     private ?string $password = null;
 
-    
     #[ORM\Column(name: 'privilege_id', type: 'smallint', nullable: false, options: ['default' => '1'])]
     private $privilegeId = '1';
 
-    
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
 
-    
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
 
-    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false)]
     private string $uuid = '';
 
     #[ORM\Column(name: 'first_time', type: 'boolean', nullable: false)]

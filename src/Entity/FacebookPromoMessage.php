@@ -29,11 +29,9 @@ class FacebookPromoMessage
     #[ORM\Column(name: 'is_posted', type: 'boolean', nullable: false)]
     private bool $isPosted = false;
 
-    
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
 
-    
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
 

@@ -18,10 +18,8 @@ class FacebookConnect
     #[ORM\Column(name: 'token', type: 'text', nullable: false)]
     private string $token = '';
 
-    
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
-
     
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
