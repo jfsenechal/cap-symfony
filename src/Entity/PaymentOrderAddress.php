@@ -11,9 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class PaymentOrderAddress
 {
-    use IdTrait;
+    use IdTrait, UuidTrait;
 
-    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false)]
     private string $uuid = '';
 
     #[ORM\Column(name: 'address_type_id', type: 'bigint', nullable: false)]

@@ -48,7 +48,7 @@ class PaymentOrderRepository extends ServiceEntityRepository
                 ->andWhere(
                     'upper(paymentOrder.orderNumber) LIKE upper(:number)'
                 )
-                ->setParameter('number', '%' . $number . '%');
+                ->setParameter('number', '%'.$number.'%');
         }
 
         if ($name) {
@@ -56,7 +56,7 @@ class PaymentOrderRepository extends ServiceEntityRepository
                 ->andWhere(
                     'upper(commercant.firstname) LIKE upper(:name) OR upper(commercant.companyName) LIKE upper(:name)'
                 )
-                ->setParameter('name', '%' . $name . '%');
+                ->setParameter('name', '%'.$name.'%');
         }
 
         if ($year) {
@@ -111,6 +111,18 @@ class PaymentOrderRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @return PaymentOrder[]
+     */
+    public function findByYearMonth(string $yearMonth): array
+    {
+        return $this->createQb()
+            ->andWhere('paymentOrder.insertDate LIKE :yearMonth')
+            ->setParameter('yearMonth', $yearMonth.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
     private function createQb(): QueryBuilder
     {
         return $this->createQueryBuilder('paymentOrder')
@@ -118,4 +130,5 @@ class PaymentOrderRepository extends ServiceEntityRepository
             ->addSelect('commercant')
             ->orderBy('paymentOrder.insertDate', 'DESC');
     }
+
 }

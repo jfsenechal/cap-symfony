@@ -11,9 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class PaymentOrderLines
 {
-    use IdTrait;
+    use IdTrait, UuidTrait;
 
-    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false)]
     private string $uuid = '';
 
     #[ORM\Column(name: 'reference', type: 'text', nullable: true)]
@@ -34,11 +34,9 @@ class PaymentOrderLines
     #[ORM\Column(name: 'quantity_label', type: 'text', nullable: false)]
     private ?string $quantityLabel = null;
 
-    
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
 
-    
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
 

@@ -24,12 +24,12 @@ class CommercioCommercantAddressRepository extends ServiceEntityRepository
         parent::__construct($registry, CommercioCommercantAddress::class);
     }
 
-    public function findByCommercant(CommercioCommercant $commercant): array
+    public function findByCommercant(CommercioCommercant $commercant): ?CommercioCommercantAddress
     {
         return $this->createQb()
             ->andWhere('commercio_commercant_address.commercioCommercant = :shop')
             ->setParameter('shop', $commercant)
-            ->getQuery()->getResult();
+            ->getQuery()->getOneOrNullResult();
     }
 
     private function createQb(): QueryBuilder

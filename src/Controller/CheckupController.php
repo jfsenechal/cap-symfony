@@ -125,7 +125,7 @@ class CheckupController extends AbstractController
         );
     }
 
-    #[Route(path: '/noinbottin', name: 'cap_checkup_no_in_obttin', methods: ['GET', 'POST'])]
+    #[Route(path: '/noinbottin', name: 'cap_checkup_no_in_bottin', methods: ['GET', 'POST'])]
     public function noMoreInBottin(): Response
     {
         $commercants = [];

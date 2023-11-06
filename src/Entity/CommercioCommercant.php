@@ -118,6 +118,7 @@ class CommercioCommercant
     public int $bottin_id = 0;
     public AddressAddress $address;
     public ?string $urlBottin = null;
+    public bool $generateOrder = false;
 
     public function getId(): ?string
     {

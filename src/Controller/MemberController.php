@@ -5,16 +5,20 @@ namespace Cap\Commercio\Controller;
 use Cap\Commercio\Bottin\BottinApiRepository;
 use Cap\Commercio\Bottin\BottinUtils;
 use Cap\Commercio\Entity\CommercioCommercant;
-use Cap\Commercio\Entity\CommercioCommercantAddress;
 use Cap\Commercio\Form\CheckMemberType;
 use Cap\Commercio\Form\MemberType;
 use Cap\Commercio\Mailer\MailerCap;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
+use Cap\Commercio\Shop\MemberHandler;
+use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 #[Route(path: '/member')]
 #[IsGranted('ROLE_CAP')]
@@ -24,6 +28,7 @@ class MemberController extends AbstractController
         private readonly CommercioCommercantRepository $commercantRepository,
         private readonly MailerCap $mailer,
         private readonly BottinApiRepository $bottinApiRepository,
+        private readonly MemberHandler $memberHandler,
         private readonly BottinUtils $bottinUtils
     ) {
     }
@@ -66,27 +71,23 @@ class MemberController extends AbstractController
         }
 
         $commercioCommercant = $this->bottinUtils->newFromBottin($fiche);
+        $commercioCommercant->generateOrder = true;
+
         $form = $this->createForm(MemberType::class, $commercioCommercant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $commercioCommercant->setIsMember(true);
-            $commercioCommercant->setAffiliationDate(new \DateTime());
-            $this->commercantRepository->persist($commercioCommercant);
-            $this->commercantRepository->persist($commercioCommercant->address);
+            $order = $this->memberHandler->newMember($commercioCommercant, $form->get('generateOrder')->getData());
+            $this->addFlash('success', 'Le nouveau membre a bien été ajouté');
 
-            $commercioCommercantAddress = new CommercioCommercantAddress();
-            $commercioCommercantAddress->setCommercioCommercant($commercioCommercant);
-            $commercioCommercantAddress->setAddress($commercioCommercant->address);
-            $commercioCommercantAddress->setUuid($commercioCommercantAddress->generateUuid());
-            $commercioCommercantAddress->setInsertDate(new \DateTime());
-            $commercioCommercantAddress->setModifyDate(new \DateTime());
-            $this->commercantRepository->persist($commercioCommercantAddress);
-
-            $this->commercantRepository->flush();
-
-            $this->addFlash('success', 'Le membre a bien été ajouté');
+            if ($order) {
+                try {
+                    $this->memberHandler->generatePdf($order);
+                } catch (Html2PdfException|LoaderError|RuntimeError|SyntaxError $e) {
+                    $this->addFlash('danger', 'Erreur pour la création du pdf '.$e->getMessage());
+                }
+            }
 
             return $this->redirectToRoute('cap_commercant_show', ['id' => $commercioCommercant->getId()]);
         }

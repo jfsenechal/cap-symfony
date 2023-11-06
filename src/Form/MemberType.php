@@ -4,6 +4,7 @@ namespace Cap\Commercio\Form;
 
 use Cap\Commercio\Entity\CommercioCommercant;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -43,7 +44,13 @@ class MemberType extends AbstractType
                 'required' => true,
                 'label' => 'Date d\'affiliation',
                 'widget' => 'single_text',
-            ]);
+            ])
+            ->add('generateOrder', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Générer un bon de commande',
+                'help' => 'Faut-il générer un bon de commande ?',
+            ])
+            ->add('address', AddressType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -46,7 +46,7 @@ class SynchroBottinCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $fix = $input->getOption('fix');
-/*
+
         foreach ($this->commercioCommercantRepository->findAllOrdered() as $commercant) {
             try {
                 $fiche = $this->bottinApiRepository->findCommerceById($commercant->getId());
@@ -70,7 +70,7 @@ class SynchroBottinCommand extends Command
         }
         if ($fix) {
             $this->commercioBottinRepository->flush();
-        }*/
+        }
         /**
          * Remove if no more in bottin
          */

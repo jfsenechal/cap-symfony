@@ -55,21 +55,22 @@ class ShopHandler
         $hours = $this->commercioCommercantHoursRepository->findByCommercant($commercant);
         $holidays = $this->commercioCommercantHolidayRepository->findByCommercant($commercant);
         $access = $this->rightAccessRepository->findByCommercant($commercant);
-        $addresses = $this->commercioCommercantAddressRepository->findByCommercant($commercant);
+        $address = $this->commercioCommercantAddressRepository->findByCommercant($commercant);
         $events = $this->eventRepository->findByCommercant($commercant);
         $facebookConnects = $this->facebookConnectRepository->findByCommercant($commercant);
         $facebookMessages = $this->facebookPromoMessageRepository->findByCommercant($commercant);
         $pixels = $this->pixelRepository->findByCommercant($commercant);
         $tags = $this->tagRepository->findByCommercant($commercant);
 
+        $this->commercioCommercantAddressRepository->remove($address);
         foreach ($gallery as $photo) {
             $this->commercantGalleryRepository->remove($photo);
         }
         foreach ($orders as $order) {
             $line = $this->paymentOrderLineRepository->findOneByOrder($order);
             $this->paymentOrderRepository->remove($line);
-            foreach ($this->paymentOrderAddressRepository->findByOrder($order) as $address) {
-                $this->paymentOrderRepository->remove($address);
+            foreach ($this->paymentOrderAddressRepository->findByOrder($order) as $orderAddress) {
+                $this->paymentOrderRepository->remove($orderAddress);
             }
             $this->paymentOrderRepository->remove($order);
         }
@@ -86,9 +87,8 @@ class ShopHandler
         if ($access) {
             $this->rightAccessRepository->remove($access);
         }
-        foreach ($addresses as $address) {
-            $this->commercioCommercantAddressRepository->remove($address);
-        }
+
+
         foreach ($events as $event) {
             $this->eventRepository->remove($event);
         }

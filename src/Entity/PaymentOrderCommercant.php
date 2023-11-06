@@ -2,7 +2,6 @@
 
 namespace Cap\Commercio\Entity;
 
-use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -10,9 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class PaymentOrderCommercant
 {
-    use IdTrait;
+    use IdTrait, UuidTrait;
 
-    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false)]
     private string $uuid = '';
 
     #[ORM\Column(name: 'firstname', type: 'text', nullable: false)]
@@ -30,11 +29,9 @@ class PaymentOrderCommercant
     #[ORM\Column(name: 'company_vat', type: 'text', nullable: true)]
     private ?string $companyVat = null;
 
-    
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
 
-    
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
 
