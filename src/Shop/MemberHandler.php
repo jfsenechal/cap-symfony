@@ -20,9 +20,6 @@ class MemberHandler
 
     public function newMember(CommercioCommercant $commercioCommercant, bool $generateOrder): ?PaymentOrder
     {
-        $commercioCommercant->setIsMember(true);
-        $commercioCommercant->setAffiliationDate(new \DateTime());
-        $this->commercantRepository->persist($commercioCommercant);
         $this->commercantRepository->flush();
 
         if (!$commercioCommercantAddress = $this->commercioCommercantAddressRepository->findByCommercant(
@@ -30,18 +27,19 @@ class MemberHandler
         )) {
             $commercioCommercantAddress = new CommercioCommercantAddress();
             $commercioCommercantAddress->setCommercioCommercant($commercioCommercant);
+            $commercioCommercantAddress->setUuid($commercioCommercantAddress->generateUuid());
+            $commercioCommercantAddress->setInsertDate(new \DateTime());
+            $this->commercioCommercantAddressRepository->persist($commercioCommercantAddress);
         }
+
         $commercioCommercantAddress->setAddress($commercioCommercant->address);
-        $commercioCommercantAddress->setUuid($commercioCommercantAddress->generateUuid());
-        $commercioCommercantAddress->setInsertDate(new \DateTime());
         $commercioCommercantAddress->setModifyDate(new \DateTime());
         $this->commercantRepository->persist($commercioCommercantAddress);
 
-        $this->commercantRepository->flush();
         $order = null;
 
         if ($generateOrder) {
-            $order = $this->orderGenerator->newOne($commercioCommercant, $commercioCommercantAddress);
+            $order = $this->orderGenerator->newOne($commercioCommercant, $commercioCommercant->address);
         }
 
         return $order;
@@ -57,6 +55,6 @@ class MemberHandler
      */
     public function generatePdf(PaymentOrder $order): void
     {
-         $this->orderGenerator->generatePdf($order);
+        $this->orderGenerator->generatePdf($order);
     }
 }

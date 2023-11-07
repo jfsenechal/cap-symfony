@@ -114,11 +114,13 @@ class PaymentOrderRepository extends ServiceEntityRepository
     /**
      * @return PaymentOrder[]
      */
-    public function findByYearMonth(string $yearMonth): array
+    public function findBetweenDates(\DateTime $startDate, \DateTime $endDate): array
     {
         return $this->createQb()
-            ->andWhere('paymentOrder.insertDate LIKE :yearMonth')
-            ->setParameter('yearMonth', $yearMonth.'%')
+            ->andWhere('paymentOrder.insertDate >= :start')
+            ->setParameter('start', $startDate->format('Y-m-d'))
+            ->andWhere('paymentOrder.insertDate < :end')
+            ->setParameter('end', $endDate->format('Y-m-d'))
             ->getQuery()
             ->getResult();
     }

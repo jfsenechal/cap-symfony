@@ -2,8 +2,8 @@
 
 namespace Cap\Commercio\Bill\Generator;
 
+use Cap\Commercio\Entity\AddressAddress;
 use Cap\Commercio\Entity\CommercioCommercant;
-use Cap\Commercio\Entity\CommercioCommercantAddress;
 use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Entity\PaymentOrderAddress;
 use Cap\Commercio\Entity\PaymentOrderCommercant;
@@ -22,7 +22,7 @@ class OrderGenerator
     ) {
     }
 
-    public function newOne(CommercioCommercant $commercant, CommercioCommercantAddress $address): PaymentOrder
+    public function newOne(CommercioCommercant $commercant, AddressAddress $address): PaymentOrder
     {
         $paymentOrderCommercant = new PaymentOrderCommercant();
         $paymentOrderCommercant->setCompanyName($commercant->getLegalEntity());
@@ -50,6 +50,7 @@ class OrderGenerator
         $order->setUuid($order->generateUuid());
         $order->setInsertDate(new  \DateTime());
         $order->setModifyDate(new \DateTime());
+        $this->paymentOrderRepository->persist($order);
 
         $line = new PaymentOrderLines();
         $line->setOrder($order);
@@ -57,6 +58,7 @@ class OrderGenerator
         $line->setPriceEvat(123.96694215);
         $line->setTotalPriceEvat(123.96694215);
         $line->setQuantity(1);
+        $line->setQuantityLabel(' ');
         $line->setUuid($line->generateUuid());
         $line->setInsertDate(new  \DateTime());
         $line->setModifyDate(new \DateTime());
@@ -65,28 +67,27 @@ class OrderGenerator
         $orderAddress = new PaymentOrderAddress();
         $orderAddress->setOrder($order);
         $orderAddress->setAddressTypeId(1);
-        $orderAddress->setStreet1($address->getAddress()->getStreet1());
-        $orderAddress->setCity($address->getAddress()->getCity());
-        $orderAddress->setZipcode($address->getAddress()->getZipcode());
+        $orderAddress->setStreet1($address->getStreet1());
+        $orderAddress->setCity($address->getCity());
+        $orderAddress->setZipcode($address->getZipcode());
         $orderAddress->setCountryId(18);
         $orderAddress->setUuid($orderAddress->generateUuid());
         $orderAddress->setInsertDate(new  \DateTime());
         $orderAddress->setModifyDate(new \DateTime());
         $this->paymentOrderRepository->persist($orderAddress);
 
-        $this->paymentOrderRepository->persist($order);
-
         $this->paymentOrderRepository->flush();
 
         return $order;
     }
 
-    private function generateOrderNumber(): string
+    public function generateOrderNumber(): string
     {
-        $yearMonth = date('Ym');
         $str = "00000";
+        $startDate = \DateTime::createFromFormat('Y-m-d',date('Y').'-01-01');
+        $endDate = \DateTime::createFromFormat('Y-m-d',date('Y').'-12-31');
 
-        $numbers = $this->paymentOrderRepository->findByYearMonth($yearMonth);
+        $numbers = $this->paymentOrderRepository->findBetweenDates($startDate, $endDate);
 
         $count = count($numbers);
         $count++;
@@ -96,7 +97,7 @@ class OrderGenerator
         $length = strlen($str);
         $result = substr_replace($str, $count_str, $length - strlen($count_str), $length);
 
-        return 'ORD'.$result;
+        return 'ORD'.date('Ym').$result;
     }
 
     /**

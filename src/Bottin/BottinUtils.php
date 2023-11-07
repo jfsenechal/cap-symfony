@@ -5,14 +5,20 @@ namespace Cap\Commercio\Bottin;
 use Cap\Commercio\Entity\AddressAddress;
 use Cap\Commercio\Entity\CommercioBottin;
 use Cap\Commercio\Entity\CommercioCommercant;
+use Cap\Commercio\Repository\AddressIsoCountriesRepository;
+use Cap\Commercio\Repository\AddressTypeRepository;
 use Cap\Commercio\Repository\CommercioBottinRepository;
+use Cap\Commercio\Repository\CommercioCommercantAddressRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 
 class BottinUtils
 {
     public function __construct(
         private readonly CommercioBottinRepository $commercioBottinRepository,
-        private readonly CommercioCommercantRepository $commercioCommercantRepository
+        private readonly CommercioCommercantRepository $commercioCommercantRepository,
+        public readonly AddressTypeRepository $addressTypeRepository,
+        public readonly CommercioCommercantAddressRepository $commercioCommercantAddressRepository,
+        public readonly AddressIsoCountriesRepository $addressIsoCountriesRepository,
     ) {
     }
 
@@ -41,18 +47,28 @@ class BottinUtils
 
     public function newFromBottin(\stdClass $fiche): CommercioCommercant
     {
-        $commercioBottin = $this->commercioBottinRepository->findByFicheId($fiche->id);
+        if (!$commercioBottin = $this->commercioBottinRepository->findByFicheId($fiche->id)) {
+            $commercioBottin = new CommercioBottin();
+            $commercioBottin->setBottin($fiche);
+            $commercioBottin->setCommercantId($fiche->id);
+            $commercioBottin->setInsertDate(new \DateTime());
+            $this->commercioBottinRepository->persist($commercioBottin);
+        }
+        $commercioBottin->setModifyDate(new \DateTime());
 
         if (!$commercioCommercant = $this->commercioCommercantRepository->findByIdCommercant($fiche->id)) {
             $commercioCommercant = new CommercioCommercant();
+            $commercioCommercant->setUuid($commercioCommercant->generateUuid());
+            $this->commercioCommercantRepository->persist($commercioCommercant);
         }
-        $commercioCommercant->setUuid($commercioCommercant->generateUuid());
+
         $commercioCommercant->setLegalEntity($fiche->societe);
         $commercioCommercant->setLegalEmail($fiche->email);
         $commercioCommercant->setLegalEmail2($fiche->contact_email);
         $commercioCommercant->setLegalFirstname($fiche->prenom);
         $commercioCommercant->setLegalLastname($fiche->nom);
         $commercioCommercant->setLegalPhone($fiche->telephone);
+        $commercioCommercant->setIsMember(true);
         $commercioCommercant->setInsertDate(new \DateTime());
         $commercioCommercant->setModifyDate(new \DateTime());
         // $commercioCommercant->setVatNumber($fiche->numero_tva);
@@ -62,9 +78,11 @@ class BottinUtils
         $address->setStreet1($fiche->rue);
         $address->setZipcode($fiche->cp);
         $address->setCity($fiche->localite);
+        $address->setAddressType($this->addressTypeRepository->find(1));
+        $address->setCountry($this->addressIsoCountriesRepository->find(1));
         $address->setInsertDate(new \DateTime());
         $address->setModifyDate(new \DateTime());
-
+        $this->commercioCommercantRepository->persist($address);
         $commercioCommercant->address = $address;
 
         return $commercioCommercant;
