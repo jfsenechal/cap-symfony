@@ -10,6 +10,7 @@ use Cap\Commercio\Repository\AddressTypeRepository;
 use Cap\Commercio\Repository\CommercioBottinRepository;
 use Cap\Commercio\Repository\CommercioCommercantAddressRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
+use Cap\Commercio\Repository\CtaRepository;
 
 class BottinUtils
 {
@@ -18,6 +19,7 @@ class BottinUtils
         private readonly CommercioCommercantRepository $commercioCommercantRepository,
         public readonly AddressTypeRepository $addressTypeRepository,
         public readonly CommercioCommercantAddressRepository $commercioCommercantAddressRepository,
+        private readonly CtaRepository $ctaRepository,
         public readonly AddressIsoCountriesRepository $addressIsoCountriesRepository,
     ) {
     }
@@ -59,6 +61,8 @@ class BottinUtils
         if (!$commercioCommercant = $this->commercioCommercantRepository->findByIdCommercant($fiche->id)) {
             $commercioCommercant = new CommercioCommercant();
             $commercioCommercant->setUuid($commercioCommercant->generateUuid());
+            $cta = $this->ctaRepository->find(2);
+            $commercioCommercant->setCta($cta);
             $this->commercioCommercantRepository->persist($commercioCommercant);
         }
 
