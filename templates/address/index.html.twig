@@ -1,0 +1,42 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">Ils n'ont pas d'adresses</h3>
+
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Commerce</th>
+                </tr>
+                {% for commercant in notFound %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('cap_commercant_show', {'id': commercant.id}) }}">
+                                {{ commercant.legalEntity }}
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <h3>No relation</h3>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Address</th>
+                    <th>Id</th>
+                </tr>
+                {% for address in noRelation %}
+                    <tr>
+                        <td>
+                            {{ address.street1 }}
+                        </td>
+                        <td>
+                            {{ address.id }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
