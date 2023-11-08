@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity]
 class RightAccess implements UserInterface, PasswordHasherAwareInterface, PasswordAuthenticatedUserInterface, Stringable
 {
-    use IdTrait;
+    use IdTrait,UuidTrait;
 
     #[ORM\Column(name: 'email', type: 'string', length: 200, nullable: false)]
     private ?string $email = null;
@@ -24,7 +24,7 @@ class RightAccess implements UserInterface, PasswordHasherAwareInterface, Passwo
     private ?string $password = null;
 
     #[ORM\Column(name: 'privilege_id', type: 'smallint', nullable: false, options: ['default' => '1'])]
-    private $privilegeId = '1';
+    private int $privilegeId = 1;
 
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;

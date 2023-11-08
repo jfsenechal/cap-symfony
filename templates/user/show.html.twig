@@ -27,10 +27,12 @@
                         <a href="{{ path('cap_commercant_show', {'id': commercant.id}) }}">{{ commercant.legalEntity }}</a>
                     </li>
                 {% else %}
-                    <li>Aucun</li>
+                    <li class="list-group-item">Aucun</li>
                 {% endfor %}
             </ul>
         </div>
+
+        {% include '@CapCommercio/user/_delete_form.html.twig' %}
     </div>
 
 {% endblock %}

@@ -2,7 +2,9 @@
 
 namespace Cap\Commercio\Controller;
 
+use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Entity\RightAccess;
+use Cap\Commercio\Form\UserNewType;
 use Cap\Commercio\Form\UserPasswordType;
 use Cap\Commercio\Form\UserSearchType;
 use Cap\Commercio\Form\UserType;
@@ -50,6 +52,52 @@ class UserController extends AbstractController
         );
     }
 
+    #[Route('/{id}/new', name: 'cap_user_new', methods: ['GET', 'POST'])]
+    public function new(
+        Request $request,
+        CommercioCommercant $commercant,
+    ): Response {
+        $user = new RightAccess();
+        $user->setEmail($commercant->getLegalEmail());
+        $form = $this->createForm(UserNewType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($this->rightAccessRepository->findByEmail($user->getEmail()) instanceof RightAccess) {
+                $this->addFlash('danger', 'L\'adresse email est déjà prise sur un autre compte');
+
+                return $this->redirectToRoute(
+                    'cap_user_new',
+                    ['id' => $commercant->getId()],
+                    Response::HTTP_SEE_OTHER
+                );
+            } else {
+                $commercant->setRightAccess($user);
+                $data = $form->getData();
+                $password = md5((string)$data->password_plain);
+                $user->setUuid($user->generateUuid());
+                $user->setPrivilegeId(3);
+                $user->setPassword($password);
+                $user->setInsertDate(new \DateTime());
+                $user->setModifyDate(new \DateTime());
+                $this->rightAccessRepository->persist($user);
+                $this->rightAccessRepository->flush();
+                $this->addFlash('success', 'L\'utilisateur a bien été créé');
+            }
+
+            return $this->redirectToRoute(
+                'cap_user_show',
+                ['id' => $user->getId()],
+                Response::HTTP_SEE_OTHER
+            );
+        }
+
+        return $this->render('@CapCommercio/user/new.html.twig', [
+            'commercant' => $commercant,
+            'form' => $form,
+        ]);
+    }
+
     #[Route('/{id}', name: 'cap_user_show', methods: ['GET'])]
     public function show(RightAccess $rightAccess): Response
     {
@@ -73,6 +121,12 @@ class UserController extends AbstractController
             $data = $form->getData();
             if ($this->rightAccessRepository->checkExist($data->getEmail(), $user) instanceof RightAccess) {
                 $this->addFlash('danger', 'L\'adresse email est déjà prise sur un autre compte');
+
+                return $this->redirectToRoute(
+                    'cap_user_show',
+                    ['id' => $user->getId()],
+                    Response::HTTP_SEE_OTHER
+                );
             } else {
                 $this->rightAccessRepository->flush();
                 $this->addFlash('success', 'La modification a été faite');
@@ -101,7 +155,7 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $password = md5((string) $data->password_plain);
+            $password = md5((string)$data->password_plain);
             $user->setPassword($password);
 
             $this->rightAccessRepository->flush();
@@ -137,11 +191,27 @@ class UserController extends AbstractController
     public function accessDemand(): Response
     {
         $demands = $this->accessDemandRepository->findAllOrdered();
+
         return $this->render(
             '@CapCommercio/user/demands.html.twig',
             [
                 'demands' => $demands,
             ]
         );
+    }
+
+    #[Route('/{id}', name: 'cap_user_delete', methods: ['POST'])]
+    public function delete(
+        Request $request,
+        RightAccess $rightAccess,
+    ): Response {
+
+        if ($this->isCsrfTokenValid('delete'.$rightAccess->getId(), $request->request->get('_token'))) {
+            $this->rightAccessRepository->remove($rightAccess);
+            $this->rightAccessRepository->flush();
+            $this->addFlash('success', 'L\'utilisateur a bien été supprimé');
+        }
+
+        return $this->redirectToRoute('cap_user_index', [], Response::HTTP_SEE_OTHER);
     }
 }

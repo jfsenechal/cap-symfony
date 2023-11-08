@@ -48,13 +48,6 @@ class RightAccessRepository extends ServiceEntityRepository
             ->setParameter('id', $userRef->getId())
             ->getQuery()->getOneOrNullResult();
     }
-
-    private function createQb(): QueryBuilder
-    {
-        return $this->createQueryBuilder('rightAccess')
-            ->orderBy('rightAccess.email', 'ASC');
-    }
-
     public function findByCommercant(CommercioCommercant $commercant): ?RightAccess
     {
         return $this->createQb()
@@ -62,4 +55,19 @@ class RightAccessRepository extends ServiceEntityRepository
             ->setParameter('uid', $commercant->getUuid())
             ->getQuery()->getOneOrNullResult();
     }
+
+    public function findByEmail(string $email): ?RightAccess
+    {
+        return $this->createQb()
+            ->andWhere('rightAccess.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()->getOneOrNullResult();
+    }
+
+    private function createQb(): QueryBuilder
+    {
+        return $this->createQueryBuilder('rightAccess')
+            ->orderBy('rightAccess.email', 'ASC');
+    }
+
 }

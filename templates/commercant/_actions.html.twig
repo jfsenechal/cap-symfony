@@ -17,15 +17,21 @@
             Images
         </a>
     </div>
-    {% if commercant.rightAccess %}
-        <div class="col-auto">
+    <div class="col-auto">
+        {% if commercant.rightAccess %}
             <a href="{{ path('cap_user_show',{'id':commercant.rightAccess.id}) }}" class="btn btn-primary"
                role='button'>
-                <i class="fas fa-people-group"></i>
+                <i class="fas fa-user"></i>
                 Compte utilisateur lié
             </a>
-        </div>
-    {% endif %}
+        {% else %}
+            <a href="{{ path('cap_user_new',{'id':commercant.id}) }}" class="btn btn-primary"
+               role='button'>
+                <i class="fas fa-user-plus"></i>
+                Créer un compte utilisateur
+            </a>
+        {% endif %}
+    </div>
     {% if urlCap %}
         <div class="col-auto">
             <a href="{{ urlCap }}" class="btn btn-primary" role='button' target="_blank">

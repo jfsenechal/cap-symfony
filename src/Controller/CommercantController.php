@@ -4,10 +4,8 @@ namespace Cap\Commercio\Controller;
 
 use Cap\Commercio\Bottin\BottinUtils;
 use Cap\Commercio\Entity\CommercioCommercant;
-use Cap\Commercio\Form\CheckMemberType;
 use Cap\Commercio\Form\CommercantSearchType;
 use Cap\Commercio\Form\CommercantType;
-use Cap\Commercio\Mailer\MailerCap;
 use Cap\Commercio\Repository\CommercantGalleryRepository;
 use Cap\Commercio\Repository\CommercioCommercantHolidayRepository;
 use Cap\Commercio\Repository\CommercioCommercantHoursRepository;
@@ -15,7 +13,6 @@ use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
 use Cap\Commercio\Shop\ShopHandler;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +32,6 @@ class CommercantController extends AbstractController
         private readonly CommercioCommercantHoursRepository $commercioCommercantHoursRepository,
         private readonly CommercioCommercantHolidayRepository $commercioCommercantHolidayRepository,
         private readonly ShopHandler $shopHandler,
-        private readonly MailerCap $mailer
     ) {
     }
 
