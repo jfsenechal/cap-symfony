@@ -28,6 +28,11 @@ class BottinApiRepository
         }
     }
 
+    /**
+     * @param int $id
+     * @return mixed
+     * @throws \Exception
+     */
     public function findCommerceById(int $id)
     {
         $this->connect();
