@@ -19,12 +19,14 @@ class OrderType extends AbstractType
                 'required' => true,
                 'label' => 'Intitulé',
                 'help' => 'Ex: Affiliation annuelle à Cap sur Marche',
+                'attr' => ['autocomplete' => 'off'],
             ])
             ->add('priceEvat', MoneyType::class, [
                 'required' => true,
                 'label' => 'Prix Htva',
                 'currency' => 'eur',
                 'scale' => 5,
+                'attr' => ['autocomplete' => 'off'],
             ])
             ->add('vat', PercentType::class, [
                 'required' => true,

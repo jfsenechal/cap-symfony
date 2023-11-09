@@ -61,8 +61,9 @@ class ShopHandler
         $facebookMessages = $this->facebookPromoMessageRepository->findByCommercant($commercant);
         $pixels = $this->pixelRepository->findByCommercant($commercant);
         $tags = $this->tagRepository->findByCommercant($commercant);
-
-        $this->commercioCommercantAddressRepository->remove($address);
+        if ($address) {
+            $this->commercioCommercantAddressRepository->remove($address);
+        }
         foreach ($gallery as $photo) {
             $this->commercantGalleryRepository->remove($photo);
         }

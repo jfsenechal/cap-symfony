@@ -8,14 +8,14 @@
 
             {% include '@CapCommercio/order/_actions.html.twig' %}
 
-            <h4 class="text-success">Détail de la commande</h4>
+            <h4 class="text-success">Détails</h4>
             <table class="table table-bordered">
                 <tr>
                     <th>Nom</th>
                     <td>{{ orderCommercant.firstname }} {{ orderCommercant.lastname }}</td>
                 </tr>
                 <tr>
-                    <th>Company</th>
+                    <th>Société</th>
                     <td>{{ orderCommercant.companyName }}</td>
                 </tr>
                 <tr>
@@ -23,7 +23,7 @@
                     <td>{{ orderCommercant.email }}</td>
                 </tr>
                 <tr>
-                    <th>Vat</th>
+                    <th>Numéro de Tva</th>
                     <td>{{ orderCommercant.companyVat }}</td>
                 </tr>
                 <tr>
@@ -33,6 +33,18 @@
                 <tr>
                     <th>Prix TvaH</th>
                     <td>{{ line.totalPriceEvat|format_currency('euro') }}</td>
+                </tr>
+                <tr>
+                    <th>Tva appliqué</th>
+                    <td>{{ order.vat }}%</td>
+                </tr>
+                <tr>
+                    <th>Montant de la Tva</th>
+                    <td>{{ order.vatAmount|format_currency('euro') }}</td>
+                </tr>
+                <tr>
+                    <th>Prix tva comprise</th>
+                    <td>{{ order.priceVat|format_currency('euro') }}</td>
                 </tr>
                 <tr>
                     <th>Référence</th>
@@ -52,26 +64,29 @@
                 </tr>
             </table>
 
-            <h4 class="text-success">Paiement</h4>
+            <h4 class="text-success">Adresse</h4>
+            {% for address in addresses %}
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Rue</th>
+                        <td>
+                            {{ address.street1 }} {{ address.street2 }}<br/>
+                            {{ address.zipcode }} {{ address.city }}
+                        </td>
+                    </tr>
+                </table>
+            {% endfor %}
+
+            <h4 class="text-success">Paiement lié</h4>
             {% if bill %}
                 {% include '@CapCommercio/order/_bill_line.html.twig' %}
             {% elseif bills|length > 0 %}
                 {% for bill in bills %}
                     {% include '@CapCommercio/order/_bill_line.html.twig' %}
                 {% endfor %}
-                {% else %}
-                    <p>Aucun paiement</p>
+            {% else %}
+                <p>Aucun paiement</p>
             {% endif %}
-
-            <h4 class="text-success">Adresse</h4>
-            {% for address in addresses %}
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Rue</th>
-                        <td>{{ address.city }} {{ address.street1 }}</td>
-                    </tr>
-                </table>
-            {% endfor %}
 
             {% include '@CapCommercio/order/_paid_form.html.twig' %}
             {% include '@CapCommercio/order/_delete_form.html.twig' %}

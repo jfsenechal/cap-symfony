@@ -16,6 +16,7 @@ class AddressType extends AbstractType
             ->add('street1', TextType::class, [
                 'required' => true,
                 'label' => 'Rue et numéro',
+                'attr' => ['autocomplete' => 'off'],
             ])
             ->add('zipcode', TextType::class, [
                 'required' => true,

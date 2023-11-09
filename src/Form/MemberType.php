@@ -18,26 +18,33 @@ class MemberType extends AbstractType
             ->add('legalEntity', TextType::class, [
                 'required' => true,
                 'label' => 'Entité légale',
+                'attr' => ['autocomplete' => 'off'],
             ])
             ->add('vatNumber', TextType::class, [
                 'required' => true,
                 'label' => 'Numéro de BCE ou de Tva',
+                'attr' => ['autocomplete' => 'off'],
             ])
             ->add('legalFirstname', TextType::class, [
                 'required' => true,
+                'attr' => ['autocomplete' => 'off'],
             ])
             ->add('legalLastname', TextType::class, [
                 'required' => true,
+                'attr' => ['autocomplete' => 'off'],
             ])
             ->add('legalEmail', TextType::class, [
                 'required' => true,
                 'label' => 'Email',
+                'attr' => ['autocomplete' => 'off'],
             ])
             ->add('legalEmail2', TextType::class, [
                 'required' => false,
+                'attr' => ['autocomplete' => 'off'],
             ])
             ->add('legalPhone', TextType::class, [
                 'required' => false,
+                'attr' => ['autocomplete' => 'off'],
             ])
             ->add('address', AddressType::class)
             ->add('affiliationDate', DateType::class, [
@@ -48,11 +55,6 @@ class MemberType extends AbstractType
             ->add('generateOrder', CheckboxType::class, [
                 'required' => false,
                 'label' => 'Générer un bon de commande',
-                'help' => 'Faut-il générer un bon de commande ?',
-            ])
-            ->add('generateBill', CheckboxType::class, [
-                'required' => false,
-                'label' => 'Générer une facture',
                 'help' => 'Faut-il générer un bon de commande ?',
             ])
             ->add('address', AddressType::class);
