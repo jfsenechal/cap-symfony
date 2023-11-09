@@ -55,7 +55,7 @@ class ShopHandler
         $hours = $this->commercioCommercantHoursRepository->findByCommercant($commercant);
         $holidays = $this->commercioCommercantHolidayRepository->findByCommercant($commercant);
         $access = $this->rightAccessRepository->findByCommercant($commercant);
-        $address = $this->commercioCommercantAddressRepository->findByCommercant($commercant);
+        $address = $this->commercioCommercantAddressRepository->findOneByCommercant($commercant);
         $events = $this->eventRepository->findByCommercant($commercant);
         $facebookConnects = $this->facebookConnectRepository->findByCommercant($commercant);
         $facebookMessages = $this->facebookPromoMessageRepository->findByCommercant($commercant);

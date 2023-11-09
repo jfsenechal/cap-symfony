@@ -3,6 +3,7 @@
 namespace Cap\Commercio\Repository;
 
 use Cap\Commercio\Doctrine\OrmCrudTrait;
+use Cap\Commercio\Entity\AddressAddress;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Entity\CommercioCommercantAddress;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -24,19 +25,39 @@ class CommercioCommercantAddressRepository extends ServiceEntityRepository
         parent::__construct($registry, CommercioCommercantAddress::class);
     }
 
-    public function findByCommercant(CommercioCommercant $commercant): ?CommercioCommercantAddress
+    /**
+     * @return CommercioCommercantAddress[]
+     */
+    public function findAllOrdered(): array
+    {
+        return $this->createQueryBuilder('commercant_address')
+            ->orderBy('commercant_address.commercioCommercant', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findOneByCommercant(CommercioCommercant $commercant): ?CommercioCommercantAddress
     {
         return $this->createQb()
-            ->andWhere('commercio_commercant_address.commercioCommercant = :shop')
+            ->andWhere('commercant_address.commercioCommercant = :shop')
             ->setParameter('shop', $commercant)
+            ->getQuery()->getOneOrNullResult();
+    }
+
+    public function findOneByAddress(AddressAddress $address): ?CommercioCommercantAddress
+    {
+        return $this->createQb()
+            ->andWhere('commercant_address.address = :address')
+            ->setParameter('address', $address)
             ->getQuery()->getOneOrNullResult();
     }
 
     private function createQb(): QueryBuilder
     {
-        return $this->createQueryBuilder('commercio_commercant_address')
-            ->leftJoin('commercio_commercant_address.commercioCommercant', 'commercioCommercant', 'WITH')
-            ->leftJoin('commercio_commercant_address.address', 'address', 'WITH')
+        return $this->createQueryBuilder('commercant_address')
+            ->leftJoin('commercant_address.commercioCommercant', 'commercioCommercant', 'WITH')
+            ->leftJoin('commercant_address.address', 'address', 'WITH')
             ->addSelect('commercioCommercant', 'address');
     }
+
 }

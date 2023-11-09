@@ -1,0 +1,17 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+<div class="card">
+        <h3 class="card-header">Nouveau bon de commande pour {{ commercant.legalEntity }}</h3>
+
+        <div class="card-body">
+            {% include '@CapCommercio/order/_form.html.twig' %}
+        </div>
+        <div class="card-footer text-end">
+            <a href="{{ path('cap_commercant_show', {'id': commercant.id}) }}" class="btn btn-secondary">
+                <i class="fa fa-arrow-left"></i> Annuler
+            </a>
+        </div>
+    </div>
+{% endblock %}
+

@@ -3,8 +3,11 @@
 namespace Cap\Commercio\Controller;
 
 use Cap\Commercio\Bill\Generator\BillGenerator;
+use Cap\Commercio\Bill\Generator\OrderGenerator;
+use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Form\OrderSearchType;
+use Cap\Commercio\Form\OrderType;
 use Cap\Commercio\Pdf\PdfGenerator;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderAddressRepository;
@@ -12,6 +15,7 @@ use Cap\Commercio\Repository\PaymentOrderLineRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
+use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,6 +35,7 @@ class OrderController extends AbstractController
         private readonly PaymentOrderLineRepository $paymentOrderLineRepository,
         private readonly PaymentOrderAddressRepository $paymentOrderAddressRepository,
         private readonly BillGenerator $billGenerator,
+        private readonly OrderGenerator $orderGenerator,
         private readonly PdfGenerator $pdfGenerator,
     ) {
     }
@@ -66,6 +71,49 @@ class OrderController extends AbstractController
             '@CapCommercio/order/index.html.twig',
             [
                 'orders' => $orders,
+                'form' => $form,
+            ]
+        );
+    }
+
+    #[Route(path: '/{id}/new', name: 'cap_order_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, CommercioCommercant $commercant): Response
+    {
+        $order = new PaymentOrder();
+        $order->setCommercantId($commercant->getId());
+        $order->setVat(0.21);
+
+        $form = $this->createForm(OrderType::class, $order);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $order->setVat($order->getVat() * 100);
+            try {
+                $order = $this->orderGenerator->newOne(
+                    $commercant,
+                    $order->getPriceEvat(),
+                    $order->getVat(),
+                    $order->label
+                );
+            } catch (Exception $exception) {
+                $this->addFlash('danger', 'Erreur lors de l\'enregistrement: '.$exception->getMessage());
+
+                return $this->redirectToRoute('cap_commercant_show', ['id' => $commercant->getId()]);
+            }
+
+            try {
+                $this->orderGenerator->generatePdf($order);
+            } catch (Html2PdfException|LoaderError|RuntimeError|SyntaxError $e) {
+                $this->addFlash('danger', 'Erreur pour la création du pdf '.$e->getMessage());
+            }
+
+            return $this->redirectToRoute('cap_order_show', ['id' => $order->getId()]);
+        }
+
+        return $this->render(
+            '@CapCommercio/order/new.html.twig',
+            [
+                'commercant' => $commercant,
                 'form' => $form,
             ]
         );

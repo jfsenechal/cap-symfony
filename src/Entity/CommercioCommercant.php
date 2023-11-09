@@ -116,7 +116,7 @@ class CommercioCommercant
     public array $images = [];
     public array $hours = [];
     public int $bottin_id = 0;
-    public AddressAddress $address;
+    public ?AddressAddress $address= null;
     public ?string $urlBottin = null;
     public bool $generateOrder = false;
 

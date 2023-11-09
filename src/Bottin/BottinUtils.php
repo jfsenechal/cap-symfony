@@ -8,7 +8,6 @@ use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Repository\AddressIsoCountriesRepository;
 use Cap\Commercio\Repository\AddressTypeRepository;
 use Cap\Commercio\Repository\CommercioBottinRepository;
-use Cap\Commercio\Repository\CommercioCommercantAddressRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Repository\CtaRepository;
 
@@ -18,7 +17,6 @@ class BottinUtils
         private readonly CommercioBottinRepository $commercioBottinRepository,
         private readonly CommercioCommercantRepository $commercioCommercantRepository,
         public readonly AddressTypeRepository $addressTypeRepository,
-        public readonly CommercioCommercantAddressRepository $commercioCommercantAddressRepository,
         private readonly CtaRepository $ctaRepository,
         public readonly AddressIsoCountriesRepository $addressIsoCountriesRepository,
     ) {

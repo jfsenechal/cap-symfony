@@ -7,6 +7,7 @@ use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Form\CommercantSearchType;
 use Cap\Commercio\Form\CommercantType;
 use Cap\Commercio\Repository\CommercantGalleryRepository;
+use Cap\Commercio\Repository\CommercioCommercantAddressRepository;
 use Cap\Commercio\Repository\CommercioCommercantHolidayRepository;
 use Cap\Commercio\Repository\CommercioCommercantHoursRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
@@ -29,6 +30,7 @@ class CommercantController extends AbstractController
         private readonly CommercantGalleryRepository $commercantGalleryRepository,
         private readonly PaymentOrderRepository $paymentOrderRepository,
         private readonly PaymentBillRepository $paymentBillRepository,
+        public readonly CommercioCommercantAddressRepository $commercioCommercantAddressRepository,
         private readonly CommercioCommercantHoursRepository $commercioCommercantHoursRepository,
         private readonly CommercioCommercantHolidayRepository $commercioCommercantHolidayRepository,
         private readonly ShopHandler $shopHandler,
@@ -82,10 +84,16 @@ class CommercantController extends AbstractController
         $bills = $this->paymentBillRepository->findByCommercant($commercant);
         $hours = $this->commercioCommercantHoursRepository->findByCommercant($commercant);
         $holidays = $this->commercioCommercantHolidayRepository->findByCommercant($commercant);
+        $address = null;
+        $commercantAddress = $this->commercioCommercantAddressRepository->findOneByCommercant($commercant);
+        if ($commercantAddress) {
+            $address = $commercantAddress->getAddress();
+        }
         $urlCap = $this->bottinUtils->urlCap($commercant);
 
         return $this->render('@CapCommercio/commercant/show.html.twig', [
             'commercant' => $commercant,
+            'address' => $address,
             'gallery' => $gallery,
             'orders' => $orders,
             'bills' => $bills,

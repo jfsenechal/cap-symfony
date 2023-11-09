@@ -1,0 +1,24 @@
+<h4 class="text-success">Adresse</h4>
+
+{% if address %}
+    <table class="table table-bordered">
+        <tr>
+            <th>Rue 1</th>
+            <td>{{ address.street1 }}</td>
+        </tr>
+        <tr>
+            <th>Rue 2</th>
+            <td>{{ address.street2 }}</td>
+        </tr>
+        <tr>
+            <th>Localité</th>
+            <td>{{ address.zipcode }} {{ address.city }}</td>
+        </tr>
+        <tr>
+            <th>Type</th>
+            <td>{{ address.addressType.name }}</td>
+        </tr>
+    </table>
+{% else %}
+    Aucune
+{% endif %}

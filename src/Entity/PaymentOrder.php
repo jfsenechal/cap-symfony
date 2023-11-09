@@ -61,6 +61,7 @@ class PaymentOrder
     private ?PaymentOrderStatus $orderStatus = null;
 
     public ?PaymentBill $bill = null;
+    public ?string $label = null;
 
     public function getId(): ?string
     {

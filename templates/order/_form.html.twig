@@ -1,0 +1,15 @@
+{{ form_start(form) }}
+{{ form_errors(form) }}
+{{ form_row(form.label) }}
+
+<div class="row">
+    <div class="col-6">
+        {{ form_row(form.priceEvat) }}
+    </div>
+    <div class="col-6">
+        {{ form_row(form.vat) }}
+    </div>
+</div>
+
+<button class="btn btn-primary"><i class="fa fa-save"></i> Sauvegarder</button>
+{{ form_end(form) }}

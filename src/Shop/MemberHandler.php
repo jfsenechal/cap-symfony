@@ -8,10 +8,13 @@ use Cap\Commercio\Entity\CommercioCommercantAddress;
 use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Repository\CommercioCommercantAddressRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class MemberHandler
 {
     public function __construct(
+        #[Autowire(env: 'MEMBER_PRICE')]
+        public readonly float $memberPrice,
         public readonly CommercioCommercantRepository $commercantRepository,
         public readonly CommercioCommercantAddressRepository $commercioCommercantAddressRepository,
         private readonly OrderGenerator $orderGenerator
@@ -22,24 +25,25 @@ class MemberHandler
     {
         $this->commercantRepository->flush();
 
-        if (!$commercioCommercantAddress = $this->commercioCommercantAddressRepository->findByCommercant(
+        if (!$commercioCommercantAddress = $this->commercioCommercantAddressRepository->findOneByCommercant(
             $commercioCommercant
         )) {
             $commercioCommercantAddress = new CommercioCommercantAddress();
             $commercioCommercantAddress->setCommercioCommercant($commercioCommercant);
             $commercioCommercantAddress->setUuid($commercioCommercantAddress->generateUuid());
             $commercioCommercantAddress->setInsertDate(new \DateTime());
-            $this->commercioCommercantAddressRepository->persist($commercioCommercantAddress);
+            $this->commercantRepository->persist($commercioCommercantAddress);
         }
 
         $commercioCommercantAddress->setAddress($commercioCommercant->address);
         $commercioCommercantAddress->setModifyDate(new \DateTime());
         $this->commercantRepository->persist($commercioCommercantAddress);
 
+        $this->commercantRepository->flush();
         $order = null;
 
         if ($generateOrder) {
-            $order = $this->orderGenerator->newOne($commercioCommercant, $commercioCommercant->address);
+            $order = $this->orderGenerator->newOne($commercioCommercant, $this->memberPrice);
         }
 
         return $order;

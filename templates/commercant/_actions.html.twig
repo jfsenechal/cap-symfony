@@ -18,6 +18,12 @@
         </a>
     </div>
     <div class="col-auto">
+        <a href="{{ path('cap_order_new',{'id':commercant.id}) }}" class="btn btn-primary" role='button' title="Nouveau bon de commande">
+            <i class="fas fa-plus"></i>
+            Nouveau Bdc
+        </a>
+    </div>
+    <div class="col-auto">
         {% if commercant.rightAccess %}
             <a href="{{ path('cap_user_show',{'id':commercant.rightAccess.id}) }}" class="btn btn-primary"
                role='button'>
