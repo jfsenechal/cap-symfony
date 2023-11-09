@@ -78,8 +78,14 @@ class MemberController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $order = $this->memberHandler->newMember($commercioCommercant, $form->get('generateOrder')->getData());
-            $this->addFlash('success', 'Le nouveau membre a bien été ajouté');
+            try {
+                $order = $this->memberHandler->newMember($commercioCommercant, $form->get('generateOrder')->getData());
+                $this->addFlash('success', 'Le nouveau membre a bien été ajouté');
+            } catch (\Exception $e) {
+                $this->addFlash('danger', 'Erreur: '.$e->getMessage());
+
+                return $this->redirectToRoute('cap_commercant_show', ['id' => $commercioCommercant->getId()]);
+            }
 
             if ($order) {
                 try {

@@ -23,6 +23,12 @@
         </button>
     </div>
     <div class="col-auto">
+        <a href="{{ path('cap_order_edit',{'id':order.id}) }}" class="btn btn-primary" role='button'>
+            <i class="fas fa-pencil"></i>
+            Editer
+        </a>
+    </div>
+    <div class="col-auto">
         <a href="{{ path('cap_order_all') }}" class="btn btn-primary" role='button'><i
                     class="fas fa-list"></i>
             Retour à la Liste</a>

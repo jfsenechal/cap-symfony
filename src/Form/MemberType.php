@@ -50,6 +50,11 @@ class MemberType extends AbstractType
                 'label' => 'Générer un bon de commande',
                 'help' => 'Faut-il générer un bon de commande ?',
             ])
+            ->add('generateBill', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Générer une facture',
+                'help' => 'Faut-il générer un bon de commande ?',
+            ])
             ->add('address', AddressType::class);
     }
 

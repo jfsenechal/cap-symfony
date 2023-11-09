@@ -6,9 +6,11 @@ use Cap\Commercio\Bill\Generator\BillGenerator;
 use Cap\Commercio\Bill\Generator\OrderGenerator;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Entity\PaymentOrder;
+use Cap\Commercio\Form\OrderEditType;
 use Cap\Commercio\Form\OrderSearchType;
 use Cap\Commercio\Form\OrderType;
 use Cap\Commercio\Pdf\PdfGenerator;
+use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderAddressRepository;
 use Cap\Commercio\Repository\PaymentOrderLineRepository;
@@ -34,6 +36,7 @@ class OrderController extends AbstractController
         private readonly PaymentBillRepository $paymentBillRepository,
         private readonly PaymentOrderLineRepository $paymentOrderLineRepository,
         private readonly PaymentOrderAddressRepository $paymentOrderAddressRepository,
+        private readonly CommercioCommercantRepository $commercantRepository,
         private readonly BillGenerator $billGenerator,
         private readonly OrderGenerator $orderGenerator,
         private readonly PdfGenerator $pdfGenerator,
@@ -145,6 +148,32 @@ class OrderController extends AbstractController
                 'addresses' => $addresses,
                 'bill' => $bill,
                 'bills' => $bills,
+            ]
+        );
+    }
+
+    #[Route(path: '/{id}/edit', name: 'cap_order_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, PaymentOrder $order): Response
+    {
+        $commercant = $this->commercantRepository->findByIdCommercant($order->getCommercantId());
+
+        $form = $this->createForm(OrderEditType::class, $order);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+
+            $this->paymentOrderRepository->flush();
+
+            return $this->redirectToRoute('cap_order_show', ['id' => $order->getId()]);
+        }
+
+        return $this->render(
+            '@CapCommercio/order/edit.html.twig',
+            [
+                'commercant' => $commercant,
+                'order' => $order,
+                'form' => $form,
             ]
         );
     }

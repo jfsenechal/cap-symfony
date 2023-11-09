@@ -21,29 +21,31 @@ class MemberHandler
     ) {
     }
 
-    public function newMember(CommercioCommercant $commercioCommercant, bool $generateOrder): ?PaymentOrder
+    /**
+     * @throws \Exception
+     */
+    public function newMember(CommercioCommercant $commercant, bool $generateOrder): ?PaymentOrder
     {
         $this->commercantRepository->flush();
 
         if (!$commercioCommercantAddress = $this->commercioCommercantAddressRepository->findOneByCommercant(
-            $commercioCommercant
+            $commercant
         )) {
             $commercioCommercantAddress = new CommercioCommercantAddress();
-            $commercioCommercantAddress->setCommercioCommercant($commercioCommercant);
+            $commercioCommercantAddress->setCommercioCommercant($commercant);
             $commercioCommercantAddress->setUuid($commercioCommercantAddress->generateUuid());
             $commercioCommercantAddress->setInsertDate(new \DateTime());
             $this->commercantRepository->persist($commercioCommercantAddress);
         }
 
-        $commercioCommercantAddress->setAddress($commercioCommercant->address);
+        $commercioCommercantAddress->setAddress($commercant->address);
         $commercioCommercantAddress->setModifyDate(new \DateTime());
-        $this->commercantRepository->persist($commercioCommercantAddress);
 
         $this->commercantRepository->flush();
         $order = null;
 
         if ($generateOrder) {
-            $order = $this->orderGenerator->newOne($commercioCommercant, $this->memberPrice);
+            $order = $this->orderGenerator->newOne($commercant, $this->memberPrice);
         }
 
         return $order;

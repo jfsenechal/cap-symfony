@@ -24,6 +24,9 @@ class OrderGenerator
     ) {
     }
 
+    /**
+     * @throws \Exception
+     */
     public function newOne(
         CommercioCommercant $commercant,
         float $priceEvat,
@@ -78,26 +81,28 @@ class OrderGenerator
                 $address = $commercantAddress->getAddress();
             }
         }
-        if ($address) {
-            $orderAddress = new PaymentOrderAddress();
-            $orderAddress->setOrder($order);
-            $orderAddress->setAddressTypeId(1);
-            $orderAddress->setStreet1($address->getStreet1());
-            $orderAddress->setCity($address->getCity());
-            $orderAddress->setZipcode($address->getZipcode());
-            $orderAddress->setCountryId(18);
-            $orderAddress->setUuid($orderAddress->generateUuid());
-            $orderAddress->setInsertDate(new  \DateTime());
-            $orderAddress->setModifyDate(new \DateTime());
-            $this->paymentOrderRepository->persist($orderAddress);
+        if (!$address) {
+            throw new \Exception('Le commerçant n\'a pas d\'adresse ! Veuillez encoder une adresse');
         }
+
+        $orderAddress = new PaymentOrderAddress();
+        $orderAddress->setOrder($order);
+        $orderAddress->setAddressTypeId(1);
+        $orderAddress->setStreet1($address->getStreet1());
+        $orderAddress->setCity($address->getCity());
+        $orderAddress->setZipcode($address->getZipcode());
+        $orderAddress->setCountryId(18);
+        $orderAddress->setUuid($orderAddress->generateUuid());
+        $orderAddress->setInsertDate(new  \DateTime());
+        $orderAddress->setModifyDate(new \DateTime());
+        $this->paymentOrderRepository->persist($orderAddress);
 
         $this->paymentOrderRepository->flush();
 
         return $order;
     }
 
-    public function generateOrderNumber(): string
+    private function generateOrderNumber(): string
     {
         $str = "00000";
         $startDate = \DateTime::createFromFormat('Y-m-d', date('Y').'-01-01');
