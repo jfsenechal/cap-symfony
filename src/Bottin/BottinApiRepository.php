@@ -21,10 +21,11 @@ class BottinApiRepository
         $this->connect();
         try {
             $response = $this->executeRequest($this->base_uri.'/bottin/fiches');
+            $this->response = $response;
 
             return json_decode($response);
-        } catch (\Exception $e) {
-            throw new $e;
+        } catch (\Exception $exception) {
+            throw new \Exception($exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 
@@ -38,10 +39,11 @@ class BottinApiRepository
         $this->connect();
         try {
             $response = $this->executeRequest($this->base_uri.'/bottin/fichebyid/'.$id);
+            $this->response = $response;
 
             return json_decode($response);
-        } catch (\Exception $e) {
-            throw new $e;
+        } catch (\Exception $exception) {
+            throw new \Exception($exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 }

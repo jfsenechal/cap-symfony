@@ -17,6 +17,7 @@ trait ConnectionTrait
 {
     private ?HttpClientInterface $httpClient = null;
     public ?string $urlExecuted = null;
+    public ?string $response = null;
 
     public function connect(): void
     {

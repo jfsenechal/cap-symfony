@@ -51,7 +51,9 @@ class SynchroBottinCommand extends Command
             try {
                 $fiche = $this->bottinApiRepository->findCommerceById($commercant->getId());
             } catch (\Exception $e) {
-                $io->error('Impossible d\'obtenir le detail du commerce'.$commercant->getLegalEntity());
+                $io->error(
+                    'Error api: '.$commercant->getLegalEntity().' Error: '.$e->getMessage().' Code '.$e->getCode()
+                );
 
                 continue;
             }
