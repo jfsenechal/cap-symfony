@@ -64,6 +64,7 @@ class SynchroBottinCommand extends Command
                 $commercioBottin = new CommercioBottin();
                 $commercioBottin->setCommercantId($fiche->id);
                 $commercioBottin->setInsertDate(new \DateTime());
+                $io->writeln('new commercio bottin: '.$commercant->getLegalEntity());
             }
             $commercioBottin->setBottin($fiche);
             $commercioBottin->setModifyDate(new \DateTime());
@@ -83,6 +84,7 @@ class SynchroBottinCommand extends Command
                 }
             }
         }
+
         return Command::SUCCESS;
     }
 }
