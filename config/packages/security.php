@@ -29,6 +29,9 @@ return static function (SecurityConfig $security) {
         'form_login' => [],
         'entry_point' => CapAuthenticator::class,
         'custom_authenticators' => [CapAuthenticator::class],
+        'login_throttling' => [
+            'max_attempts' => 6, //per minute...
+        ],
     ];
 
     $security->firewall('main', $main);
