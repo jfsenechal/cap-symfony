@@ -2,7 +2,6 @@
 
 namespace Cap\Commercio\Entity;
 
-use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Stringable;
@@ -15,7 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity]
 class RightAccess implements UserInterface, PasswordHasherAwareInterface, PasswordAuthenticatedUserInterface, Stringable
 {
-    use IdTrait,UuidTrait;
+    use IdTrait, UuidTrait;
 
     #[ORM\Column(name: 'email', type: 'string', length: 200, nullable: false)]
     private ?string $email = null;
@@ -52,10 +51,9 @@ class RightAccess implements UserInterface, PasswordHasherAwareInterface, Passwo
         return $this->roles;
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        // TODO: Implement eraseCredentials() method.
     }
 
     public function getUserIdentifier(): string
