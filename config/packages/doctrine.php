@@ -10,7 +10,7 @@ return static function (DoctrineConfig $doctrine) {
 
     $em->mapping('CapCommercio')
         ->isBundle(false)
-        ->type('annotation')
+        ->type('attribute')
         ->dir('%kernel.project_dir%/src/Cap/Commercio/src/Entity')
         ->prefix('Cap\Commercio')
         ->alias('CapCommercio');
