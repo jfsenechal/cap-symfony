@@ -5,6 +5,7 @@ namespace Cap\Commercio\Wallet;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class WalletApi
 {
@@ -29,7 +30,7 @@ class WalletApi
      */
     public function getToken(): \stdClass
     {
-        return $this->cache->get('token', function () {
+        return $this->cache->get('tokenWallet'.time(), function (ItemInterface $item) {
             $auth = base64_encode($this->clientId.':'.$this->clientKey);
             $options = [
                 'headers' => [
@@ -42,12 +43,16 @@ class WalletApi
             ];
 
             $this->connect($options);
-
             $responseString = $this->executeRequest($this->urlToken, $options, "POST");
 
-            return json_decode($responseString);
+            try {
+                $data = json_decode($responseString, flags: JSON_THROW_ON_ERROR);
+                $item->expiresAfter($data->expires_in);
+
+                return $data;
+            } catch (\Exception $exception) {
+                throw new \Exception('error json_decode '.$responseString.' '.$exception->getMessage());
+            }
         });
     }
-
-
 }
