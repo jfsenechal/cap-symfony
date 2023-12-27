@@ -17,14 +17,11 @@ trait ConnectionTrait
 {
     use DecoratorTrait;
 
-    private ?string $url = null;
-    private ?string $url_token = null;
     public ?string $url_executed = null;
     public ?string $data_raw = null;
 
-    public function connect( array $options): void
+    public function connect(array $options): void
     {
-        //$options['headers']['Accept'] = 'application/json';
         $this->client = HttpClient::create($options);
     }
 

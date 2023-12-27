@@ -12,7 +12,7 @@ class WalletApi
     use ConnectionTrait;
 
     public function __construct(
-        #[Autowire(env: 'WALLET_API_URL')] string $url,
+        #[Autowire(env: 'WALLET_API_URL')] private readonly string $url,
         #[Autowire(env: 'WALLET_API_URL_TOKEN')] private readonly string $urlToken,
         #[Autowire(env: 'WALLET_API_ID')] private readonly string $merchantId,
         #[Autowire(env: 'WALLET_API_KEY')] private readonly string $key,
@@ -30,13 +30,12 @@ class WalletApi
      */
     public function getToken(): \stdClass
     {
-        return $this->cache->get('tokenWallet'.time(), function (ItemInterface $item) {
-            $auth = base64_encode($this->clientId.':'.$this->clientKey);
+        return $this->cache->get('tokenWallet', function (ItemInterface $item) {
             $options = [
                 'headers' => [
                     'Content-Type' => 'application/x-www-form-urlencoded',
-                    'Authorization' => 'Basic '.$auth,
                 ],
+                'auth_basic' => $this->clientId.':'.$this->clientKey,
                 'body' => [
                     'grant_type' => 'client_credentials',
                 ],
@@ -54,5 +53,27 @@ class WalletApi
                 throw new \Exception('error json_decode '.$responseString.' '.$exception->getMessage());
             }
         });
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function createOrder(WalletOrder $order, string $token, array $options = []): ?string
+    {
+        $options = [
+            'auth_bearer' => $token,
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+        ];
+
+        $postFields = (array)$order;
+        $postFields['customer'] = (array)$order->customer;
+
+        $data['json'] = $postFields;
+
+        $this->connect($options);
+
+        return $this->executeRequest($this->url.'/orders', $data, "POST");
     }
 }
