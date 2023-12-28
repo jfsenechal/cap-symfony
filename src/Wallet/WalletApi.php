@@ -12,8 +12,9 @@ class WalletApi
     use ConnectionTrait;
 
     public function __construct(
-        #[Autowire(env: 'WALLET_API_URL')] private readonly string $url,
-        #[Autowire(env: 'WALLET_API_URL_TOKEN')] private readonly string $urlToken,
+        #[Autowire(env: 'WALLET_URL')] public readonly string $url,
+        #[Autowire(env: 'WALLET_URL_API')] private readonly string $urlApi,
+        #[Autowire(env: 'WALLET_URL_TOKEN')] private readonly string $urlToken,
         #[Autowire(env: 'WALLET_API_ID')] private readonly string $merchantId,
         #[Autowire(env: 'WALLET_API_KEY')] private readonly string $key,
         #[Autowire(env: 'WALLET_CLIENT_ID')] private readonly string $clientId,
@@ -71,11 +72,31 @@ class WalletApi
         $postFields['customer'] = (array)$order->customer;
 
         $data = ['json' => $postFields];
-        dd($postFields);
 
         $this->connect($options);
 
-        return $this->executeRequest($this->url.'/orders', $data, "POST");
+        return $this->executeRequest($this->urlApi.'/checkout/v2/orders', $data, "POST");
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function retrieveOrder(string $orderCode, array $options = []): ?string
+    {
+        $options = [
+            'auth_basic' => $this->clientId.':'.$this->clientKey,
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+        ];
+
+        $this->connect($options);
+
+        return $this->executeRequest(
+            $this->url.'/api/orders/{orderCode}?orderCode='.$orderCode,
+            [],
+            "GET"
+        );
     }
 
     /**
@@ -92,6 +113,6 @@ class WalletApi
 
         $this->connect($options);
 
-        return $this->executeRequest($this->url.'/transactions/'.$transactionId, [], "GET");
+        return $this->executeRequest($this->urlApi.'/checkout/v2/transactions/'.$transactionId, [], "GET");
     }
 }

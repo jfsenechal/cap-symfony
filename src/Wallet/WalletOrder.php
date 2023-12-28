@@ -2,6 +2,9 @@
 
 namespace Cap\Commercio\Wallet;
 
+/**
+ * https://developer.vivawallet.com/apis-for-payments/payment-api/#tag/Payments/paths/~1checkout~1v2~1orders/post
+ */
 class WalletOrder
 {
     public int $amount;
@@ -9,9 +12,6 @@ class WalletOrder
      * This is a description displayed to the customer
      */
     public string $customerTrns;
-    /**
-     *
-     */
     public Customer $customer;
     /**
      * if you need to allow more than the default 30 minutes for your customer to pay
@@ -34,9 +34,9 @@ class WalletOrder
      */
     public bool $paymentNotification = true;
     /**
-     *if supporting tip amount (included in amount paid by customer)
+     * if supporting tip amount (included in amount paid by customer)
      */
-    public int $tipAmount = 1;
+    public int $tipAmount = 0;
     /**
      *if supporting open amount (the customer can specify what they pay)
      */

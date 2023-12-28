@@ -3,16 +3,30 @@
 {% block body %}
 
     <div class="card">
-        <h3 class="card-header">Paiement avec succés</h3>
+        <h3 class="card-header text-success">Paiement effectué avec succès</h3>
 
         <div class="card-body">
             <img src="{{ asset('bundles/capcommercio/logo_wallet-dark.svg') }}" alt="logo">
 
-            Cool :-)
-
-            {{ dump(success) }}
+            <table class="table table-bordered">
+                <tr>
+                    <th>eventId</th>
+                    <td>{{ eventId }}</td>
+                </tr>
+                <tr>
+                    <th>transactionId</th>
+                    <td>{{ transactionId }}</td>
+                </tr>
+                <tr>
+                    <th>eci</th>
+                    <td>{{ eci }}</td>
+                </tr>
+                <tr>
+                    <th>s</th>
+                    <td>{{ s }}</td>
+                </tr>
+            </table>
 
         </div>
     </div>
-
 {% endblock %}

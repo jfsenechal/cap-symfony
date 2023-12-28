@@ -25,7 +25,7 @@ class WalletController extends AbstractController
     }
 
     #[Route(path: '/', name: 'cap_wallet_index', methods: ['GET', 'POST'])]
-    public function index(Request $request): Response
+    public function index(): Response
     {
         return $this->render(
             '@CapCommercio/wallet/index.html.twig',
@@ -35,7 +35,7 @@ class WalletController extends AbstractController
         );
     }
 
-    #[Route(path: '/new/{id}', name: 'cap_wallet_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/new/order/{id}', name: 'cap_wallet_order_new', methods: ['GET', 'POST'])]
     public function new(Request $request, PaymentOrder $paymentOrder): Response
     {
         $orderCommercant = $paymentOrder->getOrderCommercant();
@@ -63,7 +63,7 @@ class WalletController extends AbstractController
                 $response = json_decode($responseString);
                 $orderCode = $response->orderCode;
 
-                return $this->redirect('https://demo.vivapayments.com/web/checkout?ref='.$orderCode.'&color=50afd2');
+                return $this->redirect($token - $this->walletApi->url.'/web/checkout?ref='.$orderCode.'&color=50afd2');
             } catch (\Exception $e) {
                 dd($e);
             }
@@ -77,13 +77,11 @@ class WalletController extends AbstractController
             ]
         );
 
-
     }
 
-    #[Route(path: '/success', name: 'cap_wallet_success', methods: ['GET', 'POST'])]
-    public function success(Request $request): Response
+    #[Route(path: '/success', name: 'cap_wallet_transaction_success', methods: ['GET', 'POST'])]
+    public function transactionSuccess(Request $request): Response
     {
-
         $s = $request->query->get('s');
         $lang = $request->query->get('lang');
         $eventId = $request->query->get('eventId');
@@ -93,13 +91,16 @@ class WalletController extends AbstractController
         return $this->render(
             '@CapCommercio/wallet/success.html.twig',
             [
-                'request' => $request,
+                's' => $s,
+                'eventId' => $eventId,
+                'transactionId' => $transactionId,
+                'eci' => $eci,
             ]
         );
     }
 
-    #[Route(path: '/failure', name: 'cap_wallet_failure', methods: ['GET', 'POST'])]
-    public function failure(Request $request): Response
+    #[Route(path: '/failure', name: 'cap_wallet_transaction_failure', methods: ['GET', 'POST'])]
+    public function transactionFailure(Request $request): Response
     {
         dd($request);
         $s = $request->query->get('s');
@@ -111,6 +112,53 @@ class WalletController extends AbstractController
             [
                 'eventId' => $eventId,
                 's' => $s,
+            ]
+        );
+    }
+
+    #[Route(path: '/retrieve/order/{orderCode}', name: 'cap_wallet_order_retrieve', methods: ['GET', 'POST'])]
+    public function orderRetrieve(string $orderCode): Response
+    {
+        try {
+            $order = $this->walletApi->retrieveOrder($orderCode);
+        } catch (\Exception|InvalidArgumentException $exception) {
+            dd($exception);
+        }
+
+        return $this->render(
+            '@CapCommercio/wallet/order.html.twig',
+            [
+                'order' => $order,
+            ]
+        );
+    }
+
+
+    #[Route(path: '/retrieve/transaction/{transactionId}', name: 'cap_wallet_transaction_retrieve', methods: [
+        'GET',
+        'POST',
+    ])]
+    public function transactionRetrieve(string $transactionId): Response
+    {
+        try {
+            $data = $this->walletApi->getToken();
+        } catch (\Exception|InvalidArgumentException $exception) {
+            dd($exception);
+        }
+
+        $token = $data->access_token;
+
+        try {
+            $transactionString = $this->walletApi->retrieveTransaction($transactionId, $token);
+        } catch (\Exception $exception) {
+            dd($exception);
+        }
+
+        return $this->render(
+            '@CapCommercio/wallet/transaction.html.twig',
+            [
+                'transaction' => json_decode($transactionString),
+                'transactionId' => $transactionId,
             ]
         );
     }

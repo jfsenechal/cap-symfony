@@ -1,0 +1,62 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header text-success">Transaction details {{ transactionId }}</h3>
+
+        <div class="card-body">
+            <img src="{{ asset('bundles/capcommercio/logo_wallet-dark.svg') }}" alt="logo">
+
+            <table class="table table-bordered my-3">
+                <tr>
+                    <th>email</th>
+                    <td>{{ transaction.email }}</td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td>{{ transaction.bankId }}</td>
+                </tr>
+                <tr>
+                    <th>amount</th>
+                    <td>{{ transaction.amount }}</td>
+                </tr>
+                <tr>
+                    <th>orderCode</th>
+                    <td>{{ transaction.orderCode }}</td>
+                </tr>
+                <tr>
+                    <th>statusId</th>
+                    <td>{{ transaction.statusId }}</td>
+                </tr>
+                <tr>
+                    <th>fullName</th>
+                    <td>{{ transaction.fullName }}</td>
+                </tr>
+                <tr>
+                    <th>insDate</th>
+                    <td>{{ transaction.insDate }}</td>
+                </tr>
+                <tr>
+                    <th>customerTrns</th>
+                    <td>{{ transaction.customerTrns }}</td>
+                </tr>
+                <tr>
+                    <th>transactionTypeId</th>
+                    <td>{{ transaction.transactionTypeId }}</td>
+                </tr>
+                <tr>
+                    <th>cardIssuingBank</th>
+                    <td>{{ transaction.cardIssuingBank }}</td>
+                </tr>
+                <tr>
+                    <th>cardTypeId</th>
+                    <td>{{ transaction.cardTypeId }}</td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+
+{% endblock %}
+

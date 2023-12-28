@@ -3,7 +3,7 @@
 {% block body %}
 
     <div class="card">
-        <h3 class="card-header text-danger">Wallet</h3>
+        <h3 class="card-header">Wallet</h3>
 
         <div class="card-body">
             <img src="{{ asset('bundles/capcommercio/logo_wallet-dark.svg') }}" alt="logo">
@@ -11,15 +11,24 @@
             <br/>
             <br/>
 
-            <a href="https://demo.vivapayments.com/selfcare/en/sales/paynotifications">
+            <a href="https://demo.vivapayments.com/selfcare/en/sales/paynotifications" target="_blank">
                 Voir les commandes sur vivapayments.com
             </a>
             <br/>
             <br/>
-            <a href="{{ path('cap_wallet_new',{'id':920}) }}">
-                Nouveau paiement
+            <a href="{{ path('cap_wallet_order_new',{'id':920}) }}">
+                Nouvelle commande
             </a>
-
+            <br/>
+            <br/>
+            <a href="{{ path('cap_wallet_transaction_retrieve',{'transactionId':'4383dd2c-e63f-4032-b9ad-c62600982caa'}) }}">
+                Retrieve transaction
+            </a>
+            <br/>
+            <br/>
+            <a href="{{ path('cap_wallet_order_retrieve',{'orderCode':'3437104478061564'}) }}">
+                Retrieve order
+            </a>
         </div>
     </div>
 
