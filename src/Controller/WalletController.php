@@ -6,6 +6,7 @@ use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Form\WalletOrderType;
 use Cap\Commercio\Repository\PaymentOrderLineRepository;
 use Cap\Commercio\Wallet\Customer;
+use Cap\Commercio\Wallet\EventIdCodesEnum;
 use Cap\Commercio\Wallet\WalletApi;
 use Cap\Commercio\Wallet\WalletOrder;
 use Psr\Cache\InvalidArgumentException;
@@ -94,12 +95,14 @@ class WalletController extends AbstractController
         $eventId = $request->query->get('eventId');
         $transactionId = $request->query->get('t');
         $eci = $request->query->get('eci');
+        $eventIdCodeEnum = EventIdCodesEnum::from($eventId);
 
         return $this->render(
             '@CapCommercio/wallet/success.html.twig',
             [
                 's' => $s,
                 'eventId' => $eventId,
+                'eventIdCodeEnum' => $eventIdCodeEnum,
                 'transactionId' => $transactionId,
                 'eci' => $eci,
             ]
@@ -139,7 +142,6 @@ class WalletController extends AbstractController
             ]
         );
     }
-
 
     #[Route(path: '/retrieve/transaction/{transactionId}', name: 'cap_wallet_transaction_retrieve', methods: [
         'GET',
