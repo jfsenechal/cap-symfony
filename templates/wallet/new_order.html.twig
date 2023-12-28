@@ -6,14 +6,12 @@
         <h3 class="card-header">Payer ma commande</h3>
 
         <div class="card-body">
-
             {{ form_start(form) }}
             {{ form_errors(form) }}
             {{ form_row(form.customerTrns) }}
             {{ form_row(form.customer) }}
-            <button class="btn btn-primary"><i class="fa fa-save"></i> Payer</button>
+            <button class="btn btn-primary"><i class="ti ti-currency-euro"></i> Payer ma facture</button>
             {{ form_end(form) }}
-
         </div>
     </div>
 

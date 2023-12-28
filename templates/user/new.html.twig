@@ -9,12 +9,12 @@
             {{ form_errors(form) }}
             {{ form_row(form.email) }}
             {{ form_row(form.password_plain) }}
-            <button class="btn btn-primary"><i class="fa fa-save"></i> Ajouter</button>
+            <button class="btn btn-primary"><i class="ti ti-device-floppy"></i> Ajouter</button>
             {{ form_end(form) }}
         </div>
         <div class="card-footer text-end">
             <a href="{{ path('cap_commercant_show', {'id': commercant.id}) }}" class="btn btn-secondary">
-                <i class="fa fa-arrow-left"></i> Annuler
+                <i class="ti ti-arrow-left"></i> Annuler
             </a>
         </div>
     </div>

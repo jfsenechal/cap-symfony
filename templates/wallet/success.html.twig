@@ -8,6 +8,9 @@
         <div class="card-body">
             <img src="{{ asset('bundles/capcommercio/logo_wallet-dark.svg') }}" alt="logo">
 
+            <br/>
+            <br/>
+
             <table class="table table-bordered">
                 <tr>
                     <th>eventId</th>
@@ -15,7 +18,11 @@
                 </tr>
                 <tr>
                     <th>transactionId</th>
-                    <td>{{ transactionId }}</td>
+                    <td>
+                        <a href="{{ path('cap_wallet_transaction_retrieve',{'transactionId':transactionId}) }}">
+                            {{ transactionId }}
+                        </a>
+                    </td>
                 </tr>
                 <tr>
                     <th>eci</th>
