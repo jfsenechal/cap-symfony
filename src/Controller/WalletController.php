@@ -82,6 +82,13 @@ class WalletController extends AbstractController
     #[Route(path: '/success', name: 'cap_wallet_success', methods: ['GET', 'POST'])]
     public function success(Request $request): Response
     {
+
+        $s = $request->query->get('s');
+        $lang = $request->query->get('lang');
+        $eventId = $request->query->get('eventId');
+        $transactionId = $request->query->get('t');
+        $eci = $request->query->get('eci');
+
         return $this->render(
             '@CapCommercio/wallet/success.html.twig',
             [
@@ -103,6 +110,17 @@ class WalletController extends AbstractController
             [
                 'eventId' => $eventId,
                 's' => $s,
+            ]
+        );
+    }
+
+    #[Route(path: '/webhook', name: 'cap_wallet_webhook', methods: ['GET', 'POST'])]
+    public function webhook(Request $request): Response
+    {
+        return $this->render(
+            '@CapCommercio/wallet/index.html.twig',
+            [
+
             ]
         );
     }

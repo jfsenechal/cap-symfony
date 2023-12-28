@@ -70,7 +70,8 @@ class WalletApi
         $postFields = (array)$order;
         $postFields['customer'] = (array)$order->customer;
 
-        $data['json'] = $postFields;
+        $data = ['json' => $postFields];
+        dd($postFields);
 
         $this->connect($options);
 
@@ -80,7 +81,7 @@ class WalletApi
     /**
      * @throws \Exception
      */
-    public function retrieveTransaction(WalletOrder $order, string $token, array $options = []): ?string
+    public function retrieveTransaction(string $transactionId, string $token, array $options = []): ?string
     {
         $options = [
             'auth_bearer' => $token,
@@ -89,13 +90,8 @@ class WalletApi
             ],
         ];
 
-        $postFields = (array)$order;
-        $postFields['customer'] = (array)$order->customer;
-
-        $data['json'] = $postFields;
-
         $this->connect($options);
 
-        return $this->executeRequest($this->url.'/orders', $data, "POST");
+        return $this->executeRequest($this->url.'/transactions/'.$transactionId, [], "GET");
     }
 }
