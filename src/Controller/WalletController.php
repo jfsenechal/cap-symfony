@@ -10,6 +10,7 @@ use Cap\Commercio\Wallet\WalletApi;
 use Cap\Commercio\Wallet\WalletOrder;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -115,13 +116,16 @@ class WalletController extends AbstractController
     }
 
     #[Route(path: '/webhook', name: 'cap_wallet_webhook', methods: ['GET', 'POST'])]
-    public function webhook(Request $request): Response
+    public function webhook(Request $request): JsonResponse
     {
-        return $this->render(
-            '@CapCommercio/wallet/index.html.twig',
-            [
+        try {
+            $data = $this->walletApi->getToken();
+        } catch (\Exception|InvalidArgumentException $exception) {
+            dd($exception);
+        }
 
-            ]
-        );
+        $token = $data->access_token;
+
+        return $this->json(['Key' => $token]);
     }
 }
