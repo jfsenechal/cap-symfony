@@ -27,10 +27,12 @@ class WalletController extends AbstractController
     #[Route(path: '/', name: 'cap_wallet_index', methods: ['GET', 'POST'])]
     public function index(): Response
     {
+        $url = $this->walletApi->url.'/selfcare/en/sales/paynotifications';
+
         return $this->render(
             '@CapCommercio/wallet/index.html.twig',
             [
-
+                'url' => $url,
             ]
         );
     }
@@ -45,6 +47,7 @@ class WalletController extends AbstractController
         $order = new WalletOrder($paymentOrder->getPriceVat(), $customer, $line->getLabel());
 
         $order->sourceCode = '1619';
+        $order->merchantTrns = 'Cap sur Marche';
 
         $form = $this->createForm(WalletOrderType::class, $order);
 
@@ -65,7 +68,7 @@ class WalletController extends AbstractController
                 $response = json_decode($responseString);
                 $orderCode = $response->orderCode;
 
-                return $this->redirect($token - $this->walletApi->url.'/web/checkout?ref='.$orderCode.'&color=50afd2');
+                return $this->redirect($this->walletApi->url.'/web/checkout?ref='.$orderCode.'&color=50afd2');
             } catch (\Exception $exception) {
                 $this->addFlash('danger', 'Erreur pour générer le paiement: '.$exception->getMessage());
 
