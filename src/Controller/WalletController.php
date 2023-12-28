@@ -54,7 +54,9 @@ class WalletController extends AbstractController
             try {
                 $data = $this->walletApi->getToken();
             } catch (\Exception|InvalidArgumentException $exception) {
-                dd($exception);
+                $this->addFlash('danger', 'Erreur pour obtenir le token: '.$exception->getMessage());
+
+                return $this->redirectToRoute('cap_order_show', ['id' => $paymentOrder->getId()]);
             }
 
             $token = $data->access_token;
@@ -64,8 +66,10 @@ class WalletController extends AbstractController
                 $orderCode = $response->orderCode;
 
                 return $this->redirect($token - $this->walletApi->url.'/web/checkout?ref='.$orderCode.'&color=50afd2');
-            } catch (\Exception $e) {
-                dd($e);
+            } catch (\Exception $exception) {
+                $this->addFlash('danger', 'Erreur pour générer le paiement: '.$exception->getMessage());
+
+                return $this->redirectToRoute('cap_order_show', ['id' => $paymentOrder->getId()]);
             }
         }
 
@@ -151,7 +155,9 @@ class WalletController extends AbstractController
         try {
             $transactionString = $this->walletApi->retrieveTransaction($transactionId, $token);
         } catch (\Exception $exception) {
-            dd($exception);
+            $this->addFlash('danger', 'Erreur pour récupérer le paiement: '.$exception->getMessage());
+
+            return $this->redirectToRoute('cap_home');
         }
 
         return $this->render(
