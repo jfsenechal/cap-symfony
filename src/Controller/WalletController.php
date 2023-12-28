@@ -40,7 +40,7 @@ class WalletController extends AbstractController
         $orderCommercant = $paymentOrder->getOrderCommercant();
         $line = $this->paymentOrderLineRepository->findOneByOrder($paymentOrder);
 
-        $customer = new Customer($orderCommercant->getEmail(), $orderCommercant->getCompanyName());
+        $customer = new Customer('jf@marche.be', $orderCommercant->getCompanyName());
         $order = new WalletOrder($paymentOrder->getPriceVat(), $customer, $line->getLabel());
 
         $order->sourceCode = '1619';
