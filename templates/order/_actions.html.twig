@@ -2,7 +2,7 @@
     {% if order.pdfPath %}
         <div class="col-auto">
             <a href="https://cap.marche.be/{{ order.pdfPath }}" class="btn btn-primary" role='button' target="_blank">
-                <i class="fas fa-download"></i>
+                <i class="ti ti-download"></i>
                 Télécharger le pdf</a>
         </div>
     {% else %}
@@ -12,30 +12,30 @@
     {% endif %}
     <div class="col-auto">
         <a href="{{ path('cap_commercant_show',{'id':order.commercantId}) }}" class="btn btn-primary" role='button'><i
-                    class="fas fa-arrow-left"></i>
+                    class="ti ti-arrow-left"></i>
             Retour au magasin
         </a>
     </div>
     <div class="col-auto">
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paidModal">
-            <i class="fas fa-euro-sign"></i>
+            <i class="ti ti-currency-euro"></i>
             Payer la commande
         </button>
     </div>
     <div class="col-auto">
         <a href="{{ path('cap_order_edit',{'id':order.id}) }}" class="btn btn-primary" role='button'>
-            <i class="fas fa-pencil"></i>
+            <i class="ti ti-pencil"></i>
             Editer
         </a>
     </div>
     <div class="col-auto">
         <a href="{{ path('cap_order_all') }}" class="btn btn-primary" role='button'><i
-                    class="fas fa-list"></i>
+                    class="ti ti-plus"></i>
             Retour à la Liste</a>
     </div>
     <div class="col-auto">
         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-            <i class="fas fa-trash"></i> Supprimer
+            <i class="ti ti-trash"></i> Supprimer
         </button>
     </div>
 </div>

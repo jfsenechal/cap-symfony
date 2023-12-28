@@ -69,7 +69,7 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="fas fa-ellipsis-v"></i> <b class="caret"></b></a>
+                            <i class="ti ti-ellipsis-v"></i> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="{{ path('cap_blog_tag_index') }}" class="dropdown-item">Les tags</a>
@@ -109,18 +109,18 @@
             <ul class="navbar-nav mb-2 mb-lg-0">
                 {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                     <li class="nav-item">
-                        <a href="{{ path('cap_home') }}" class="nav-link"><i class="fas fa-sign-in-alt"></i>
+                        <a href="{{ path('cap_home') }}" class="nav-link"><i class="ti ti-sign-in-alt"></i>
                             Se connecter</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
                         <a href="{{ path('cap_home') }}" class="nav-link">
-                            <i class="fas fa-user"></i>
+                            <i class="ti ti-user"></i>
                             Mon compte</a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ path('app_logout') }}" class="nav-link">
-                            <i class="fas fa-sign-out"></i>
+                            <i class="ti ti-sign-out"></i>
                             Quitter</a>
                     </li>
                 {% endif %}

@@ -2,7 +2,7 @@
     <div class="col-auto">
         {% if bill.pdfPath != null %}
             <a href="https://cap.marche.be/{{ bill.pdfPath }}" class="btn btn-primary" role='button' target="_blank">
-                <i class="fas fa-download"></i>
+                <i class="ti ti-download"></i>
                 Télécharger le pdf</a>
         {% else %}
             Pas de chemin pdf !
@@ -10,18 +10,18 @@
     </div>
     <div class="col-auto">
         <a href="{{ path('cap_commercant_show',{'id':bill.order.commercantId}) }}" class="btn btn-primary" role='button'><i
-                    class="fas fa-arrow-left"></i>
+                    class="ti ti-arrow-left"></i>
             Retour au magasin
         </a>
     </div>
     <div class="col-auto">
         <a href="{{ path('cap_bill_all') }}" class="btn btn-primary" role='button'><i
-                    class="fas fa-list"></i>
+                    class="ti ti-plus"></i>
             Retour à la Liste</a>
     </div>
     <div class="col-auto">
         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-            <i class="fas fa-trash"></i> Supprimer
+            <i class="ti ti-trash"></i> Supprimer
         </button>
     </div>
 </div>
