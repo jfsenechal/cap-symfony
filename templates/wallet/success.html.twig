@@ -1,0 +1,18 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">Paiement avec succés</h3>
+
+        <div class="card-body">
+            <img src="{{ asset('bundles/capcommercio/logo_wallet-dark.svg') }}" alt="logo">
+
+            Cool :-)
+
+            {{ dump(success) }}
+
+        </div>
+    </div>
+
+{% endblock %}

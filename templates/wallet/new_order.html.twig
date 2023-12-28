@@ -1,0 +1,37 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">Payer ma commande</h3>
+
+        <div class="card-body">
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            {{ form_row(form.customerTrns) }}
+            {{ form_row(form.customer) }}
+            <button class="btn btn-primary"><i class="fa fa-save"></i> Sauvegarder</button>
+            {{ form_end(form) }}
+
+
+            <table class="table table-bordered">
+                <tr>
+                    <th></th>
+                    <td>{{ order.amount }}</td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td>{{ order.customer.email }}</td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td>{{ order.customer.fullName }}</td>
+                </tr>
+            </table>
+
+
+        </div>
+    </div>
+
+{% endblock %}

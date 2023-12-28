@@ -8,7 +8,7 @@ class Customer
     public string $fullName;
     public string $phone;
     public string $countryCode = "BE";
-    public string $requestLang = "FR-BE";
+    public string $requestLang = "fr-BE";
 
     public function __construct(string $email, string $fullName)
     {

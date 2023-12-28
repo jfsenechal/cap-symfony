@@ -76,4 +76,26 @@ class WalletApi
 
         return $this->executeRequest($this->url.'/orders', $data, "POST");
     }
+
+    /**
+     * @throws \Exception
+     */
+    public function retrieveTransaction(WalletOrder $order, string $token, array $options = []): ?string
+    {
+        $options = [
+            'auth_bearer' => $token,
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+        ];
+
+        $postFields = (array)$order;
+        $postFields['customer'] = (array)$order->customer;
+
+        $data['json'] = $postFields;
+
+        $this->connect($options);
+
+        return $this->executeRequest($this->url.'/orders', $data, "POST");
+    }
 }
