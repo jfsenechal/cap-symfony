@@ -93,6 +93,7 @@ class WalletController extends AbstractController
     #[Route(path: '/failure', name: 'cap_wallet_failure', methods: ['GET', 'POST'])]
     public function failure(Request $request): Response
     {
+        dd($request);
         $s = $request->query->get('s');
         $lang = $request->query->get('lang');
         $eventId = $request->query->get('eventId');
