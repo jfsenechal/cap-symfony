@@ -17,6 +17,12 @@
         </a>
     </div>
     <div class="col-auto">
+        <a href="{{ path('cap_wallet_order_new',{'id':order.id}) }}" class="btn btn-primary" role='button'><i
+                    class="ti ti-cash"></i>
+           Payer en ligne
+        </a>
+    </div>
+    <div class="col-auto">
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paidModal">
             <i class="ti ti-currency-euro"></i>
             Payer la commande

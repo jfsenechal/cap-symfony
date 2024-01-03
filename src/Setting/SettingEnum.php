@@ -6,4 +6,5 @@ enum SettingEnum: string
 {
     case STRIPE_SECRET_KEY = 'STRIPE_SECRET_KEY';
     case STRIPE_PUBLIC_KEY = 'STRIPE_PUBLIC_KEY';
+    case SITE_NAME = 'SITE_NAME';
 }

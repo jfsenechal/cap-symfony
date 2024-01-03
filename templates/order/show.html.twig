@@ -8,7 +8,6 @@
 
             {% include '@CapCommercio/order/_actions.html.twig' %}
 
-            <h4 class="text-success">Détails</h4>
             <table class="table table-bordered">
                 <tr>
                     <th>Nom</th>
@@ -61,6 +60,10 @@
                 <tr>
                     <th>Modifié le</th>
                     <td>{{ orderCommercant.modifyDate|format_date('full') }}</td>
+                </tr>
+                <tr>
+                    <th>Code Wallet</th>
+                    <td>{{ order.walletCodeOrder }}</td>
                 </tr>
             </table>
 

@@ -60,6 +60,9 @@ class PaymentOrder
     #[ORM\ManyToOne(targetEntity: 'PaymentOrderStatus')]
     private ?PaymentOrderStatus $orderStatus = null;
 
+    #[ORM\Column(name: 'wallet_code_order', type: 'text', nullable: true)]
+    public ?string $walletCodeOrder = null;
+
     public ?PaymentBill $bill = null;
     public ?string $label = null;
 

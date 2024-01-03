@@ -2,26 +2,28 @@
 
 namespace Cap\Commercio\Controller;
 
+use Cap\Commercio\Bill\Generator\OrderGenerator;
+use Cap\Commercio\Bill\Handler\PaymentOrderHandler;
 use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Form\WalletOrderType;
-use Cap\Commercio\Repository\PaymentOrderLineRepository;
-use Cap\Commercio\Wallet\Customer;
 use Cap\Commercio\Wallet\EventIdCodesEnum;
+use Cap\Commercio\Wallet\Handler\WallHandler;
 use Cap\Commercio\Wallet\WalletApi;
-use Cap\Commercio\Wallet\WalletOrder;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/wallet')]
 class WalletController extends AbstractController
 {
     public function __construct(
-        private readonly PaymentOrderLineRepository $paymentOrderLineRepository,
-        private readonly WalletApi $walletApi
+        private readonly WalletApi $walletApi,
+        private readonly WallHandler $wallHandler,
+        private readonly PaymentOrderHandler $paymentOrderHandler,
+        private readonly OrderGenerator $orderGenerator,
     ) {
     }
 
@@ -41,37 +43,22 @@ class WalletController extends AbstractController
     #[Route(path: '/new/order/{id}', name: 'cap_wallet_order_new', methods: ['GET', 'POST'])]
     public function new(Request $request, PaymentOrder $paymentOrder): Response
     {
-        $orderCommercant = $paymentOrder->getOrderCommercant();
-        $line = $this->paymentOrderLineRepository->findOneByOrder($paymentOrder);
+        $walletOrder = $this->wallHandler->createWalletOrderFromPaymentOrder($paymentOrder);
 
-        $customer = new Customer('jf@marche.be', $orderCommercant->getCompanyName());
-        $order = new WalletOrder($paymentOrder->getPriceVat(), $customer, $line->getLabel());
-
-        $order->sourceCode = '1619';
-        $order->merchantTrns = 'Cap sur Marche';
-
-        $form = $this->createForm(WalletOrderType::class, $order);
+        $form = $this->createForm(WalletOrderType::class, $walletOrder);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             try {
-                $data = $this->walletApi->getToken();
-            } catch (\Exception|InvalidArgumentException $exception) {
-                $this->addFlash('danger', 'Erreur pour obtenir le token: '.$exception->getMessage());
+                $this->wallHandler->createOrderForOnlinePayment($paymentOrder, $walletOrder);
 
-                return $this->redirectToRoute('cap_order_show', ['id' => $paymentOrder->getId()]);
-            }
-
-            $token = $data->access_token;
-            try {
-                $responseString = $this->walletApi->createOrder($order, $token);
-                $response = json_decode($responseString);
-                $orderCode = $response->orderCode;
-
-                return $this->redirect($this->walletApi->url.'/web/checkout?ref='.$orderCode.'&color=50afd2');
-            } catch (\Exception $exception) {
-                $this->addFlash('danger', 'Erreur pour générer le paiement: '.$exception->getMessage());
+                return $this->redirect(
+                    $this->walletApi->url.'/web/checkout?ref='.$paymentOrder->walletCodeOrder.'&color=50afd2'
+                );
+            } catch (\Exception $e) {
+                $this->addFlash('danger', $e->getMessage());
 
                 return $this->redirectToRoute('cap_order_show', ['id' => $paymentOrder->getId()]);
             }
@@ -80,7 +67,9 @@ class WalletController extends AbstractController
         return $this->render(
             '@CapCommercio/wallet/new_order.html.twig',
             [
-                'order' => $order,
+                'paymentOrder' => $paymentOrder,
+                'orderCommercant' => $paymentOrder->getOrderCommercant(),
+                'walletOrder' => $walletOrder,
                 'form' => $form,
             ]
         );
@@ -91,11 +80,22 @@ class WalletController extends AbstractController
     public function transactionSuccess(Request $request): Response
     {
         $s = $request->query->get('s');
-        $lang = $request->query->get('lang');
         $eventId = $request->query->get('eventId');
-        $transactionId = $request->query->get('t');
         $eci = $request->query->get('eci');
         $eventIdCodeEnum = EventIdCodesEnum::from($eventId);
+
+        $transactionId = $request->query->get('t');
+        $paymentOrder = $this->wallHandler->success($request);
+        dump($paymentOrder);
+        if ($paymentOrder) {
+            try {
+                $bill = $this->paymentOrderHandler->paid($paymentOrder);
+                $bill->walletTransactionId = $transactionId;
+            } catch (\Exception $exception) {
+
+                $this->addFlash('danger', 'Une erreur est survenue '.$exception->getMessage());
+            }
+        }
 
         return $this->render(
             '@CapCommercio/wallet/success.html.twig',
@@ -121,6 +121,7 @@ class WalletController extends AbstractController
             '@CapCommercio/wallet/failure.html.twig',
             [
                 'eventId' => $eventId,
+                'eventIdCodeEnum' => $eventIdCodeEnum,
                 's' => $s,
             ]
         );

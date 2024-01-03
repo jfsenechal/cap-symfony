@@ -19,11 +19,9 @@ class PaymentBill
     #[ORM\Column(name: 'bill_number', type: 'text', nullable: false)]
     private ?string $billNumber = null;
 
-    
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
 
-    
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
 
@@ -48,6 +46,9 @@ class PaymentBill
     #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
     #[ORM\ManyToOne(targetEntity: 'PaymentOrder')]
     private ?PaymentOrder $order = null;
+
+    #[ORM\Column(name: 'wallet_transaction_id', type: 'text', nullable: true)]
+    public ?string $walletTransactionId = null;
 
     public function getId(): ?string
     {

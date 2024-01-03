@@ -2,14 +2,13 @@
 
 namespace Cap\Commercio\Controller;
 
-use Cap\Commercio\Bill\Generator\BillGenerator;
 use Cap\Commercio\Bill\Generator\OrderGenerator;
+use Cap\Commercio\Bill\Handler\PaymentOrderHandler;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Form\OrderEditType;
 use Cap\Commercio\Form\OrderSearchType;
 use Cap\Commercio\Form\OrderType;
-use Cap\Commercio\Pdf\PdfGenerator;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderAddressRepository;
@@ -37,9 +36,8 @@ class OrderController extends AbstractController
         private readonly PaymentOrderLineRepository $paymentOrderLineRepository,
         private readonly PaymentOrderAddressRepository $paymentOrderAddressRepository,
         private readonly CommercioCommercantRepository $commercantRepository,
-        private readonly BillGenerator $billGenerator,
+        private readonly PaymentOrderHandler $paymentOrderHandler,
         private readonly OrderGenerator $orderGenerator,
-        private readonly PdfGenerator $pdfGenerator,
     ) {
     }
 
@@ -162,7 +160,6 @@ class OrderController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-
             $this->paymentOrderRepository->flush();
 
             return $this->redirectToRoute('cap_order_show', ['id' => $order->getId()]);
@@ -189,18 +186,8 @@ class OrderController extends AbstractController
             }
 
             try {
-                $bill = $this->billGenerator->generateFromOrder($paymentOrder);
+                $bill = $this->paymentOrderHandler->paid($paymentOrder);
                 $this->addFlash('success', 'Facture générée');
-
-                try {
-                    $html = $this->pdfGenerator->generateContentForBill($bill);
-                    $fileName = 'bill-'.$bill->getUuid().'.pdf';
-                    $this->pdfGenerator->savePdfToDisk($html, $fileName);
-                    $bill->setPdfPath('pdf-docs/'.$fileName);
-                    $this->paymentBillRepository->flush();
-                } catch (LoaderError|RuntimeError|SyntaxError|Exception $e) {
-                    throw new Exception($e->getMessage(), $e->getCode(), $e);
-                }
 
                 return $this->redirectToRoute('cap_bill_show', ['id' => $bill->getId()]);
             } catch (Exception $exception) {

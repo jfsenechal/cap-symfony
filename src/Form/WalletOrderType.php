@@ -12,7 +12,7 @@ class WalletOrderType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
+      /*  $builder
             ->add('customerTrns', TextType::class, [
                 'label' => 'Intitule',
                 'required' => true,
@@ -20,7 +20,7 @@ class WalletOrderType extends AbstractType
             ->add('customer', WalletCustomerType::class, [
                 'label' => 'Client',
                 'required' => true,
-            ]);
+            ]);*/
     }
 
     public function configureOptions(OptionsResolver $resolver): void

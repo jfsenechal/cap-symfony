@@ -125,6 +125,15 @@ class PaymentOrderRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findOneByWalletCodeOrder(string $orderCode): ?PaymentOrder
+    {
+        return $this->createQb()
+            ->andWhere('paymentOrder.walletCodeOrder = :code')
+            ->setParameter('code', $orderCode)
+            ->getQuery()
+            ->getResult();
+    }
+
     private function createQb(): QueryBuilder
     {
         return $this->createQueryBuilder('paymentOrder')
@@ -132,5 +141,6 @@ class PaymentOrderRepository extends ServiceEntityRepository
             ->addSelect('commercant')
             ->orderBy('paymentOrder.insertDate', 'DESC');
     }
+
 
 }

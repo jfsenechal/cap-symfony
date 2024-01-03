@@ -1,4 +1,4 @@
-{% extends '@CapCommercio/base.html.twig' %}
+{% extends '@CapCommercio/base_public.html.twig' %}
 
 {% block body %}
 
@@ -13,16 +13,6 @@
 
             <a href="{{ url }}" target="_blank">
                 Voir les bons de commandes sur vivapayments.com
-            </a>
-            <br/>
-            <br/>
-            <a href="{{ path('cap_wallet_order_new',{'id':920}) }}">
-                Nouvelle commande
-            </a>
-            <br/>
-            <br/>
-            <a href="{{ path('cap_wallet_transaction_retrieve',{'transactionId':'4383dd2c-e63f-4032-b9ad-c62600982caa'}) }}">
-                Retrieve transaction
             </a>
             <br/>
             <br/>
