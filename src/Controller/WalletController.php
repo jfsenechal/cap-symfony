@@ -8,6 +8,7 @@ use Cap\Commercio\Form\WalletOrderType;
 use Cap\Commercio\Mailer\MailerJf;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
+use Cap\Commercio\Wallet\EciEnum;
 use Cap\Commercio\Wallet\EventIdCodesEnum;
 use Cap\Commercio\Wallet\Handler\WallHandler;
 use Cap\Commercio\Wallet\WalletApi;
@@ -17,6 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/wallet')]
 class WalletController extends AbstractController
@@ -32,6 +34,7 @@ class WalletController extends AbstractController
     }
 
     #[Route(path: '/', name: 'cap_wallet_index', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CAP')]
     public function index(): Response
     {
         $url = $this->walletApi->url.'/selfcare/en/sales/paynotifications';
@@ -44,14 +47,13 @@ class WalletController extends AbstractController
         );
     }
 
-    #[Route(path: '/new/order/{id}', name: 'cap_wallet_order_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/new/order/{uuid}', name: 'cap_wallet_order_new', methods: ['GET', 'POST'])]
     public function new(Request $request, PaymentOrder $paymentOrder): Response
     {
         if ($bill = $this->paymentBillRepository->findOneByOrder($paymentOrder)) {
             $this->addFlash('danger', 'Cette commande a déjà été payée');
         }
 
-        $paymentOrder = $this->paymentOrderRepository->findOneByWalletCodeOrder($paymentOrder->walletCodeOrder);
         $walletOrder = $this->wallHandler->createWalletOrderFromPaymentOrder($paymentOrder);
 
         $form = $this->createForm(WalletOrderType::class, $walletOrder);
@@ -80,7 +82,7 @@ class WalletController extends AbstractController
                     $this->addFlash('danger', $e->getMessage());
                     $this->mailerJf->sendError('Error create bill', $exception->getMessage());
 
-                    return $this->redirectToRoute('cap_wallet_order_new', ['id' => $paymentOrder->getId()]);
+                    return $this->redirectToRoute('cap_wallet_order_new', ['uuid' => $paymentOrder->getUuid()]);
                 }
             }
 
@@ -109,9 +111,10 @@ class WalletController extends AbstractController
         $eventId = $request->query->get('eventId');
         $eci = $request->query->get('eci');
         $eventIdCodeEnum = EventIdCodesEnum::from($eventId);
+        $eciEnum = EciEnum::from($eci);
 
         $transactionId = $request->query->get('t');
-        $paymentOrder = $this->wallHandler->success($request);
+        $paymentOrder = $this->wallHandler->retrievePaymentOrderByCodeOrder($request);
 
         if ($paymentOrder) {
             try {
@@ -120,7 +123,6 @@ class WalletController extends AbstractController
                 $this->paymentOrderRepository->flush();
             } catch (\Exception $exception) {
                 $this->mailerJf->sendError('Error create bill', $exception->getMessage());
-                $this->addFlash('danger', 'Une erreur est survenue '.$exception->getMessage());
             }
         }
 
@@ -155,12 +157,14 @@ class WalletController extends AbstractController
     }
 
     #[Route(path: '/retrieve/order/{orderCode}', name: 'cap_wallet_order_retrieve', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CAP')]
     public function orderRetrieve(string $orderCode): Response
     {
+        $order = null;
         try {
-            $order = $this->walletApi->retrieveOrder($orderCode);
+            $order = json_decode($this->walletApi->retrieveOrder($orderCode));
         } catch (\Exception|InvalidArgumentException $exception) {
-            dd($exception);
+            $this->addFlash('danger', $exception->getMessage());
         }
 
         return $this->render(
@@ -175,6 +179,7 @@ class WalletController extends AbstractController
         'GET',
         'POST',
     ])]
+    #[IsGranted('ROLE_CAP')]
     public function transactionRetrieve(string $transactionId): Response
     {
         try {
@@ -182,11 +187,11 @@ class WalletController extends AbstractController
         } catch (\Exception|InvalidArgumentException $exception) {
             dd($exception);
         }
-
         $token = $data->access_token;
 
         try {
             $transactionString = $this->walletApi->retrieveTransaction($transactionId, $token);
+            $transaction = json_decode($transactionString);
         } catch (\Exception $exception) {
             $this->addFlash('danger', 'Erreur pour récupérer le paiement: '.$exception->getMessage());
 
@@ -196,7 +201,7 @@ class WalletController extends AbstractController
         return $this->render(
             '@CapCommercio/wallet/transaction.html.twig',
             [
-                'transaction' => json_decode($transactionString),
+                'transaction' => $transaction,
                 'transactionId' => $transactionId,
             ]
         );

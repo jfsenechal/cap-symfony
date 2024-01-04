@@ -8,6 +8,7 @@ use Cap\Commercio\Repository\PaymentOrderRepository;
 use Cap\Commercio\Repository\SettingRepository;
 use Cap\Commercio\Setting\SettingEnum;
 use Cap\Commercio\Wallet\Customer;
+use Cap\Commercio\Wallet\EciEnum;
 use Cap\Commercio\Wallet\EventIdCodesEnum;
 use Cap\Commercio\Wallet\OrderStatusEnum;
 use Cap\Commercio\Wallet\WalletApi;
@@ -30,6 +31,7 @@ class WallHandler
         $line = $this->paymentOrderLineRepository->findOneByOrder($paymentOrder);
 
         $orderCommercant = $paymentOrder->getOrderCommercant();
+        //todo remove jf
         $customer = new Customer('jf@marche.be', $orderCommercant->getCompanyName());
         $walletOrder = new WalletOrder($paymentOrder->getPriceVat(), $customer, $line->getLabel());
         $walletOrder->sourceCode = '1619';
@@ -87,7 +89,7 @@ class WallHandler
 
     }
 
-    public function success(Request $request): ?PaymentOrder
+    public function retrievePaymentOrderByCodeOrder(Request $request): ?PaymentOrder
     {
         if (!$request->query->get('s')) {
             return null;
@@ -97,7 +99,7 @@ class WallHandler
         $eventId = $request->query->get('eventId');
         $transactionId = $request->query->get('t');
         $eci = $request->query->get('eci');
-        $eciCodeEnum = $eci;
+        $eciCodeEnum = EciEnum::from($eci);
         $eventIdCodeEnum = EventIdCodesEnum::from($eventId);
 
         return $this->paymentOrderRepository->findOneByWalletCodeOrder($orderCode);

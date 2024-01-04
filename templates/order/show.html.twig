@@ -62,8 +62,16 @@
                     <td>{{ orderCommercant.modifyDate|format_date('full') }}</td>
                 </tr>
                 <tr>
-                    <th>Code Wallet</th>
-                    <td>{{ order.walletCodeOrder }}</td>
+                    <th>Ordre paiement en ligne</th>
+                    <td>
+                        {% if order.walletCodeOrder %}
+                            <a href="{{ path('cap_wallet_order_retrieve',{'orderCode':s}) }}">
+                                {{ order.walletCodeOrder }}
+                            </a>
+                        {% else %}
+                            Non
+                        {% endif %}
+                    </td>
                 </tr>
             </table>
 

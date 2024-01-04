@@ -7,10 +7,14 @@
 
         <div class="card-body">
             <img src="{{ asset('bundles/capcommercio/logo_wallet-dark.svg') }}" alt="logo">
+            <br/>
             <img src="{{ asset('bundles/capcommercio/cap_logo.jpg') }}" alt="logo" style="height: 350px;">
 
             <br/>
             <br/>
+            <div class="alert alert-info">
+                Merci pour votre paiement
+            </div>
 
             <table class="table table-bordered">
                 <tr>
@@ -38,7 +42,11 @@
                 </tr>
                 <tr>
                     <th>s</th>
-                    <td>{{ s }}</td>
+                    <td>
+                        <a href="{{ path('cap_wallet_order_retrieve',{'orderCode':s}) }}">
+                            {{ s }}
+                        </a>
+                    </td>
                 </tr>
             </table>
 

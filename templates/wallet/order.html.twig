@@ -1,15 +1,64 @@
-{% extends '@CapCommercio/base_public.html.twig' %}
+{% extends '@CapCommercio/base.html.twig' %}
 
 {% block body %}
 
     <div class="card">
-        <h3 class="card-header text-success">Order details</h3>
+        <h3 class="card-header text-success">Order details {% if order %}{{ order.OrderCode }}{% endif %}</h3>
 
         <div class="card-body">
-            <img src="{{ asset('bundles/capcommercio/logo_wallet-dark.svg') }}" alt="logo">
 
-            {{ dump(order) }}
-
+            {% if order %}
+                <table class="table table-bordered my-3">
+                    <tr>
+                        <th>SourceCode</th>
+                        <td>
+                            {{ order.SourceCode }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>TipAmount</th>
+                        <td>
+                            {{ order.TipAmount }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>RequestLang</th>
+                        <td>
+                            {{ order.RequestLang }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>MerchantTrns</th>
+                        <td>
+                            {{ order.MerchantTrns }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>CustomerTrns</th>
+                        <td>
+                            {{ order.CustomerTrns }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>MaxInstallments</th>
+                        <td>
+                            {{ order.MaxInstallments }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>RequestAmount</th>
+                        <td>
+                            {{ order.RequestAmount }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>ExpirationDate</th>
+                        <td>
+                            {{ order.ExpirationDate }}
+                        </td>
+                    </tr>
+                </table>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

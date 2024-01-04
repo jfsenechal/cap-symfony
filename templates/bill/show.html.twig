@@ -38,6 +38,18 @@
                     <td>{{ bill.insertDate|format_date('full') }} </td>
                 </tr>
                 <tr>
+                    <th>Paiement en ligne</th>
+                    <td>
+                        {% if bill.walletTransactionId %}
+                            <a href="{{ path('cap_wallet_transaction_retrieve',{'transactionId':bill.walletTransactionId}) }}">
+                                {{ bill.walletTransactionId }}
+                            </a>
+                        {% else %}
+                            Non
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
                     <th>Archivé</th>
                     <td>{{ bill.archived }} </td>
                 </tr>

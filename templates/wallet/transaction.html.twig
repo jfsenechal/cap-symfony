@@ -1,4 +1,4 @@
-{% extends '@CapCommercio/base_public.html.twig' %}
+{% extends '@CapCommercio/base.html.twig' %}
 
 {% block body %}
 
@@ -9,6 +9,13 @@
             <img src="{{ asset('bundles/capcommercio/logo_wallet-dark.svg') }}" alt="logo">
 
             <table class="table table-bordered my-3">
+                <tr>
+                    <th>Status</th>
+                    <td>
+                        {{ transaction.statusId }} =>
+                        {{ transaction.statusId|transaction_status }}
+                    </td>
+                </tr>
                 <tr>
                     <th>email</th>
                     <td>{{ transaction.email }}</td>
@@ -23,11 +30,11 @@
                 </tr>
                 <tr>
                     <th>orderCode</th>
-                    <td>{{ transaction.orderCode }}</td>
-                </tr>
-                <tr>
-                    <th>statusId</th>
-                    <td>{{ transaction.statusId }}</td>
+                    <td>
+                        <a href="{{ path('cap_wallet_order_retrieve',{'orderCode':transaction.orderCode}) }}">
+                            {{ transaction.orderCode }}
+                        </a>
+                    </td>
                 </tr>
                 <tr>
                     <th>fullName</th>
