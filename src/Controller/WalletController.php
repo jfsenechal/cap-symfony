@@ -47,7 +47,7 @@ class WalletController extends AbstractController
     #[Route(path: '/new/order/{id}', name: 'cap_wallet_order_new', methods: ['GET', 'POST'])]
     public function new(Request $request, PaymentOrder $paymentOrder): Response
     {
-        if ($bill = $this->paymentBillRepository->findByOrder($paymentOrder)) {
+        if ($bill = $this->paymentBillRepository->findOneByOrder($paymentOrder)) {
             $this->addFlash('danger', 'Cette commande a déjà été payée');
         }
 

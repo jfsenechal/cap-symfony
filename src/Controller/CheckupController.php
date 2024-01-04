@@ -45,7 +45,7 @@ class CheckupController extends AbstractController
         $orders = $this->paymentOrderRepository->findAllOrdered();
         $multiplePayments = [];
         foreach ($orders as $order) {
-            $payments = $this->paymentBillRepository->findByOrder($order);
+            $payments = $this->paymentBillRepository->findMultipleByOrder($order);
             if (count($payments) > 1) {
                 $multiplePayments[] = ['order' => $order, 'payments' => $payments];
             }
@@ -65,7 +65,7 @@ class CheckupController extends AbstractController
         $orders = $this->paymentOrderRepository->findPaid();
         $noBill = [];
         foreach ($orders as $order) {
-            $bills = $this->paymentBillRepository->findByOrder($order);
+            $bills = $this->paymentBillRepository->findMultipleByOrder($order);
             if (count($bills) == 0) {
                 $noBill[] = $order;
             }

@@ -131,7 +131,7 @@ class OrderController extends AbstractController
             $bill = $this->paymentBillRepository->findOneByOrder($paymentOrder);
         } catch (NonUniqueResultException) {
             $bill = null;
-            $bills = $this->paymentBillRepository->findByOrder($paymentOrder);
+            $bills = $this->paymentBillRepository->findMultipleByOrder($paymentOrder);
             if ($bills !== []) {
                 $this->addFlash('danger', 'Attention plusieurs paiements pour cette facture');
             }
@@ -206,7 +206,7 @@ class OrderController extends AbstractController
             $orderCommercant = $paymentOrder->getOrderCommercant();
             $line = $this->paymentOrderLineRepository->findOneByOrder($paymentOrder);
             $addresses = $this->paymentOrderAddressRepository->findByOrder($paymentOrder);
-            $bills = $this->paymentBillRepository->findByOrder($paymentOrder);
+            $bills = $this->paymentBillRepository->findMultipleByOrder($paymentOrder);
 
             $this->paymentOrderRepository->remove($orderCommercant);
             $this->paymentOrderRepository->remove($line);

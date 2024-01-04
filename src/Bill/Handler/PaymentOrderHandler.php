@@ -27,7 +27,7 @@ class PaymentOrderHandler
      */
     public function paid(PaymentOrder $paymentOrder): PaymentBill
     {
-        if ($this->paymentBillRepository->findByOrder($paymentOrder)) {
+        if ($this->paymentBillRepository->findOneByOrder($paymentOrder)) {
             throw new \Exception('Facture déjà payée');
         }
 

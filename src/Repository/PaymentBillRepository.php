@@ -103,7 +103,7 @@ class PaymentBillRepository extends ServiceEntityRepository
     /**
      * @return PaymentBill[]
      */
-    public function findByOrder(PaymentOrder $order): array
+    public function findMultipleByOrder(PaymentOrder $order): array
     {
         return $this->createQb()
             ->andWhere('payment_bill.order = :order')
