@@ -185,7 +185,9 @@ class WalletController extends AbstractController
         try {
             $data = $this->walletApi->getToken();
         } catch (\Exception|InvalidArgumentException $exception) {
-            dd($exception);
+            $this->addFlash('danger', 'Erreur pour récupérer le paiement: '.$exception->getMessage());
+
+            return $this->redirectToRoute('cap_home');
         }
         $token = $data->access_token;
 

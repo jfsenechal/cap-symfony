@@ -50,7 +50,13 @@
                 </tr>
                 <tr>
                     <th>transactionTypeId</th>
-                    <td>{{ transaction.transactionTypeId }}</td>
+                    <td>
+                        {{ transaction.transactionTypeId }}<br/>
+                        <a href="https://developer.vivawallet.com/integration-reference/response-codes/#transactiontypeid-parameter"
+                           target="_blank">
+                            Liste des codes
+                        </a>
+                    </td>
                 </tr>
                 <tr>
                     <th>cardIssuingBank</th>
@@ -58,7 +64,7 @@
                 </tr>
                 <tr>
                     <th>cardTypeId</th>
-                    <td>{{ transaction.cardTypeId }}</td>
+                    <td>{{ transaction.cardTypeId }} => {{ transaction.cardTypeId|card_type }}</td>
                 </tr>
             </table>
 

@@ -19,6 +19,10 @@ class CapExtension extends AbstractExtension
                 'transaction_status',
                 [CapExtensionRuntime::class, 'transactionStatus'],
                 ['is_safe' => ['html']]
+            ),new TwigFilter(
+                'card_type',
+                [CapExtensionRuntime::class, 'cardType'],
+                ['is_safe' => ['html']]
             ),
         ];
     }
