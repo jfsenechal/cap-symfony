@@ -11,24 +11,24 @@ use Mandrill_Senders;
 use Mandrill_Subaccounts;
 use Mandrill_Templates;
 use Mandrill_Users;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Mime\Email;
 
 class MailerCap
 {
     private string $senderEmail = 'info@capsurmarche.com';
-    private readonly string $api;
     private string $senderName = 'Cap sur Marche';
 
-    public function __construct(private readonly ParameterBagInterface $parameterBag, private readonly MandrillMail $mandrillMail)
-    {
+    public function __construct(
+        #[Autowire('%env(MANDRILL_API)')] private readonly string $api,
+        private readonly MandrillMail $mandrillMail
+    ) {
         define('PREFIX', 'https://cap.marche.be'); //url site
         define('PREFIX_RESOURCES', ''); // vide
         define('TEMPLATES_PATH', '/templates/');
         define('TEMPLATES_FOLDER_NAME', 'commercio');
         define('MANDRILL_SUBACCOUNT', 'commercio');
-
-        $this->api = $this->parameterBag->get('MANDRILL_API');
     }
 
     /**
@@ -39,7 +39,7 @@ class MailerCap
     {
         $dateTime = $commercant->getAffiliationDate();
 
-        $templatePath = PREFIX . PREFIX_RESOURCES . TEMPLATES_PATH . TEMPLATES_FOLDER_NAME . '/';
+        $templatePath = PREFIX.PREFIX_RESOURCES.TEMPLATES_PATH.TEMPLATES_FOLDER_NAME.'/';
         if ($env == "dev") {
             $this->mandrillMail->addReceiver('jf@marche.be', 'jfs', 'senechal');
         } else {
@@ -58,15 +58,15 @@ class MailerCap
         }
         $date = $dateTime instanceof DateTimeInterface ? $dateTime->format("d/m/Y") : date('d/m/Y');
 
-        $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("PREFIX", PREFIX . PREFIX_RESOURCES));
+        $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("PREFIX", PREFIX.PREFIX_RESOURCES));
         $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("TEMPLATEPATH", $templatePath));
         $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("START_DATE", $date));
         $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("ORDER_PDF", "/admin"));
         $this->mandrillMail->template = "commercio_reminder_expired";
-        $this->mandrillMail->subject = $this->senderName . " - Votre affiliation a expiré";
+        $this->mandrillMail->subject = $this->senderName." - Votre affiliation a expiré";
         $this->mandrillMail->senderName = $this->senderName;
         $this->mandrillMail->senderEmail = $this->senderEmail;
-        $this->mandrillMail->website = PREFIX . PREFIX_RESOURCES;
+        $this->mandrillMail->website = PREFIX.PREFIX_RESOURCES;
         try {
             $this->mandrillMail->sendMe();
         } catch (Exception $exception) {
@@ -79,11 +79,11 @@ class MailerCap
         $email = 'jf@marche.be';
 
         $code = 1235;
-        $recovery_path = "/admin/renew/" . $code;
+        $recovery_path = "/admin/renew/".$code;
 
-        $templatePath = PREFIX . PREFIX_RESOURCES . TEMPLATES_PATH . TEMPLATES_FOLDER_NAME . '/';
+        $templatePath = PREFIX.PREFIX_RESOURCES.TEMPLATES_PATH.TEMPLATES_FOLDER_NAME.'/';
 
-        $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("PREFIX", PREFIX . PREFIX_RESOURCES));
+        $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("PREFIX", PREFIX.PREFIX_RESOURCES));
         $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("TEMPLATEPATH", $templatePath));
         $this->mandrillMail->addMailDataItem(new MandrillMailDataItem("RENEW_LINK", $recovery_path));
 
@@ -92,7 +92,7 @@ class MailerCap
         $this->mandrillMail->subject = "Récupération de mot de passe."; //translator ?
         $this->mandrillMail->senderName = 'Cap sur Marche';
         $this->mandrillMail->senderEmail = $this->senderEmail;
-        $this->mandrillMail->website = PREFIX . PREFIX_RESOURCES;
+        $this->mandrillMail->website = PREFIX.PREFIX_RESOURCES;
         try {
             $this->mandrillMail->sendMe();
         } catch (Exception $exception) {

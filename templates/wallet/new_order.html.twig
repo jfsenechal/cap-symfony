@@ -9,16 +9,16 @@
             <h4 class="text-success">Rappel des informations</h4>
             <table class="table table-bordered">
                 <tr>
+                    <th>Date</th>
+                    <td>{{ paymentOrder.insertDate|format_date('full') }}</td>
+                </tr>
+                <tr>
                     <th>Nom</th>
                     <td>{{ orderCommercant.firstname }} {{ orderCommercant.lastname }}</td>
                 </tr>
                 <tr>
                     <th>Société</th>
                     <td>{{ orderCommercant.companyName }}</td>
-                </tr>
-                <tr>
-                    <th>Date</th>
-                    <td>{{ paymentOrder.insertDate|format_date('full') }}</td>
                 </tr>
                 <tr>
                     <th>Courriel</th>
@@ -41,11 +41,12 @@
                     <td>{{ paymentOrder.priceVat|format_currency('euro') }}</td>
                 </tr>
             </table>
-
-            {{ form_start(form) }}
-            {{ form_errors(form) }}
-            <button class="btn btn-primary"><i class="ti ti-currency-euro"></i> Payer ma facture en ligne</button>
-            {{ form_end(form) }}
+            {% if bill is null %}
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+                <button class="btn btn-primary"><i class="ti ti-currency-euro"></i> Payer ma facture en ligne</button>
+                {{ form_end(form) }}
+            {% endif %}
         </div>
     </div>
 

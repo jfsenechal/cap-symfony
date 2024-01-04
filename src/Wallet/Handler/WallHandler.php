@@ -2,17 +2,14 @@
 
 namespace Cap\Commercio\Wallet\Handler;
 
-use Cap\Commercio\Bill\Generator\BillGenerator;
-use Cap\Commercio\Bill\Generator\OrderGenerator;
 use Cap\Commercio\Entity\PaymentOrder;
-use Cap\Commercio\Pdf\PdfGenerator;
-use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderLineRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
 use Cap\Commercio\Repository\SettingRepository;
 use Cap\Commercio\Setting\SettingEnum;
 use Cap\Commercio\Wallet\Customer;
 use Cap\Commercio\Wallet\EventIdCodesEnum;
+use Cap\Commercio\Wallet\OrderStatusEnum;
 use Cap\Commercio\Wallet\WalletApi;
 use Cap\Commercio\Wallet\WalletOrder;
 use Psr\Cache\InvalidArgumentException;
@@ -23,12 +20,8 @@ class WallHandler
     public function __construct(
         private readonly PaymentOrderLineRepository $paymentOrderLineRepository,
         private readonly PaymentOrderRepository $paymentOrderRepository,
-        private readonly PaymentBillRepository $paymentBillRepository,
         private readonly SettingRepository $settingRepository,
         private readonly WalletApi $walletApi,
-        private readonly BillGenerator $billGenerator,
-        private readonly OrderGenerator $orderGenerator,
-        private readonly PdfGenerator $pdfGenerator,
     ) {
     }
 
@@ -47,6 +40,27 @@ class WallHandler
     }
 
     /**
+     *
+     */
+    public function checkPaymentOrderStillValid(object $data): bool
+    {
+        if (!isset($data->StateId) || !isset($data->ExpirationDate)) {
+            return false;
+        }
+        if ($data->StateId > OrderStatusEnum::PENDING->value) {
+            return false;
+        }
+        $now = new \DateTime();
+        $dateTime = \DateTime::createFromFormat("Y-m-d\TH:i:s.u", $data->ExpirationDate);
+        if ($now->format('Y-m-d H:i') > $dateTime->format('Y-m-d H:i')) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
      * @param PaymentOrder $paymentOrder
      * @param WalletOrder $walletOrder
      * @return void
@@ -62,8 +76,8 @@ class WallHandler
 
         $token = $data->access_token;
         try {
-            $responseString = $this->walletApi->createOrder($walletOrder, $token);
-            $response = json_decode($responseString);
+            $codeOrderString = $this->walletApi->createOrder($walletOrder, $token);
+            $response = json_decode($codeOrderString);
             $paymentOrder->walletCodeOrder = $response->orderCode;
             $this->paymentOrderLineRepository->flush();
 

@@ -27,6 +27,10 @@ class PaymentOrderHandler
      */
     public function paid(PaymentOrder $paymentOrder): PaymentBill
     {
+        if ($this->paymentBillRepository->findByOrder($paymentOrder)) {
+            throw new \Exception('Facture déjà payée');
+        }
+
         try {
             $bill = $this->billGenerator->generateFromOrder($paymentOrder);
             try {

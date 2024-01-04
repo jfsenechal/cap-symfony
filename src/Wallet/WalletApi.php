@@ -15,10 +15,10 @@ class WalletApi
         #[Autowire(env: 'WALLET_URL')] public readonly string $url,
         #[Autowire(env: 'WALLET_URL_API')] private readonly string $urlApi,
         #[Autowire(env: 'WALLET_URL_TOKEN')] private readonly string $urlToken,
-        #[Autowire(env: 'WALLET_API_ID')] private readonly string $merchantId,
-        #[Autowire(env: 'WALLET_API_KEY')] private readonly string $key,
-        #[Autowire(env: 'WALLET_CLIENT_ID')] private readonly string $clientId,
-        #[Autowire(env: 'WALLET_CLIENT_KEY')] private readonly string $clientKey,
+        #[Autowire(env: 'WALLET_API_ID')] public readonly string $merchantId,
+        #[Autowire(env: 'WALLET_API_KEY')] public readonly string $key,
+        #[Autowire(env: 'WALLET_CLIENT_ID')] public readonly string $clientId,
+        #[Autowire(env: 'WALLET_CLIENT_KEY')] public readonly string $clientKey,
         private readonly CacheInterface $cache
     ) {
 
@@ -57,6 +57,7 @@ class WalletApi
     }
 
     /**
+     * @return {orderCode: string }
      * @throws \Exception
      */
     public function createOrder(WalletOrder $order, string $token, array $options = []): ?string
@@ -84,7 +85,7 @@ class WalletApi
     public function retrieveOrder(string $orderCode, array $options = []): ?string
     {
         $options = [
-            'auth_basic' => $this->clientId.':'.$this->clientKey,
+            'auth_basic' => $this->merchantId.':'.$this->key,
             'headers' => [
                 'Content-Type' => 'application/json',
             ],
@@ -93,7 +94,7 @@ class WalletApi
         $this->connect($options);
 
         return $this->executeRequest(
-            $this->url.'/api/orders/{orderCode}?orderCode='.$orderCode,
+            $this->url.'/api/orders/'.$orderCode.'?orderCode='.$orderCode,
             [],
             "GET"
         );
@@ -114,5 +115,22 @@ class WalletApi
         $this->connect($options);
 
         return $this->executeRequest($this->urlApi.'/checkout/v2/transactions/'.$transactionId, [], "GET");
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function hookToken(): ?string
+    {
+        $options = [
+            'auth_basic' => $this->merchantId.':'.$this->key,
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+        ];
+
+        $this->connect($options);
+
+        return $this->executeRequest($this->url.'/api/messages/config/token', [], "GET");
     }
 }

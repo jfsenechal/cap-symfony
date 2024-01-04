@@ -2,10 +2,12 @@
 
 namespace Cap\Commercio\Controller;
 
-use Cap\Commercio\Bill\Generator\OrderGenerator;
 use Cap\Commercio\Bill\Handler\PaymentOrderHandler;
 use Cap\Commercio\Entity\PaymentOrder;
 use Cap\Commercio\Form\WalletOrderType;
+use Cap\Commercio\Mailer\MailerJf;
+use Cap\Commercio\Repository\PaymentBillRepository;
+use Cap\Commercio\Repository\PaymentOrderRepository;
 use Cap\Commercio\Wallet\EventIdCodesEnum;
 use Cap\Commercio\Wallet\Handler\WallHandler;
 use Cap\Commercio\Wallet\WalletApi;
@@ -23,7 +25,9 @@ class WalletController extends AbstractController
         private readonly WalletApi $walletApi,
         private readonly WallHandler $wallHandler,
         private readonly PaymentOrderHandler $paymentOrderHandler,
-        private readonly OrderGenerator $orderGenerator,
+        private readonly PaymentOrderRepository $paymentOrderRepository,
+        private readonly PaymentBillRepository $paymentBillRepository,
+        private readonly MailerJf $mailerJf
     ) {
     }
 
@@ -43,25 +47,46 @@ class WalletController extends AbstractController
     #[Route(path: '/new/order/{id}', name: 'cap_wallet_order_new', methods: ['GET', 'POST'])]
     public function new(Request $request, PaymentOrder $paymentOrder): Response
     {
+        if ($bill = $this->paymentBillRepository->findByOrder($paymentOrder)) {
+            $this->addFlash('danger', 'Cette commande a déjà été payée');
+        }
+
+        $paymentOrder = $this->paymentOrderRepository->findOneByWalletCodeOrder($paymentOrder->walletCodeOrder);
         $walletOrder = $this->wallHandler->createWalletOrderFromPaymentOrder($paymentOrder);
 
         $form = $this->createForm(WalletOrderType::class, $walletOrder);
-
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            try {
-                $this->wallHandler->createOrderForOnlinePayment($paymentOrder, $walletOrder);
-
-                return $this->redirect(
-                    $this->walletApi->url.'/web/checkout?ref='.$paymentOrder->walletCodeOrder.'&color=50afd2'
-                );
-            } catch (\Exception $e) {
-                $this->addFlash('danger', $e->getMessage());
-
-                return $this->redirectToRoute('cap_order_show', ['id' => $paymentOrder->getId()]);
+        if ($form->isSubmitted() && $form->isValid() && !$bill) {
+            $walletCodeOrder = null;
+            if ($paymentOrder->walletCodeOrder) {
+                try {
+                    $dataString = $this->walletApi->retrieveOrder($paymentOrder->walletCodeOrder);
+                    $data = json_decode($dataString);
+                    if ($this->wallHandler->checkPaymentOrderStillValid($data)) {
+                        $walletCodeOrder = $data->OrderCode;
+                    }
+                } catch (\Exception $exception) {
+                    $this->mailerJf->sendError('Error retrieve payment order on wallet', $exception->getMessage());
+                }
             }
+
+            if (!$walletCodeOrder) {
+                try {
+                    $this->wallHandler->createOrderForOnlinePayment($paymentOrder, $walletOrder);
+                    $walletCodeOrder = $paymentOrder->walletCodeOrder;
+
+                } catch (\Exception $e) {
+                    $this->addFlash('danger', $e->getMessage());
+                    $this->mailerJf->sendError('Error create bill', $exception->getMessage());
+
+                    return $this->redirectToRoute('cap_wallet_order_new', ['id' => $paymentOrder->getId()]);
+                }
+            }
+
+            return $this->redirect(
+                $this->walletApi->url.'/web/checkout?ref='.$walletCodeOrder.'&color=50afd2'
+            );
         }
 
         return $this->render(
@@ -71,6 +96,7 @@ class WalletController extends AbstractController
                 'orderCommercant' => $paymentOrder->getOrderCommercant(),
                 'walletOrder' => $walletOrder,
                 'form' => $form,
+                'bill' => $bill,
             ]
         );
 
@@ -86,13 +112,14 @@ class WalletController extends AbstractController
 
         $transactionId = $request->query->get('t');
         $paymentOrder = $this->wallHandler->success($request);
-        dump($paymentOrder);
+
         if ($paymentOrder) {
             try {
                 $bill = $this->paymentOrderHandler->paid($paymentOrder);
                 $bill->walletTransactionId = $transactionId;
+                $this->paymentOrderRepository->flush();
             } catch (\Exception $exception) {
-
+                $this->mailerJf->sendError('Error create bill', $exception->getMessage());
                 $this->addFlash('danger', 'Une erreur est survenue '.$exception->getMessage());
             }
         }
@@ -179,13 +206,13 @@ class WalletController extends AbstractController
     public function webhook(Request $request): JsonResponse
     {
         try {
-            $data = $this->walletApi->getToken();
+            $data = $this->walletApi->hookToken();
+
+            return $this->json(json_decode($data));
         } catch (\Exception|InvalidArgumentException $exception) {
             dd($exception);
         }
 
-        $token = $data->access_token;
-
-        return $this->json(['Key' => $token]);
+        return $this->json([]);
     }
 }

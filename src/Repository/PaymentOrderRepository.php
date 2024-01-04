@@ -131,7 +131,7 @@ class PaymentOrderRepository extends ServiceEntityRepository
             ->andWhere('paymentOrder.walletCodeOrder = :code')
             ->setParameter('code', $orderCode)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
     }
 
     private function createQb(): QueryBuilder
