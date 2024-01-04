@@ -2,7 +2,7 @@
 
 {% block body %}
     <div class="card">
-        <h3 class="card-header">Paiement num {{ bill.billNumber }}</h3>
+        <h3 class="card-header">Paiement numéro {{ bill.billNumber }}</h3>
 
         <div class="card-body">
 
@@ -10,7 +10,7 @@
 
             <table class="table table-bordered">
                 <tr>
-                    <th>Commande</th>
+                    <th>Ordre de paiement</th>
                     <td>
                         <a href="{{ path('cap_order_show', {'id': order.id}) }}">
                             {{ bill.order.orderNumber }}
@@ -40,12 +40,6 @@
                 <tr>
                     <th>Archivé</th>
                     <td>{{ bill.archived }} </td>
-                </tr>
-                <tr>
-                    <th>Pdf</th>
-                    <td>
-
-                    </td>
                 </tr>
             </table>
         </div>
