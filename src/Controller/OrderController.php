@@ -179,8 +179,9 @@ class OrderController extends AbstractController
     public function paid(Request $request, PaymentOrder $paymentOrder): Response
     {
         if ($this->isCsrfTokenValid('paid'.$paymentOrder->getId(), $request->request->get('_token'))) {
-            if ($bill = $this->paymentBillRepository->findByOrder($paymentOrder)) {
-                $this->addFlash('danger', 'Cette commande a déjà une facture liée');
+
+            if ($bill = $this->paymentBillRepository->findOneByOrder($paymentOrder)) {
+                $this->addFlash('danger', 'Cette commande a déjà été payée');
 
                 return $this->redirectToRoute('cap_bill_show', ['id' => $bill->getId()]);
             }
