@@ -151,6 +151,11 @@ class WalletController extends AbstractController
         $eciEnum = EciEnum::from($eci);
         $transactionId = $request->query->get('t');
 
+        $this->mailerJf->sendError(
+            'Error transaction failure',
+            'order code: '.$orderCode.' transactionId '.$transactionId.' raison'.$eventIdCodeEnum->reason()
+        );
+
         return $this->render(
             '@CapCommercio/wallet/failure.html.twig',
             [
