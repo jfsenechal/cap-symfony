@@ -3,7 +3,7 @@
 {% block body %}
 
     <div class="card">
-        <h3 class="card-header text-success">Paiement effectué avec succès</h3>
+        <h3 class="card-header text-success">Paiement effectué avec succès pour la commande {{ orderCode }}</h3>
 
         <div class="card-body">
             <img src="{{ asset('bundles/capcommercio/logo_wallet-dark.svg') }}" alt="logo">
@@ -16,39 +16,10 @@
                 Merci pour votre paiement
             </div>
 
-            <table class="table table-bordered">
-                <tr>
-                    <th>eventId</th>
-                    <td>{{ eventId }}</td>
-                </tr>
-                <tr>
-                    <th>transactionId</th>
-                    <td>
-                        <a href="{{ path('cap_wallet_transaction_retrieve',{'transactionId':transactionId}) }}">
-                            {{ transactionId }}
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Event Id explication</th>
-                    <td>
-                        {{ eventIdCodeEnum.reason }}<br/>
-                        {{ eventIdCodeEnum.explanation }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>eci</th>
-                    <td>{{ eci }}</td>
-                </tr>
-                <tr>
-                    <th>s</th>
-                    <td>
-                        <a href="{{ path('cap_wallet_order_retrieve',{'orderCode':s}) }}">
-                            {{ s }}
-                        </a>
-                    </td>
-                </tr>
-            </table>
+            <div class="alert alert-warning">
+                <h4 class="text-info">{{ eventIdCodeEnum.reason }}</h4>
+                {{ eventIdCodeEnum.explanation }}
+            </div>
 
         </div>
     </div>

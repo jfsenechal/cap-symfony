@@ -107,14 +107,19 @@ class WalletController extends AbstractController
     #[Route(path: '/success', name: 'cap_wallet_transaction_success', methods: ['GET', 'POST'])]
     public function transactionSuccess(Request $request): Response
     {
-        $s = $request->query->get('s');
+        if (!$orderCode = $request->query->get('s')) {
+            $this->addFlash('danger', 'Aucun code de commande trouvé');
+
+            return $this->redirectToRoute('cap_home');
+        }
+
         $eventId = $request->query->get('eventId');
         $eci = $request->query->get('eci');
         $eventIdCodeEnum = EventIdCodesEnum::from($eventId);
         $eciEnum = EciEnum::from($eci);
 
         $transactionId = $request->query->get('t');
-        $paymentOrder = $this->wallHandler->retrievePaymentOrderByCodeOrder($request);
+        $paymentOrder = $this->wallHandler->retrievePaymentOrderByCodeOrder($orderCode);
 
         if ($paymentOrder) {
             try {
@@ -129,11 +134,8 @@ class WalletController extends AbstractController
         return $this->render(
             '@CapCommercio/wallet/success.html.twig',
             [
-                's' => $s,
-                'eventId' => $eventId,
+                'orderCode' => $orderCode,
                 'eventIdCodeEnum' => $eventIdCodeEnum,
-                'transactionId' => $transactionId,
-                'eci' => $eci,
             ]
         );
     }
@@ -141,17 +143,21 @@ class WalletController extends AbstractController
     #[Route(path: '/failure', name: 'cap_wallet_transaction_failure', methods: ['GET', 'POST'])]
     public function transactionFailure(Request $request): Response
     {
-        dd($request);
-        $s = $request->query->get('s');
-        $lang = $request->query->get('lang');
+        $orderCode = $request->query->get('s');
         $eventId = $request->query->get('eventId');
+        $eventIdCodeEnum = EventIdCodesEnum::from($eventId);
+        $lang = $request->query->get('lang');
+        $eci = $request->query->get('eci');
+        $eciEnum = EciEnum::from($eci);
+        $transactionId = $request->query->get('t');
 
         return $this->render(
             '@CapCommercio/wallet/failure.html.twig',
             [
                 'eventId' => $eventId,
                 'eventIdCodeEnum' => $eventIdCodeEnum,
-                's' => $s,
+                'transactionId' => $transactionId,
+                'orderCode' => $orderCode,
             ]
         );
     }

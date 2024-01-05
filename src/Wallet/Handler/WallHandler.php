@@ -33,7 +33,8 @@ class WallHandler
         $orderCommercant = $paymentOrder->getOrderCommercant();
         //todo remove jf
         $customer = new Customer('jf@marche.be', $orderCommercant->getCompanyName());
-        $walletOrder = new WalletOrder($paymentOrder->getPriceVat(), $customer, $line->getLabel());
+        $walletOrder = new WalletOrder($paymentOrder->getPriceVat() * 100, $customer, $line->getLabel());
+        $walletOrder = new WalletOrder(9907, $customer, $line->getLabel());
         $walletOrder->sourceCode = '1619';
         $walletOrder->merchantTrns = $this->settingRepository->findValue(SettingEnum::SITE_NAME->value)->getParamValue(
         );
@@ -89,19 +90,8 @@ class WallHandler
 
     }
 
-    public function retrievePaymentOrderByCodeOrder(Request $request): ?PaymentOrder
+    public function retrievePaymentOrderByCodeOrder(string $orderCode): ?PaymentOrder
     {
-        if (!$request->query->get('s')) {
-            return null;
-        }
-        $orderCode = $request->query->get('s');
-        $lang = $request->query->get('lang');
-        $eventId = $request->query->get('eventId');
-        $transactionId = $request->query->get('t');
-        $eci = $request->query->get('eci');
-        $eciCodeEnum = EciEnum::from($eci);
-        $eventIdCodeEnum = EventIdCodesEnum::from($eventId);
-
         return $this->paymentOrderRepository->findOneByWalletCodeOrder($orderCode);
     }
 

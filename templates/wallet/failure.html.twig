@@ -3,21 +3,15 @@
 {% block body %}
 
     <div class="card">
-        <h3 class="card-header text-danger">Echec du paiment</h3>
+        <h3 class="card-header text-danger">Echec pour le paiment {{ orderCode }}</h3>
 
         <div class="card-body">
-            <img src="{{ asset('bundles/capcommercio/logo_wallet-dark.svg') }}" alt="logo">
-            <h4 class="text-danger">Raison :</h4>
-            <table class="table table-bordered">
-                <tr>
-                    <th>s</th>
-                    <td> {{ s }}</td>
-                </tr>
-                <tr>
-                    <th>eventId</th>
-                    <td>{{ eventId }}</td>
-                </tr>
-            </table>
+            <img src="{{ asset('bundles/capcommercio/capMarcheLogo.png') }}" alt="logo">
+            <h4 class="text-danger">Raison : {{ eventIdCodeEnum.reason }}</h4>
+
+            <div class="alert alert-danger">
+                {{ eventIdCodeEnum.explanation }}
+            </div>
 
         </div>
     </div>
