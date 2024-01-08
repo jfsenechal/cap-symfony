@@ -47,6 +47,10 @@ class MemberController extends AbstractController
             $commercants = $this->commercantRepository->findMembers();
         }
 
+        foreach ($commercants as $commercant) {
+            $commercant->complete = $this->memberHandler->isMemberCompleted($commercant);
+        }
+
         return $this->render('@CapCommercio/member/index.html.twig', [
             'commercants' => $commercants,
             'form' => $form->createView(),

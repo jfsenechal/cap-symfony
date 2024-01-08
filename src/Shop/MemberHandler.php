@@ -69,8 +69,8 @@ class MemberHandler
     public function isMemberCompleted(CommercioCommercant $commercant): bool
     {
         $galleries = $this->galleryRepository->findByCommercant($commercant);
-        if (count($galleries) > 0 && $commercant->getCommercialWordMediaPath() && $commercant->getCommercialWordTitle(
-            ) && $commercant->getCommercialWordDescription()) {
+        if (count($galleries) > 0 && $commercant->getCommercialWordMediaPath() &&
+            $commercant->getCommercialWordTitle() && $commercant->getCommercialWordDescription()) {
             return true;
         }
 

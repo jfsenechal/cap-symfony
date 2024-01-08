@@ -119,6 +119,7 @@ class CommercioCommercant
     public ?AddressAddress $address = null;
     public ?string $urlBottin = null;
     public bool $generateOrder = false;
+    public bool $complete = false;
 
     public function isMemberCapExpired(): bool
     {

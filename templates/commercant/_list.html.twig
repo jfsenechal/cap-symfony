@@ -4,7 +4,7 @@
         <th></th>
         <th>Société</th>
         <th>Affilié le</th>
-        <th>Téléphone</th>
+        <th>Fiche complète ?</th>
         <th>Nom</th>
     </tr>
     </thead>
@@ -25,7 +25,7 @@
                 </a>
             </td>
             <td>{{ commercant.affiliationDate ? commercant.affiliationDate|format_date('short') : '' }}</td>
-            <td>{{ commercant.legalPhone }}</td>
+            <td class="{% if commercant.complete == false %}text-danger{% endif %}">{{ commercant.complete ? 'Oui' : 'Non' }}</td>
             <td>
                 {{ commercant.legalFirstname }}  {{ commercant.legalLastname }}
             </td>

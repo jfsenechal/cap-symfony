@@ -97,6 +97,36 @@ class GalleryController extends AbstractController
         if ($this->isCsrfTokenValid('deleteimage', $request->request->get('_token'))) {
             $this->galleryRepository->remove($gallery);
             $this->galleryRepository->flush();
+            $this->addFlash('success', 'Image supprimée');
+        }
+
+        return $this->redirectToRoute('cap_gallery_show', ['id' => $id], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/default', name: 'cap_gallery_img_default', methods: ['POST'])]
+    public function imgDefault(
+        Request $request,
+    ): Response {
+        $id = $request->request->getInt('imageid');
+        if (0 === $id) {
+            $this->addFlash('danger', 'Image non trouvée');
+
+            return $this->redirectToRoute('cap_commercant_index');
+        }
+
+        $gallery = $this->galleryRepository->find(($id));
+        if (!$gallery instanceof CommercioCommercantGallery) {
+            $this->addFlash('danger', 'Image non trouvée');
+
+            return $this->redirectToRoute('cap_commercant_index');
+        }
+
+        $id = $gallery->getCommercioCommercant()->getId();
+
+        if ($this->isCsrfTokenValid('defaultImage', $request->request->get('_token'))) {
+            $gallery->getCommercioCommercant()->setCommercialWordMediaPath($gallery->getMediaPath());
+            $this->addFlash('success', 'Image placé par défaut');
+            $this->galleryRepository->flush();
         }
 
         return $this->redirectToRoute('cap_gallery_show', ['id' => $id], Response::HTTP_SEE_OTHER);

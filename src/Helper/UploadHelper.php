@@ -57,6 +57,9 @@ class UploadHelper
         }
 
         $this->galleryRepository->persist($image);
+        if (count($this->galleryRepository->findByCommercant($commercant)) === 0) {
+            $commercant->setCommercialWordMediaPath('/media/'.$fileName);
+        }
         $this->galleryRepository->flush();
     }
 }
