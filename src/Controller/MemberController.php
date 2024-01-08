@@ -7,6 +7,7 @@ use Cap\Commercio\Bottin\BottinUtils;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Form\CheckMemberType;
 use Cap\Commercio\Form\MemberType;
+use Cap\Commercio\Form\NameSearchType;
 use Cap\Commercio\Mailer\MailerCap;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Shop\MemberHandler;
@@ -34,12 +35,21 @@ class MemberController extends AbstractController
     }
 
     #[Route('/', name: 'cap_member_index', methods: ['GET', 'POST'])]
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $commercants = $this->commercantRepository->membres();
+        $form = $this->createForm(NameSearchType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $commercants = $this->commercantRepository->search($data['name'], 1);
+        } else {
+            $commercants = $this->commercantRepository->findMembers();
+        }
 
         return $this->render('@CapCommercio/member/index.html.twig', [
             'commercants' => $commercants,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -120,7 +130,7 @@ class MemberController extends AbstractController
             $this->commercantRepository->flush();
             if ($data->sendMailExpired) {
                 try {
-                    $this->mailer->sendAffiliationExpired($commercant, $this->getParameter('kernel.environment'));
+                    $this->mailer->sendAffiliationExpired($commercant);
                     $this->addFlash('success', 'Le mail a bien été envoyé');
                 } catch (\Exception $e) {
                     $this->addFlash('danger', 'Erreur lors de l\'envoie du mail: '.$e->getMessage());

@@ -15,7 +15,7 @@ class CommercantType extends AbstractType
     {
         $builder
             ->add('commercialWordTitle', TextType::class, [
-                'required' => false,
+                'required' => true,
             ])
             ->add('legalEntity', TextType::class, [
                 'required' => true,
@@ -28,7 +28,7 @@ class CommercantType extends AbstractType
             ])
             ->add('commercialWordDescription', TextareaType::class, [
                 'required' => false,
-                'attr' => ['rows' => 5]
+                'attr' => ['rows' => 5],
             ])
             ->add('legalEmail', TextType::class, [
                 'required' => true,

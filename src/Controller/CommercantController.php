@@ -13,6 +13,7 @@ use Cap\Commercio\Repository\CommercioCommercantHoursRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
+use Cap\Commercio\Shop\MemberHandler;
 use Cap\Commercio\Shop\ShopHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,6 +35,7 @@ class CommercantController extends AbstractController
         private readonly CommercioCommercantHoursRepository $commercioCommercantHoursRepository,
         private readonly CommercioCommercantHolidayRepository $commercioCommercantHolidayRepository,
         private readonly ShopHandler $shopHandler,
+        private readonly MemberHandler $memberHandler,
     ) {
     }
 
@@ -90,6 +92,7 @@ class CommercantController extends AbstractController
             $address = $commercantAddress->getAddress();
         }
         $urlCap = $this->bottinUtils->urlCap($commercant);
+        $isMemberComplete = $this->memberHandler->isMemberCompleted($commercant);
 
         return $this->render('@CapCommercio/commercant/show.html.twig', [
             'commercant' => $commercant,
@@ -100,6 +103,7 @@ class CommercantController extends AbstractController
             'hours' => $hours,
             'holidays' => $holidays,
             'urlCap' => $urlCap,
+            'isMemberComplete' => $isMemberComplete,
         ]);
     }
 

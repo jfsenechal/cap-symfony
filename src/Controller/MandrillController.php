@@ -74,7 +74,7 @@ class MandrillController extends AbstractController
         $adl = $this->commercantRepository->find(1384);
 
         try {
-            $this->mailer->sendAffiliationExpired($adl, $this->getParameter('kernel.environment'));
+            $this->mailer->sendAffiliationExpired($adl);
         } catch (Exception $e) {
             $this->addFlash('danger', $e->getMessage());
         }

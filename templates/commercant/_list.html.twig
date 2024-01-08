@@ -3,7 +3,6 @@
     <tr>
         <th></th>
         <th>Société</th>
-        <th>Membre</th>
         <th>Affilié le</th>
         <th>Téléphone</th>
         <th>Nom</th>
@@ -11,7 +10,7 @@
     </thead>
     <tbody>
     {% for commercant in commercants %}
-        <tr>
+        <tr class="{% if commercant.isMemberCapExpired %}table-warning{% endif %}">
             <td>
                 {% if commercant.profileMediaPath %}
                     <img src="https://cap.marche.be/{{ commercant.profileMediaPath }}" alt=""
@@ -25,7 +24,6 @@
                     {{ commercant.legalEntity }}
                 </a>
             </td>
-            <td>{{ commercant.isMember ? 'Oui' : 'Non' }}</td>
             <td>{{ commercant.affiliationDate ? commercant.affiliationDate|format_date('short') : '' }}</td>
             <td>{{ commercant.legalPhone }}</td>
             <td>

@@ -116,9 +116,30 @@ class CommercioCommercant
     public array $images = [];
     public array $hours = [];
     public int $bottin_id = 0;
-    public ?AddressAddress $address= null;
+    public ?AddressAddress $address = null;
     public ?string $urlBottin = null;
     public bool $generateOrder = false;
+
+    public function isMemberCapExpired(): bool
+    {
+        if (!$this->isMemberCap()) {
+            return false;
+        }
+
+        if (!$affiliationDate = $this->getAffiliationDate()) {
+            return true;
+        }
+
+        $today = new \DateTime('-1 year');
+
+        return $affiliationDate->format('Y-m-d') < $today->format('Y-m-d');
+    }
+
+    public function isMemberCap(): bool
+    {
+        return $this->isIsMember() && $this->getAffiliationDate();
+    }
+
 
     public function getId(): ?string
     {

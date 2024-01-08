@@ -12,7 +12,6 @@ use Mandrill_Subaccounts;
 use Mandrill_Templates;
 use Mandrill_Users;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Mime\Email;
 
 class MailerCap
@@ -22,6 +21,7 @@ class MailerCap
 
     public function __construct(
         #[Autowire('%env(MANDRILL_API)')] private readonly string $api,
+        #[Autowire('%env(APP_ENV)')] private readonly string $env,
         private readonly MandrillMail $mandrillMail
     ) {
         define('PREFIX', 'https://cap.marche.be'); //url site
@@ -35,12 +35,12 @@ class MailerCap
      * @return void
      * @throws Exception
      */
-    public function sendAffiliationExpired(CommercioCommercant $commercant, string $env): void
+    public function sendAffiliationExpired(CommercioCommercant $commercant): void
     {
         $dateTime = $commercant->getAffiliationDate();
 
         $templatePath = PREFIX.PREFIX_RESOURCES.TEMPLATES_PATH.TEMPLATES_FOLDER_NAME.'/';
-        if ($env == "dev") {
+        if ($this->env == "dev") {
             $this->mandrillMail->addReceiver('jf@marche.be', 'jfs', 'senechal');
         } else {
             $this->mandrillMail->addReceiver(
