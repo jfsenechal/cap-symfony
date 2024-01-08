@@ -20,8 +20,8 @@ class MailerCap
     private string $senderName = 'Cap sur Marche';
 
     public function __construct(
-        #[Autowire('%env(MANDRILL_API)')] private readonly string $api,
-        #[Autowire('%env(APP_ENV)')] private readonly string $env,
+        #[Autowire('%env(MANDRILL_API)%')] private readonly string $api,
+        #[Autowire('%env(APP_ENV)%')] private readonly string $env,
         private readonly MandrillMail $mandrillMail
     ) {
         define('PREFIX', 'https://cap.marche.be'); //url site

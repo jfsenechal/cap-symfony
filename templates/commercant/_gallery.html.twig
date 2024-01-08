@@ -11,7 +11,7 @@
         </div>
         <div class="carousel-inner">
             {% for img in gallery %}
-                <div class="carousel-item {% if loop.index == 1 %}active{% endif %}">
+                <div class="carousel-item {% if loop.index == 1 %}active{% endif %}">{{ asset(img.mediaPath) }}
                     <img src="{{ asset(img.mediaPath) }}" class="d-block w-100" alt="...">
                 </div>
             {% endfor %}

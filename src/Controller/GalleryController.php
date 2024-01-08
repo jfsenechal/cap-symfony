@@ -5,23 +5,22 @@ namespace Cap\Commercio\Controller;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Entity\CommercioCommercantGallery;
 use Cap\Commercio\Form\ImageDropZoneType;
+use Cap\Commercio\Helper\UploadHelper;
 use Cap\Commercio\Repository\CommercantGalleryRepository;
-use DateTime;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Uid\Uuid;
 
 #[Route('/gallery')]
 #[IsGranted('ROLE_CAP')]
 class GalleryController extends AbstractController
 {
     public function __construct(
+        private readonly UploadHelper $uploadHelper,
         private readonly CommercantGalleryRepository $galleryRepository,
     ) {
     }
@@ -52,7 +51,11 @@ class GalleryController extends AbstractController
             $data = $form->getData();
             foreach ($data['file'] as $file) {
                 if ($file instanceof UploadedFile) {
-                    $this->treatmentFile($file, $commercant);
+                    try {
+                        $this->uploadHelper->treatmentFile($file, $commercant);
+                    } catch (Exception $e) {
+                        $this->addFlash('danger', 'Erreur image: '.$e->getMessage());
+                    }
                 }
             }
 
@@ -69,33 +72,6 @@ class GalleryController extends AbstractController
             'commercant' => $commercant,
             'form' => $form,
         ]);
-    }
-
-    private function treatmentFile(UploadedFile $file, CommercioCommercant $commercant): void
-    {
-        $image = new CommercioCommercantGallery();
-        $image->setInsertDate(new DateTime());
-        $image->setModifyDate(new DateTime());
-        $image->setUuid(Uuid::v4());
-        $image->setCommercioCommercant($commercant);
-
-        $fileName = Uuid::v4() . '.' . $file->guessClientExtension();
-        $pathToCopy = $this->getParameter('CAP_PATH') . '/' . $this->getParameter('CAP_FOLDER_IMAGE') . '/' . $fileName;
-
-        $image->setMediaPath($this->getParameter('CAP_FOLDER_IMAGE') . '/' . $fileName);
-
-        try {
-            $file->move(
-                $pathToCopy,
-                $fileName
-            );
-        } catch (FileException|Exception $exception) {
-            $this->addFlash('danger', 'Erreur upload image: ' . $exception->getMessage());
-
-            return;
-        }
-        $this->galleryRepository->persist($image);
-        $this->galleryRepository->flush();
     }
 
     #[Route('/delete', name: 'cap_gallery_delete', methods: ['POST'])]
