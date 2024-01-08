@@ -8,18 +8,23 @@
         <div class="card-body">
             <img src="{{ asset('bundles/capcommercio/logo_wallet-dark.svg') }}" alt="logo">
             <br/>
-            <img src="{{ asset('bundles/capcommercio/cap_logo.jpg') }}" alt="logo" style="height: 350px;">
-
-            <br/>
-            <br/>
-            <div class="alert alert-info">
-                Merci pour votre paiement
+            <div class="row">
+                <div class="col-6">
+                    <img src="{{ asset('bundles/capcommercio/cap_logo.jpg') }}" alt="logo" style="height: 350px;">
+                </div>
+                <div class="col-6">
+                    <div class="alert alert-info">
+                        Merci pour votre paiement
+                    </div>
+                </div>
             </div>
 
-            <div class="alert alert-warning">
-                <h4 class="text-info">{{ eventIdCodeEnum.reason }}</h4>
-                {{ eventIdCodeEnum.explanation }}
-            </div>
+            {% if eventIdCodeEnum.value != 0 %}
+                <div class="alert alert-warning my-3">
+                    <h4 class="text-info">{{ eventIdCodeEnum.reason }}</h4>
+                    {{ eventIdCodeEnum.explanation }}
+                </div>
+            {% endif %}
 
         </div>
     </div>

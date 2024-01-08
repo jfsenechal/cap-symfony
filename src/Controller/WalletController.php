@@ -130,6 +130,12 @@ class WalletController extends AbstractController
                 $this->mailerJf->sendError('Error create bill', $exception->getMessage());
             }
         }
+        if ($eventId != 0) {
+            $this->mailerJf->sendError(
+                'Paiement eventId '.$eventId,
+                $eventId.' transaction id'.$transactionId.' order Code '.$orderCode
+            );
+        }
 
         return $this->render(
             '@CapCommercio/wallet/success.html.twig',

@@ -34,7 +34,7 @@ class WallHandler
         //todo remove jf
         $customer = new Customer('jf@marche.be', $orderCommercant->getCompanyName());
         $walletOrder = new WalletOrder($paymentOrder->getPriceVat() * 100, $customer, $line->getLabel());
-        $walletOrder = new WalletOrder(9907, $customer, $line->getLabel());
+        //$walletOrder = new WalletOrder(9907, $customer, $line->getLabel());
         $walletOrder->sourceCode = '1619';
         $walletOrder->merchantTrns = $this->settingRepository->findValue(SettingEnum::SITE_NAME->value)->getParamValue(
         );
