@@ -94,7 +94,7 @@ class CommercioCommercantRepository extends ServiceEntityRepository
                 ->setParameter('name', '%'.$name.'%');
         }
 
-        if ($isMember === 1 || $isMember === 0) {
+        if ($isMember !== null) {
             $qb->andWhere('commercant.isMember = :member')
                 ->setParameter('member', $isMember);
         }

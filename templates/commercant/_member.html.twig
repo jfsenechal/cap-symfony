@@ -2,6 +2,11 @@
     <div class="alert alert-info">
         Membre depuis {{ commercant.affiliationDate|format_date('full') }}
     </div>
+    {% if commercant.isMemberCapExpired %}
+        <div class="alert alert-warning">
+            !Membre expiré!
+        </div>
+    {% endif %}
     {% if not isMemberComplete %}
         <div class="alert alert-danger">
             Attention pour être membre complet, il faut que les champs nom du commerce et description du commerce
