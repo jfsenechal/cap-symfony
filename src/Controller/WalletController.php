@@ -113,12 +113,12 @@ class WalletController extends AbstractController
             return $this->redirectToRoute('cap_home');
         }
 
-        $eventId = $request->query->get('eventId');
-        $eci = $request->query->get('eci');
+        $eventId = $request->query->getInt('eventId');
+        $eci = $request->query->getInt('eci');
         $eventIdCodeEnum = EventIdCodesEnum::from($eventId);
         $eciEnum = EciEnum::from($eci);
 
-        $transactionId = $request->query->get('t');
+        $transactionId = $request->query->getString('t');
         $paymentOrder = $this->wallHandler->retrievePaymentOrderByCodeOrder($orderCode);
 
         if ($paymentOrder) {
@@ -149,13 +149,13 @@ class WalletController extends AbstractController
     #[Route(path: '/failure', name: 'cap_wallet_transaction_failure', methods: ['GET', 'POST'])]
     public function transactionFailure(Request $request): Response
     {
-        $orderCode = $request->query->get('s');
-        $eventId = $request->query->get('eventId');
+        $orderCode = $request->query->getString('s');
+        $eventId = $request->query->getInt('eventId');
         $eventIdCodeEnum = EventIdCodesEnum::from($eventId);
         $lang = $request->query->get('lang');
-        $eci = $request->query->get('eci');
+        $eci = $request->query->getInt('eci');
         $eciEnum = EciEnum::from($eci);
-        $transactionId = $request->query->get('t');
+        $transactionId = $request->query->getString('t');
 
         $this->mailerJf->sendError(
             'Error transaction failure',
