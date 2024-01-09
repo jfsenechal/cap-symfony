@@ -65,7 +65,7 @@
                     <th>Ordre paiement en ligne</th>
                     <td>
                         {% if order.walletCodeOrder %}
-                            <a href="{{ path('cap_wallet_order_retrieve',{'orderCode':s}) }}">
+                            <a href="{{ path('cap_wallet_order_retrieve',{'orderCode':order.walletCodeOrder}) }}">
                                 {{ order.walletCodeOrder }}
                             </a>
                         {% else %}
