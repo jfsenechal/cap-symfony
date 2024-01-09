@@ -89,7 +89,6 @@ class ShopHandler
             $this->rightAccessRepository->remove($access);
         }
 
-
         foreach ($events as $event) {
             $this->eventRepository->remove($event);
         }
@@ -106,6 +105,5 @@ class ShopHandler
             $this->tagRepository->remove($tag);
         }
         $this->commercantRepository->remove($commercant);
-        $this->commercantRepository->flush();
     }
 }

@@ -33,11 +33,9 @@ class PaymentOrderAddress
 
     #[ORM\Column(name: 'country_id', type: 'bigint', nullable: false)]
     private ?string $countryId = null;
-
     
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
-
     
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;

@@ -8,6 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'payment_order_status')]
 #[ORM\Entity]
+/**
+ * @deprecated
+ */
 class PaymentOrderStatus
 {
     use IdTrait;
@@ -18,11 +21,9 @@ class PaymentOrderStatus
     #[ORM\Column(name: 'name', type: 'text', nullable: false)]
     private ?string $name = null;
 
-    
     #[ORM\Column(name: 'insert_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $insertDate;
 
-    
     #[ORM\Column(name: 'modify_date', type: 'datetime', nullable: false, options: ['default' => 'now()'])]
     private \DateTimeInterface $modifyDate;
 

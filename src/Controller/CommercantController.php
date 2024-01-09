@@ -150,6 +150,7 @@ class CommercantController extends AbstractController
     ): Response {
         if ($this->isCsrfTokenValid('delete'.$commercioCommercant->getId(), $request->request->get('_token'))) {
             $this->shopHandler->removeCommercant($commercioCommercant);
+            $this->commercantRepository->flush();
             $this->addFlash('success', 'Le commerçant a bien été supprimé');
         }
 
