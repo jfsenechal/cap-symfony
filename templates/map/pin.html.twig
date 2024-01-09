@@ -1,0 +1,29 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">Les PI</h3>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>Nom</th>
+                    <th>Ville</th>
+                    <th>Rue</th>
+                    <th>Type</th>
+                </tr>
+                {% for pin in pins %}
+                    <tr>
+                        <td>{{ pin.title }}</td>
+                        <td>{{ pin.city }}</td>
+                        <td>{{ pin.street1 }}</td>
+                        <td>{{ pin.pinType.name }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
