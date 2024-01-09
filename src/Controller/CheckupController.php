@@ -113,13 +113,15 @@ class CheckupController extends AbstractController
             try {
                 $fiche = $this->bottinApiRepository->findCommerceById($commercant->getId());
             } catch (\Exception $e) {
-                $this->addFlash(
-                    'danger',
-                    'Impossible d\'obtenir le detail du commerce: '.$commercant->getLegalEntity(
-                    ).' Erreur '.$e->getMessage()
-                );
+
                 if ($e->getCode() === 404) {
                     $commercants[] = $commercant;
+                } else {
+                    $this->addFlash(
+                        'danger',
+                        'Impossible d\'obtenir le detail du commerce: '.$commercant->getLegalEntity(
+                        ).' Erreur '.$e->getMessage()
+                    );
                 }
 
                 continue;
