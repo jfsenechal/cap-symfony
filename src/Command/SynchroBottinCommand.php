@@ -39,6 +39,7 @@ class SynchroBottinCommand extends Command
     {
         $this
             ->addOption('fix', null, InputOption::VALUE_NONE, 'Flush database')
+            ->addOption('remove', null, InputOption::VALUE_NONE, 'Remove not in bottin')
             ->addOption('compare', null, InputOption::VALUE_NONE, 'Compare commercant/bottin');
     }
 
@@ -48,6 +49,7 @@ class SynchroBottinCommand extends Command
 
         $fix = $input->getOption('fix');
         $compare = $input->getOption('compare');
+        $remove = $input->getOption('remove');
         $notFound = [];
 
         if ($compare) {
@@ -90,17 +92,19 @@ class SynchroBottinCommand extends Command
         /**
          * Remove if no more in bottin
          */
-        $io->section('Shop to delete. Add --fix to flush');
-        foreach ($notFound as $commercant) {
-            if (!$this->commercioBottinRepository->findByFicheId($commercant->getId()) instanceof CommercioBottin) {
-                $io->writeln($commercant->getLegalEntity());
-                if ($fix) {
-                    $this->shopHandler->removeCommercant($commercant);
+        if ($remove) {
+            $io->section('Shop to delete. Add --fix to flush');
+            foreach ($notFound as $commercant) {
+                if (!$this->commercioBottinRepository->findByFicheId($commercant->getId()) instanceof CommercioBottin) {
+                    $io->writeln($commercant->getLegalEntity());
+                    if ($fix) {
+                        $this->shopHandler->removeCommercant($commercant);
+                    }
                 }
             }
-        }
-        if ($fix) {
-            $this->commercioBottinRepository->flush();
+            if ($fix) {
+                $this->commercioBottinRepository->flush();
+            }
         }
 
         return Command::SUCCESS;
