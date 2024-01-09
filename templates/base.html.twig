@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}Cap{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('bundles/capcommercio/favicon.png') }}"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
     <meta name="description" content="">
     <meta name="author" content="Cst">
 
@@ -112,18 +112,17 @@
             <ul class="navbar-nav mb-2 mb-lg-0">
                 {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                     <li class="nav-item">
-                        <a href="{{ path('cap_home') }}" class="nav-link"><i class="ti ti-sign-in-alt"></i>
-                            Se connecter</a>
+                        <a href="{{ path('cap_home') }}" class="nav-link">
+                            <i class="ti ti-login-2"></i> Se connecter</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
                         <a href="{{ path('cap_home') }}" class="nav-link">
-                            <i class="ti ti-user"></i>
-                            Mon compte</a>
+                            <i class="ti ti-user"></i> Mon compte</a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ path('app_logout') }}" class="nav-link">
-                            <i class="ti ti-sign-out"></i>
+                            <i class="ti ti-logout"></i>
                             Quitter</a>
                     </li>
                 {% endif %}
