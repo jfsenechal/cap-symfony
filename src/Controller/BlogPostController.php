@@ -5,9 +5,9 @@ namespace Cap\Commercio\Controller;
 use Cap\Commercio\Entity\BlogPost;
 use Cap\Commercio\Form\BlogPostSearchType;
 use Cap\Commercio\Form\BlogPostType;
+use Cap\Commercio\Helper\UploadHelper;
 use Cap\Commercio\Repository\BlogPostRepository;
 use Cap\Commercio\Repository\RepositoryUtils;
-use Cap\Commercio\Service\ImageService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +21,7 @@ class BlogPostController extends AbstractController
     public function __construct(
         private readonly BlogPostRepository $blog_postRepository,
         private readonly RepositoryUtils $repositoryUtils,
-        private readonly ImageService $imageService
+        private readonly UploadHelper $uploadHelper
     ) {
     }
 
@@ -53,9 +53,8 @@ class BlogPostController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $imageName = $this->imageService->upload($blogPost->image);
+                $this->uploadHelper->upload($blogPost);
                 $blogPost->setUuid($blogPost->generateUuid());
-                $blogPost->setMediaPath($imageName);
                 $blogPost->setInsertDate(new \DateTime());
                 $blogPost->setModifyDate(new \DateTime());
                 $blogPost->setPublishDate(new \DateTime());

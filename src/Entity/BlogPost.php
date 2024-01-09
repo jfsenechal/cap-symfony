@@ -65,7 +65,7 @@ class BlogPost implements Stringable
     #[Assert\Image(
 
     )]
-    public UploadedFile $image;
+    public ?UploadedFile $image;
 
     public function __construct()
     {

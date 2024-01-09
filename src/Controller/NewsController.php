@@ -4,9 +4,8 @@ namespace Cap\Commercio\Controller;
 
 use Cap\Commercio\Entity\News;
 use Cap\Commercio\Form\NewsType;
-use Cap\Commercio\Mailer\NewsMailer;
+use Cap\Commercio\Helper\UploadHelper;
 use Cap\Commercio\Repository\NewsRepository;
-use Cap\Commercio\Service\ImageService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +18,7 @@ class NewsController extends AbstractController
 {
     public function __construct(
         private readonly NewsRepository $newsRepository,
-        private readonly ImageService $imageService
+        private readonly UploadHelper $uploadHelper
     ) {
     }
 
@@ -43,9 +42,8 @@ class NewsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             try {
-                $imageName = $this->imageService->upload($news->image);
+                $this->uploadHelper->upload($news);
                 $news->setUuid($news->generateUuid());
-                $news->setMediaPath($imageName);
                 $news->setInsertDate(new \DateTime());
                 $news->setModifyDate(new \DateTime());
                 $this->newsRepository->persist($news);
@@ -67,11 +65,11 @@ class NewsController extends AbstractController
     #[Route('/{id}', name: 'cap_news_show', methods: ['GET'])]
     public function show(News $news): Response
     {
-        $mark = $this->markdownHelper->markdownToHtml($news->getDescription());
+        //$mark = $this->markdownHelper->markdownToHtml($news->getDescription());
 
         return $this->render('@CapCommercio/news/show.html.twig', [
             'news' => $news,
-            'mark' => $mark,
+            'mark' => null,
         ]);
     }
 

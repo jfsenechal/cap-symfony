@@ -2,8 +2,10 @@
 
 namespace Cap\Commercio\Helper;
 
+use Cap\Commercio\Entity\BlogPost;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Entity\CommercioCommercantGallery;
+use Cap\Commercio\Entity\News;
 use Cap\Commercio\Repository\CommercantGalleryRepository;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
@@ -40,6 +42,43 @@ class UploadHelper
         $image->setMediaPath('/media/'.$fileName);
 
         try {
+            $this->moveAndCopyFile($file, $pathToCopyToCap, $fileName);
+        } catch (FileException|\Exception $exception) {
+            throw new \Exception($exception->getMessage());
+        }
+
+        $this->galleryRepository->persist($image);
+        if (count($this->galleryRepository->findByCommercant($commercant)) === 0) {
+            $commercant->setCommercialWordMediaPath('/media/'.$fileName);
+        }
+        $this->galleryRepository->flush();
+    }
+
+
+    public function upload(BlogPost|News $post): void
+    {
+        $file = $post->image;
+
+        if ($file instanceof UploadedFile) {
+
+            $fileName = Uuid::v4().'.'.$file->guessClientExtension();
+            $pathToCopyToCap = $this->capPath.'/media/';
+            $post->setMediaPath('/media/'.$fileName);
+
+            try {
+                $this->moveAndCopyFile($file, $pathToCopyToCap, $fileName);
+            } catch (FileException|\Exception $exception) {
+                throw new \Exception($exception->getMessage());
+            }
+        }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function moveAndCopyFile(UploadedFile $file, string $pathToCopyToCap, string $fileName): void
+    {
+        try {
             $file->move(
                 $pathToCopyToCap,
                 $fileName
@@ -56,10 +95,5 @@ class UploadHelper
             throw new \Exception('Erreur copy image: '.$exception->getMessage());
         }
 
-        $this->galleryRepository->persist($image);
-        if (count($this->galleryRepository->findByCommercant($commercant)) === 0) {
-            $commercant->setCommercialWordMediaPath('/media/'.$fileName);
-        }
-        $this->galleryRepository->flush();
     }
 }
