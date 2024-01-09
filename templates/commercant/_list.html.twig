@@ -13,7 +13,7 @@
         <tr class="{% if commercant.isMemberCapExpired %}table-warning{% endif %}">
             <td>
                 {% if commercant.profileMediaPath %}
-                    <img src="https://cap.marche.be/{{ commercant.profileMediaPath }}" alt=""
+                    <img src="{{ commercant.profileMediaPath }}" alt=""
                          class="img-thumbnail" style="height: 6rem; width: 6rem; overflow: hidden; object-fit: cover;"/>
                 {% else %}
                     <img src="https://cap.marche.be/admin/commercio/resources/defaultProfile2.png" alt=""/>
