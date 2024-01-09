@@ -35,7 +35,7 @@ class CommercioCommercantHoliday
     private \DateTimeInterface $modifyDate;
 
     #[ORM\JoinColumn(name: 'commercio_commercant_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'CommercioCommercant')]
+    #[ORM\ManyToOne(targetEntity: CommercioCommercant::class)]
     private ?CommercioCommercant $commercioCommercant = null;
 
     public function getId(): ?string

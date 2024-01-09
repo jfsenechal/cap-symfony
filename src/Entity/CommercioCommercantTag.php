@@ -29,7 +29,7 @@ class CommercioCommercantTag
     private ?string $tag = null;
 
     #[ORM\JoinColumn(name: 'commercant_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'CommercioCommercant')]
+    #[ORM\ManyToOne(targetEntity: CommercioCommercant::class)]
     private ?CommercioCommercant $commercant = null;
 
     public function getId(): ?string

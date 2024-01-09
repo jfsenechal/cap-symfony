@@ -32,7 +32,7 @@ class Content
     private string $name = '';
 
     #[ORM\JoinColumn(name: 'page_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'Page')]
+    #[ORM\ManyToOne(targetEntity: Page::class)]
     private ?Page $page = null;
 
     public function getId(): ?string

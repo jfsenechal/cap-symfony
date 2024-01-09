@@ -43,7 +43,7 @@ class PaymentOrderAddress
     private \DateTimeInterface $modifyDate;
 
     #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'PaymentOrder')]
+    #[ORM\ManyToOne(targetEntity: PaymentOrder::class)]
     private ?PaymentOrder $order = null;
 
     public function getId(): ?string

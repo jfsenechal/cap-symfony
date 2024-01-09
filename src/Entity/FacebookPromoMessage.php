@@ -36,19 +36,19 @@ class FacebookPromoMessage
     private \DateTimeInterface $modifyDate;
 
     #[ORM\JoinColumn(name: 'blog_post_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'BlogPost')]
+    #[ORM\ManyToOne(targetEntity: BlogPost::class)]
     private ?BlogPost $blogPost = null;
 
     #[ORM\JoinColumn(name: 'commercant_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'CommercioCommercant')]
+    #[ORM\ManyToOne(targetEntity: CommercioCommercant::class)]
     private ?CommercioCommercant $commercant = null;
 
     #[ORM\JoinColumn(name: 'commercio_administrator_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'CommercioAdministrator')]
+    #[ORM\ManyToOne(targetEntity: CommercioAdministrator::class)]
     private ?CommercioAdministrator $commercioAdministrator = null;
 
     #[ORM\JoinColumn(name: 'event_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'EventEvent')]
+    #[ORM\ManyToOne(targetEntity: EventEvent::class)]
     private ?EventEvent $event = null;
 
     public function getId(): ?string

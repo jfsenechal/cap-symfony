@@ -27,7 +27,7 @@ class TenderAttachment
     private \DateTimeInterface $modifyDate;
 
     #[ORM\JoinColumn(name: 'tender_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'TenderTender')]
+    #[ORM\ManyToOne(targetEntity: TenderTender::class)]
     private ?TenderTender $tender = null;
 
     public function getId(): ?string

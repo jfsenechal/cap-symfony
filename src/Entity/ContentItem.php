@@ -28,7 +28,7 @@ class ContentItem
     private \DateTimeInterface $modifyDate;
 
     #[ORM\JoinColumn(name: 'content_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'Content')]
+    #[ORM\ManyToOne(targetEntity: Content::class)]
     private ?Content $content = null;
 
     public function getId(): ?string

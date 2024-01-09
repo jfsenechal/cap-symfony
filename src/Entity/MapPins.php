@@ -68,7 +68,7 @@ class MapPins
     private ?string $horaires = null;
 
     #[ORM\JoinColumn(name: 'pin_type_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'MapPinsType')]
+    #[ORM\ManyToOne(targetEntity: MapPinsType::class)]
     private ?MapPinsType $pinType = null;
 
     public function getId(): ?string

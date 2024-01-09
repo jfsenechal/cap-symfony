@@ -44,7 +44,7 @@ class PromoCode
     private string $code = '';
 
     #[ORM\JoinColumn(name: 'promo_code_status_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'PromoCodeStatus')]
+    #[ORM\ManyToOne(targetEntity: PromoCodeStatus::class)]
     private ?PromoCodeStatus $promoCodeStatus = null;
 
     public function getId(): ?string

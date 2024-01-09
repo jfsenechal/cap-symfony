@@ -38,7 +38,7 @@ class CommercioAdministrator
     private bool $archived = false;
 
     #[ORM\JoinColumn(name: 'right_access_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'RightAccess')]
+    #[ORM\ManyToOne(targetEntity: RightAccess::class)]
     private ?RightAccess $rightAccess = null;
 
     public function getId(): ?string

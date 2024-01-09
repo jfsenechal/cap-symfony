@@ -45,7 +45,7 @@ class PaymentBill
     private bool $archived = false;
 
     #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'PaymentOrder')]
+    #[ORM\ManyToOne(targetEntity: PaymentOrder::class)]
     private ?PaymentOrder $order = null;
 
     #[ORM\Column(name: 'wallet_transaction_id', type: 'text', nullable: true)]

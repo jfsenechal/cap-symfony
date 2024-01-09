@@ -28,7 +28,7 @@ class ContactParams
     private \DateTimeInterface $modifyDate;
 
     #[ORM\JoinColumn(name: 'contact_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'Contact')]
+    #[ORM\ManyToOne(targetEntity: Contact::class)]
     private ?Contact $contact = null;
 
     public function getId(): ?string

@@ -53,11 +53,11 @@ class PaymentOrder
     private ?string $pdfPath = null;
 
     #[ORM\JoinColumn(name: 'order_commercant_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'PaymentOrderCommercant')]
+    #[ORM\ManyToOne(targetEntity: PaymentOrderCommercant::class)]
     private ?PaymentOrderCommercant $orderCommercant = null;
 
     #[ORM\JoinColumn(name: 'order_status_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'PaymentOrderStatus')]
+    #[ORM\ManyToOne(targetEntity: PaymentOrderStatus::class)]
     private ?PaymentOrderStatus $orderStatus = null;
 
     #[ORM\Column(name: 'wallet_code_order', type: 'text', nullable: true, unique: true)]

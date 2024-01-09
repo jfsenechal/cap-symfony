@@ -86,15 +86,15 @@ class EventEvent
     private ?DateTimeInterface $timeSlotEnd = null;
 
     #[ORM\JoinColumn(name: 'commercio_administrator_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'CommercioAdministrator')]
+    #[ORM\ManyToOne(targetEntity: CommercioAdministrator::class)]
     private ?CommercioAdministrator $commercioAdministrator = null;
 
     #[ORM\JoinColumn(name: 'commercio_commercant_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'CommercioCommercant')]
+    #[ORM\ManyToOne(targetEntity: CommercioCommercant::class)]
     private ?CommercioCommercant $commercioCommercant = null;
 
     #[ORM\JoinColumn(name: 'event_type_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'EventType')]
+    #[ORM\ManyToOne(targetEntity: EventType::class)]
     private ?EventType $eventType = null;
 
     public function getId(): ?string

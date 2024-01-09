@@ -30,11 +30,11 @@ class CommercioPixel
     private \DateTimeInterface $modifyDate;
 
     #[ORM\JoinColumn(name: 'commercio_commercant_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'CommercioCommercant')]
+    #[ORM\ManyToOne(targetEntity: CommercioCommercant::class)]
     private ?CommercioCommercant $commercioCommercant = null;
 
     #[ORM\JoinColumn(name: 'pixel_type_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'CommercioPixelType')]
+    #[ORM\ManyToOne(targetEntity: CommercioPixelType::class)]
     private ?CommercioPixelType $pixelType = null;
 
     public function getId(): ?string

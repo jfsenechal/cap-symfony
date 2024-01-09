@@ -27,11 +27,11 @@ class BlogCategoryPost
     private \DateTimeInterface $modifyDate;
 
     #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'BlogCategory')]
+    #[ORM\ManyToOne(targetEntity: BlogCategory::class)]
     private ?BlogCategory $category = null;
 
     #[ORM\JoinColumn(name: 'post_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'BlogPost')]
+    #[ORM\ManyToOne(targetEntity: BlogPost::class)]
     private ?BlogPost $post = null;
 
     public function getId(): ?string

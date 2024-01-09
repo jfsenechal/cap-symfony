@@ -55,11 +55,11 @@ class BlogPost implements Stringable
     private bool $firstPublication = true;
 
     #[ORM\JoinColumn(name: 'language_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'Language')]
+    #[ORM\ManyToOne(targetEntity: Language::class)]
     private ?Language $language = null;
 
     #[ORM\JoinColumn(name: 'author_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'BlogAuthor')]
+    #[ORM\ManyToOne(targetEntity: BlogAuthor::class)]
     private ?BlogAuthor $author = null;
 
     #[Assert\Image(

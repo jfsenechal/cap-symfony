@@ -101,15 +101,15 @@ class CommercioCommercant
     private ?string $linkedinLink = null;
 
     #[ORM\JoinColumn(name: 'cta_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'CommercioCta')]
+    #[ORM\ManyToOne(targetEntity: CommercioCta::class)]
     private ?CommercioCta $cta = null;
 
     #[ORM\JoinColumn(name: 'hours_type_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'CommercioCommercantHoursType')]
+    #[ORM\ManyToOne(targetEntity: CommercioCommercantHoursType::class)]
     private ?CommercioCommercantHoursType $hoursType = null;
 
     #[ORM\JoinColumn(name: 'right_access_id', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'RightAccess')]
+    #[ORM\ManyToOne(targetEntity: RightAccess::class)]
     private ?RightAccess $rightAccess = null;
 
     public bool $sendMailExpired = false;
