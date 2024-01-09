@@ -125,6 +125,7 @@ class GalleryController extends AbstractController
 
         if ($this->isCsrfTokenValid('defaultImage', $request->request->get('_token'))) {
             $gallery->getCommercioCommercant()->setCommercialWordMediaPath($gallery->getMediaPath());
+            $gallery->getCommercioCommercant()->setProfileMediaPath($gallery->getMediaPath());
             $this->addFlash('success', 'Image placé par défaut');
             $this->galleryRepository->flush();
         }
