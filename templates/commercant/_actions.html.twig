@@ -1,7 +1,7 @@
 <div class="row gy-2 gx-1 align-items-center d-print-none mb-3">
     <div class="col-auto">
         <a href="{{ path('cap_member_set',{'id':commercant.id}) }}" class="btn btn-primary" role='button'>
-            <i class="ti ti-people-group"></i>
+            <i class="ti ti-friends"></i>
             Membre Cap ?
         </a>
     </div>
@@ -13,12 +13,13 @@
     </div>
     <div class="col-auto">
         <a href="{{ path('cap_gallery_show',{'id':commercant.id}) }}" class="btn btn-primary" role='button'>
-            <i class="ti ti-image"></i>
+            <i class="ti ti-photo-edit"></i>
             Images
         </a>
     </div>
     <div class="col-auto">
-        <a href="{{ path('cap_order_new',{'id':commercant.id}) }}" class="btn btn-primary" role='button' title="Nouveau bon de commande">
+        <a href="{{ path('cap_order_new',{'id':commercant.id}) }}" class="btn btn-primary" role='button'
+           title="Nouveau bon de commande">
             <i class="ti ti-plus"></i>
             Nouveau Bdc
         </a>
@@ -43,6 +44,14 @@
             <a href="{{ urlCap }}" class="btn btn-primary" role='button' target="_blank">
                 <i class="ti ti-eye"></i>
                 Voir sur Cap
+            </a>
+        </div>
+    {% endif %}
+    {% if urlBottin %}
+        <div class="col-auto">
+            <a href="{{ urlBottin }}" class="btn btn-primary" role='button' title="Bottin Marchois" target="_blank">
+                <i class="ti ti-book"></i>
+                Bottin
             </a>
         </div>
     {% endif %}
