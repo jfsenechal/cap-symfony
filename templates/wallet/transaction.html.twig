@@ -3,10 +3,14 @@
 {% block body %}
 
     <div class="card">
-        <h3 class="card-header text-success">Transaction details {{ transactionId }}</h3>
+        <h3 class="card-header text-success">Détails de la transaction {{ transactionId }}</h3>
 
         <div class="card-body">
             <img src="{{ asset('bundles/capcommercio/logo_wallet-dark.svg') }}" alt="logo">
+
+            <div class="alert alert-info">
+                Les informations proviennent de VivaWallet.com
+            </div>
 
             <table class="table table-bordered my-3">
                 <tr>
