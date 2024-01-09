@@ -91,10 +91,6 @@
             <h4 class="text-success">Paiement lié</h4>
             {% if bill %}
                 {% include '@CapCommercio/order/_bill_line.html.twig' %}
-            {% elseif bills|length > 0 %}
-                {% for bill in bills %}
-                    {% include '@CapCommercio/order/_bill_line.html.twig' %}
-                {% endfor %}
             {% else %}
                 <p>Aucun paiement</p>
             {% endif %}
