@@ -2,6 +2,7 @@
 
 namespace Cap\Commercio\Controller;
 
+use Cap\Commercio\Bottin\BottinApiRepository;
 use Cap\Commercio\Bottin\BottinUtils;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Form\CommercantSearchType;
@@ -34,6 +35,7 @@ class CommercantController extends AbstractController
         public readonly CommercioCommercantAddressRepository $commercioCommercantAddressRepository,
         private readonly CommercioCommercantHoursRepository $commercioCommercantHoursRepository,
         private readonly CommercioCommercantHolidayRepository $commercioCommercantHolidayRepository,
+        public readonly BottinApiRepository $bottinApiRepository,
         private readonly ShopHandler $shopHandler,
         private readonly MemberHandler $memberHandler,
     ) {
@@ -93,6 +95,14 @@ class CommercantController extends AbstractController
         }
         $urlCap = $this->bottinUtils->urlCap($commercant);
         $isMemberComplete = $this->memberHandler->isMemberCompleted($commercant);
+        try {
+            $fiche = $this->bottinApiRepository->findCommerceById($commercant->getId());
+            if (!isset($fiche->error)) {
+                $urlBottin = BottinUtils::urlBottin($commercant->getId());
+            }
+        } catch (\Exception $e) {
+            $urlBottin = null;
+        }
 
         return $this->render('@CapCommercio/commercant/show.html.twig', [
             'commercant' => $commercant,
@@ -104,6 +114,7 @@ class CommercantController extends AbstractController
             'holidays' => $holidays,
             'urlCap' => $urlCap,
             'isMemberComplete' => $isMemberComplete,
+            'urlBottin' => $urlBottin,
         ]);
     }
 

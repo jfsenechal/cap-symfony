@@ -60,7 +60,7 @@ class PaymentBillRepository extends ServiceEntityRepository
                 ->andWhere(
                     'upper(payment_bill.billNumber) LIKE upper(:number)'
                 )
-                ->setParameter('number', '%' . $number . '%');
+                ->setParameter('number', '%'.$number.'%');
         }
 
         if ($name) {
@@ -68,7 +68,7 @@ class PaymentBillRepository extends ServiceEntityRepository
                 ->andWhere(
                     'upper(commercant.firstname) LIKE upper(:name) OR upper(commercant.companyName) LIKE upper(:name)'
                 )
-                ->setParameter('name', '%' . $name . '%');
+                ->setParameter('name', '%'.$name.'%');
         }
 
         if ($year) {
@@ -98,18 +98,6 @@ class PaymentBillRepository extends ServiceEntityRepository
             ->setParameter('order', $order)
             ->getQuery()
             ->getOneOrNullResult();
-    }
-
-    /**
-     * @return PaymentBill[]
-     */
-    public function findMultipleByOrder(PaymentOrder $order): array
-    {
-        return $this->createQb()
-            ->andWhere('payment_bill.order = :order')
-            ->setParameter('order', $order)
-            ->getQuery()
-            ->getResult();
     }
 
     /**

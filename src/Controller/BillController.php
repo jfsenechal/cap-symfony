@@ -64,7 +64,7 @@ class BillController extends AbstractController
             $this->paymentBillRepository->remove($paymentBill);
             $this->paymentBillRepository->flush();
 
-            $this->addFlash('success', 'Commande supprimée');
+            $this->addFlash('success', 'Facture supprimée');
         }
 
         return $this->redirectToRoute('cap_order_show', ['id' => $order->getId()]);

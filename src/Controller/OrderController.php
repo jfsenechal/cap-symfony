@@ -126,15 +126,10 @@ class OrderController extends AbstractController
         $orderCommercant = $paymentOrder->getOrderCommercant();
         $line = $this->paymentOrderLineRepository->findOneByOrder($paymentOrder);
         $addresses = $this->paymentOrderAddressRepository->findByOrder($paymentOrder);
-        $bills = [];
         try {
             $bill = $this->paymentBillRepository->findOneByOrder($paymentOrder);
         } catch (NonUniqueResultException) {
             $bill = null;
-            $bills = $this->paymentBillRepository->findMultipleByOrder($paymentOrder);
-            if ($bills !== []) {
-                $this->addFlash('danger', 'Attention plusieurs paiements pour cette facture');
-            }
         }
 
         return $this->render(
@@ -145,7 +140,6 @@ class OrderController extends AbstractController
                 'line' => $line,
                 'addresses' => $addresses,
                 'bill' => $bill,
-                'bills' => $bills,
             ]
         );
     }
@@ -206,7 +200,7 @@ class OrderController extends AbstractController
             $orderCommercant = $paymentOrder->getOrderCommercant();
             $line = $this->paymentOrderLineRepository->findOneByOrder($paymentOrder);
             $addresses = $this->paymentOrderAddressRepository->findByOrder($paymentOrder);
-            $bills = $this->paymentBillRepository->findMultipleByOrder($paymentOrder);
+            $bill = $this->paymentBillRepository->findOneByOrder($paymentOrder);
 
             $this->paymentOrderRepository->remove($orderCommercant);
             $this->paymentOrderRepository->remove($line);
@@ -214,11 +208,10 @@ class OrderController extends AbstractController
             foreach ($addresses as $address) {
                 $this->paymentOrderRepository->remove($address);
             }
-            foreach ($bills as $bill) {
+            if ($bill) {
                 $this->paymentOrderRepository->remove($bill);
             }
             $this->paymentOrderRepository->remove($paymentOrder);
-
             $this->paymentOrderRepository->flush();
 
             $this->addFlash('success', 'Commande supprimée');

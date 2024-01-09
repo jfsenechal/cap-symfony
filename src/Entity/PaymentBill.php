@@ -2,18 +2,19 @@
 
 namespace Cap\Commercio\Entity;
 
-use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Table(name: 'payment_bill')]
-#[ORM\Index(name: 'IDX_5BA28E978D9F6D38', columns: ['order_id'])]
+#[ORM\UniqueConstraint(columns: ['order_id'])]
+#[UniqueEntity(fields: ['order'], message: 'Déjà facturé')]
 #[ORM\Entity]
 class PaymentBill
 {
     use IdTrait;
 
-    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false, options: ['default' => 'uuid_generate_v4()'])]
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false)]
     private string $uuid = '';
 
     #[ORM\Column(name: 'bill_number', type: 'text', nullable: false)]
