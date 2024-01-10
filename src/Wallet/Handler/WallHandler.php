@@ -32,7 +32,7 @@ class WallHandler
 
         $orderCommercant = $paymentOrder->getOrderCommercant();
         //todo remove jf
-        $customer = new Customer('jf@marche.be', $orderCommercant->getCompanyName());
+        $customer = new Customer('maureen.cap@marche.be', $orderCommercant->getCompanyName());
         $walletOrder = new WalletOrder($paymentOrder->getPriceVat() * 100, $customer, $line->getLabel());
         //$walletOrder = new WalletOrder(9907, $customer, $line->getLabel());
         $walletOrder->sourceCode = '1619';
