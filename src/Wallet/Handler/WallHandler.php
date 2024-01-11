@@ -31,10 +31,9 @@ class WallHandler
         $line = $this->paymentOrderLineRepository->findOneByOrder($paymentOrder);
         $orderCommercant = $paymentOrder->getOrderCommercant();
         //todo remove jf
-        $customer = new Customer('maureen.cap@marche.be', $orderCommercant->getCompanyName());
+        $customer = new Customer('jf@marche.be', $orderCommercant->getCompanyName());
         $walletOrder = new WalletOrder($paymentOrder->getPriceVat() * 100, $customer, $line->getLabel());
-        //$walletOrder = new WalletOrder(9907, $customer, $line->getLabel());
-        $walletOrder->sourceCode = '1619';
+        $walletOrder->sourceCode = '6912';
         $walletOrder->merchantTrns = $this->settingRepository->findValue(SettingEnum::SITE_NAME->value)->getParamValue(
         );
 
