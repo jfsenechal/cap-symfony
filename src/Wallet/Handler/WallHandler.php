@@ -8,13 +8,12 @@ use Cap\Commercio\Repository\PaymentOrderRepository;
 use Cap\Commercio\Repository\SettingRepository;
 use Cap\Commercio\Setting\SettingEnum;
 use Cap\Commercio\Wallet\Customer;
-use Cap\Commercio\Wallet\EciEnum;
-use Cap\Commercio\Wallet\EventIdCodesEnum;
 use Cap\Commercio\Wallet\OrderStatusEnum;
 use Cap\Commercio\Wallet\WalletApi;
 use Cap\Commercio\Wallet\WalletOrder;
 use Psr\Cache\InvalidArgumentException;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 class WallHandler
 {
@@ -23,13 +22,13 @@ class WallHandler
         private readonly PaymentOrderRepository $paymentOrderRepository,
         private readonly SettingRepository $settingRepository,
         private readonly WalletApi $walletApi,
+        private readonly RouterInterface $router
     ) {
     }
 
     public function createWalletOrderFromPaymentOrder(PaymentOrder $paymentOrder): WalletOrder
     {
         $line = $this->paymentOrderLineRepository->findOneByOrder($paymentOrder);
-
         $orderCommercant = $paymentOrder->getOrderCommercant();
         //todo remove jf
         $customer = new Customer('maureen.cap@marche.be', $orderCommercant->getCompanyName());
@@ -98,5 +97,14 @@ class WallHandler
     public function failure()
     {
 
+    }
+
+    public function generateUrlForPayment(PaymentOrder $paymentOrder): string
+    {
+        return $this->router->generate(
+            'cap_wallet_order_new',
+            ['uuid' => $paymentOrder->getUuid()],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
     }
 }

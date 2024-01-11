@@ -16,19 +16,14 @@ class CheckMemberType extends AbstractType
         $builder
             ->add('isMember', CheckboxType::class, [
                 'required' => false,
-                'label' => 'Est-il affilié à Cap ?',
-                'help' => 'Cochez pour oui',
+                'label' => 'Affilier à Cap ?',
+                'help' => 'Décochez la case pour désaffilier',
             ])
             ->add('affiliationDate', DateType::class, [
                 'required' => false,
                 'label' => 'Date d\'affiliation',
                 'widget' => 'single_text',
-                'help' => 'Si affilié, à quelle date ? Sinon la valeur n\'est pas prise en compte',
-            ])
-            ->add('sendMailExpired', CheckboxType::class, [
-                'label' => 'Envoyer un mail',
-                'help' => 'Envoyer un mail pour prévenir de l\'expiration du membre',
-                'required' => false,
+                'help' => 'Si affilié, à partir de quelle date ? Sinon la date est mise à nul',
             ]);
     }
 

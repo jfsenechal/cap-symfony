@@ -52,7 +52,7 @@ trait PdfDownloaderTrait
     public function savePdfToDisk(string $html, string $fileName, bool $debug = false): string
     {
         $html2pdf = $this->generatePdfH2Pdf($html, $debug);
-        $path = $this->parameterBag->get('CAP_PATH').'pdf-docs/'.$fileName;
+        $path = $this->parameterBag->get('CAP_PATH').'/pdf-docs/'.$fileName;
 
         return $html2pdf->output($path, 'F');
     }
@@ -87,7 +87,7 @@ trait PdfDownloaderTrait
 
         /*   $this->pdf->setOption('footer-html','    CAP sur Marche ASBL - Avenue de France, 126 - 6900 Marche-en-Famenne (Belgique)
        <br/>
-       N° de téléphone : 0478/34 69 42 - TVA : BE 0525 968 345 - cap@marche.be - IBAN : BE51 0689 3813 9062
+       N° de téléphone : 0478/34 69 42 - TVA : BE 0525 968 345 - cap@marche.be - IBAN : BE82 7320 7308 1568
        <br/>
        Les conditions dutilisation sont dapplication pour laffiliation. Vous retrouvez ces conditions sur notre
        site.');*/

@@ -10,7 +10,9 @@
             {{ form_row(form.code) }}
             <button class="btn btn-primary"><i class="ti ti-device-floppy"></i> Sauvegarder</button>
             {{ form_end(form) }}
-
+        </div>
+        <div class="card-footer">
+            <a href="{{ path('cap_commercio_mandrill_showtemplate', {'name': template.name}) }}">Retour</a>
         </div>
     </div>
 {% endblock %}

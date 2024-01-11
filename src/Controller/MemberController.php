@@ -10,7 +10,9 @@ use Cap\Commercio\Form\MemberType;
 use Cap\Commercio\Form\NameSearchType;
 use Cap\Commercio\Mailer\MailerCap;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
+use Cap\Commercio\Repository\PaymentOrderRepository;
 use Cap\Commercio\Shop\MemberHandler;
+use Cap\Commercio\Shop\SendExpiredForm;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,6 +29,7 @@ class MemberController extends AbstractController
 {
     public function __construct(
         private readonly CommercioCommercantRepository $commercantRepository,
+        private readonly PaymentOrderRepository $paymentOrderRepository,
         private readonly MailerCap $mailer,
         private readonly BottinApiRepository $bottinApiRepository,
         private readonly MemberHandler $memberHandler,
@@ -84,32 +87,40 @@ class MemberController extends AbstractController
             return $this->redirectToRoute('cap_home');
         }
 
-        $commercioCommercant = $this->bottinUtils->newFromBottin($fiche);
-        $commercioCommercant->generateOrder = true;
+        $commercant = $this->bottinUtils->newFromBottin($fiche);
+        $commercant->setIsMember(true);
+        $commercant->generateOrder = true;
 
-        $form = $this->createForm(MemberType::class, $commercioCommercant);
+        $form = $this->createForm(MemberType::class, $commercant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             try {
-                $order = $this->memberHandler->newMember($commercioCommercant, $form->get('generateOrder')->getData());
+                $order = $this->memberHandler->newMember($commercant, $form->get('generateOrder')->getData());
                 $this->addFlash('success', 'Le nouveau membre a bien été ajouté');
             } catch (\Exception $e) {
                 $this->addFlash('danger', 'Erreur: '.$e->getMessage());
 
-                return $this->redirectToRoute('cap_commercant_show', ['id' => $commercioCommercant->getId()]);
+                return $this->redirectToRoute('cap_commercant_show', ['id' => $commercant->getId()]);
             }
 
             if ($order) {
                 try {
-                    $this->memberHandler->generatePdf($order);
+                    $this->memberHandler->generateOrderPdf($order);
                 } catch (Html2PdfException|LoaderError|RuntimeError|SyntaxError $e) {
                     $this->addFlash('danger', 'Erreur pour la création du pdf '.$e->getMessage());
                 }
+
+                try {
+                    $this->mailer->sendNewAffiliation($commercant, $order);
+                    $this->addFlash('success', 'Le bon a bien été envoyé par mail');
+                } catch (\Exception $e) {
+                    $this->addFlash('danger', 'Erreur lors de l\'envoie du mail: '.$e->getMessage());
+                }
             }
 
-            return $this->redirectToRoute('cap_commercant_show', ['id' => $commercioCommercant->getId()]);
+            return $this->redirectToRoute('cap_commercant_show', ['id' => $commercant->getId()]);
         }
 
         return $this->render('@CapCommercio/member/new.html.twig', [
@@ -129,18 +140,12 @@ class MemberController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             if ($data->isIsMember() === false) {
-                $commercant->setAffiliationDate(null);
+                $this->memberHandler->disaffiliated($commercant->getId());
+                $this->addFlash('success', 'Le membre a été désaffilié');
+            } else {
+                $this->memberHandler->affiliated($commercant->getId());
+                $this->addFlash('success', 'Le commerçant a été affilié');
             }
-            $this->commercantRepository->flush();
-            if ($data->sendMailExpired) {
-                try {
-                    $this->mailer->sendAffiliationExpired($commercant);
-                    $this->addFlash('success', 'Le mail a bien été envoyé');
-                } catch (\Exception $e) {
-                    $this->addFlash('danger', 'Erreur lors de l\'envoie du mail: '.$e->getMessage());
-                }
-            }
-            $this->addFlash('success', 'Le commerçant a été modifié');
 
             return $this->redirectToRoute(
                 'cap_commercant_show',
@@ -151,6 +156,62 @@ class MemberController extends AbstractController
 
         return $this->render('@CapCommercio/member/set.html.twig', [
             'commercant' => $commercant,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}/reminder', name: 'cap_member_reminder', methods: ['GET', 'POST'])]
+    public function reminder(
+        Request $request,
+        CommercioCommercant $commercant
+    ): Response {
+
+        $order = $orderCommercant = null;
+        $orders = $this->paymentOrderRepository->findByCommercantIdAndNotPaid($commercant->getId());
+        if (count($orders) == 1) {
+            $order = $orders[0];
+            $orderCommercant = $order->getOrderCommercant();
+        }
+
+        $form = $this->createForm(SendExpiredForm::class, $commercant);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (!$order) {
+                try {
+                    $order = $this->memberHandler->generateNewOrder($commercant);
+                } catch (\Exception $e) {
+                    $this->addFlash('danger', 'Erreur pour générer un ordre de paiement: '.$e->getMessage());
+
+                    return $this->redirectToRoute('cap_commercant_show', ['id' => $commercant->getId()]);
+                }
+            }
+
+            if ($order) {
+                try {
+                    $this->memberHandler->generateOrderPdf($order);
+                } catch (Html2PdfException|LoaderError|RuntimeError|SyntaxError $e) {
+                    $this->addFlash('danger', 'Erreur pour la création du pdf '.$e->getMessage());
+                }
+                try {
+                    $this->mailer->sendAffiliationExpired($commercant, $order);
+                    $this->addFlash('success', 'Le mail a bien été envoyé');
+                } catch (\Exception $e) {
+                    $this->addFlash('danger', 'Erreur lors de l\'envoie du mail: '.$e->getMessage());
+                }
+            }
+
+            return $this->redirectToRoute(
+                'cap_commercant_show',
+                ['id' => $commercant->getId()],
+                Response::HTTP_SEE_OTHER
+            );
+        }
+
+        return $this->render('@CapCommercio/member/reminder.html.twig', [
+            'commercant' => $commercant,
+            'paymentOrder' => $order,
+            'orderCommercant' => $orderCommercant,
             'form' => $form,
         ]);
     }

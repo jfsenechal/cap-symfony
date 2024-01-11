@@ -8,6 +8,7 @@ use Cap\Commercio\Form\WalletOrderType;
 use Cap\Commercio\Mailer\MailerJf;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
+use Cap\Commercio\Shop\MemberHandler;
 use Cap\Commercio\Wallet\EciEnum;
 use Cap\Commercio\Wallet\EventIdCodesEnum;
 use Cap\Commercio\Wallet\Handler\WallHandler;
@@ -26,6 +27,7 @@ class WalletController extends AbstractController
     public function __construct(
         private readonly WalletApi $walletApi,
         private readonly WallHandler $wallHandler,
+        private readonly MemberHandler $memberHandler,
         private readonly PaymentOrderHandler $paymentOrderHandler,
         private readonly PaymentOrderRepository $paymentOrderRepository,
         private readonly PaymentBillRepository $paymentBillRepository,
@@ -126,6 +128,7 @@ class WalletController extends AbstractController
                 $bill = $this->paymentOrderHandler->paid($paymentOrder);
                 $bill->walletTransactionId = $transactionId;
                 $this->paymentOrderRepository->flush();
+                $this->memberHandler->affiliated($paymentOrder->getCommercantId());
             } catch (\Exception $exception) {
                 $this->mailerJf->sendError('Error create bill', $exception->getMessage());
             }

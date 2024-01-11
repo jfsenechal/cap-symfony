@@ -1,0 +1,34 @@
+<table class="table table-bordered">
+    <tr>
+        <th>Date</th>
+        <td>{{ paymentOrder.insertDate|format_date('full') }}</td>
+    </tr>
+    <tr>
+        <th>Nom</th>
+        <td>{{ orderCommercant.firstname }} {{ orderCommercant.lastname }}</td>
+    </tr>
+    <tr>
+        <th>Société</th>
+        <td>{{ orderCommercant.companyName }}</td>
+    </tr>
+    <tr>
+        <th>Courriel</th>
+        <td>{{ orderCommercant.email }}</td>
+    </tr>
+    <tr>
+        <th>Numéro de Tva</th>
+        <td>{{ orderCommercant.companyVat }}</td>
+    </tr>
+    <tr>
+        <th>Tva appliqué</th>
+        <td>{{ paymentOrder.vat }}%</td>
+    </tr>
+    <tr>
+        <th>Montant de la Tva</th>
+        <td>{{ paymentOrder.vatAmount|format_currency('euro') }}</td>
+    </tr>
+    <tr>
+        <th>Prix tva comprise</th>
+        <td>{{ paymentOrder.priceVat|format_currency('euro') }}</td>
+    </tr>
+</table>

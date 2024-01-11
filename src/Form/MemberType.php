@@ -48,14 +48,14 @@ class MemberType extends AbstractType
             ])
             ->add('address', AddressType::class)
             ->add('affiliationDate', DateType::class, [
-                'required' => true,
+                'required' => false,
                 'label' => 'Date d\'affiliation',
                 'widget' => 'single_text',
             ])
             ->add('generateOrder', CheckboxType::class, [
                 'required' => false,
-                'label' => 'Générer un bon de commande',
-                'help' => 'Faut-il générer un bon de commande ?',
+                'label' => 'Générer un bon de paiement',
+                'help' => 'Un bon de paiement sera envoyé par mail au commerçant',
             ])
             ->add('address', AddressType::class);
     }

@@ -70,7 +70,6 @@ class BottinUtils
         $commercioCommercant->setLegalFirstname($fiche->prenom);
         $commercioCommercant->setLegalLastname($fiche->nom);
         $commercioCommercant->setLegalPhone($fiche->telephone);
-        $commercioCommercant->setIsMember(true);
         $commercioCommercant->setInsertDate(new \DateTime());
         $commercioCommercant->setModifyDate(new \DateTime());
         // $commercioCommercant->setVatNumber($fiche->numero_tva);

@@ -1,0 +1,31 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block title %}Rappel membre Commercant{% endblock %}
+
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">Envoyer un rappel pour le commerçant {{ commercant.legalEntity }}</h3>
+        <div class="card-body">
+
+            {% if paymentOrder %}
+                <h4 class="text-success">Le rappel sera basé sur cet ordre de paiement</h4>
+                {% include '@CapCommercio/order/_details.html.twig' %}
+            {% else %}
+                <div class="alert alert-info">
+                    Aucun ordre de paiement trouvé
+                </div>
+            {% endif %}
+
+            {{ form_start(form) }}
+            <button class="btn btn-primary"><i class="ti ti-mail"></i> Envoyer le rappel</button>
+            {{ form_end(form) }}
+        </div>
+        <div class="card-footer text-end">
+            <a href="{{ path('cap_commercant_show', {'id': commercant.id}) }}" class="btn btn-secondary">
+                <i class="ti ti-arrow-left"></i> Annuler
+            </a>
+        </div>
+    </div>
+
+{% endblock %}

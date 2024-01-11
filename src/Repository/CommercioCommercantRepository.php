@@ -77,7 +77,6 @@ class CommercioCommercantRepository extends ServiceEntityRepository
         return $this->createQb()
             ->andWhere('commercant.isMember = :member')
             ->setParameter('member', 1)
-            ->andWhere('commercant.affiliationDate IS NOT NULL')
             ->orderBy('commercant.affiliationDate', 'DESC')
             ->getQuery()->getResult();
     }

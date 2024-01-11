@@ -47,10 +47,20 @@ class MemberHandler
         $order = null;
 
         if ($generateOrder) {
-            $order = $this->orderGenerator->newOne($commercant, $this->memberPrice);
+            $order = $this->generateNewOrder($commercant);
         }
 
         return $order;
+    }
+
+    /**
+     * @param CommercioCommercant $commercant
+     * @return PaymentOrder
+     * @throws \Exception
+     */
+    public function generateNewOrder(CommercioCommercant $commercant): PaymentOrder
+    {
+        return $this->orderGenerator->newOne($commercant, $this->memberPrice);
     }
 
     /**
@@ -61,7 +71,7 @@ class MemberHandler
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function generatePdf(PaymentOrder $order): void
+    public function generateOrderPdf(PaymentOrder $order): void
     {
         $this->orderGenerator->generatePdf($order);
     }
@@ -70,10 +80,31 @@ class MemberHandler
     {
         $galleries = $this->galleryRepository->findByCommercant($commercant);
         if (count($galleries) > 0 && $commercant->getCommercialWordMediaPath() &&
-            $commercant->getCommercialWordTitle() && $commercant->getCommercialWordDescription()) {
+            $commercant->getCommercialWordTitle() && $commercant->getCommercialWordDescription(
+            ) && $commercant->getAffiliationDate()) {
             return true;
         }
 
         return false;
+    }
+
+    public function affiliated(int $commercantId): void
+    {
+        if ($commercant = $this->commercantRepository->findByIdCommercant($commercantId)) {
+            $commercant->setAffiliationDate(new \DateTime());
+            $commercant->setIsMember(true);
+            $commercant->setModifyDate(new \DateTime());
+            $this->commercantRepository->flush();
+        }
+    }
+
+    public function disaffiliated(int $commercantId): void
+    {
+        if ($commercant = $this->commercantRepository->findByIdCommercant($commercantId)) {
+            $commercant->setAffiliationDate(null);
+            $commercant->setIsMember(false);
+            $commercant->setModifyDate(new \DateTime());
+            $this->commercantRepository->flush();
+        }
     }
 }

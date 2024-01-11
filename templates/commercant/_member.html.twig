@@ -5,13 +5,20 @@
     {% if commercant.isMemberCapExpired %}
         <div class="alert alert-warning">
             !Membre expiré!
+            <a href="{{ path('cap_member_reminder',{'id':commercant.id}) }}" class="ms-2 btn btn-secondary btn-sm" role='button'>
+                <i class="ti ti-mail-fas"></i>
+                Envoyer un rappel de paiement
+            </a>
         </div>
     {% endif %}
     {% if not isMemberComplete %}
         <div class="alert alert-danger">
-            Attention pour être membre complet, il faut que les champs nom du commerce et description du commerce
-            soient remplis.<br/>
-            Et que le commerçant ait au moins une image mise par défaut
+            Attention pour être membre complet, il faut:
+            <ul class="list-group mt-1">
+                <li class="list-group-item">Les champs nom et description soient remplis</li>
+                <li class="list-group-item">Au moins une image mise par défaut</li>
+                <li class="list-group-item">La date d'affiliation doit dater de maximum 1 an</li>
+            </ul>
         </div>
     {% endif %}
 {% else %}

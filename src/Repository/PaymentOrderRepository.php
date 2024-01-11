@@ -90,6 +90,20 @@ class PaymentOrderRepository extends ServiceEntityRepository
     /**
      * @return PaymentOrder[]
      */
+    public function findByCommercantIdAndNotPaid(int $commercantId): array
+    {
+        return $this->createQb()
+            ->andWhere('paymentOrder.commercantId = :id')
+            ->setParameter('id', $commercantId)
+            ->andWhere('paymentOrder.isPaid = :paid')
+            ->setParameter('paid', 0)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return PaymentOrder[]
+     */
     public function findByBill(string $orderNumber): array
     {
         return $this->createQb()

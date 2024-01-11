@@ -5,12 +5,11 @@
 {% block body %}
 
     <div class="card">
-        <h3 class="card-header">{{ commercant.legalEntity }}</h3>
+        <h3 class="card-header">Affilier/Désaffilier le commerçant {{ commercant.legalEntity }}</h3>
         <div class="card-body">
             {{ form_start(form) }}
             {{ form_row(form.isMember) }}
             {{ form_row(form.affiliationDate) }}
-            {{ form_row(form.sendMailExpired) }}
             <button class="btn btn-primary"><i class="ti ti-device-floppy"></i> Sauvegarder</button>
             {{ form_end(form) }}
         </div>
