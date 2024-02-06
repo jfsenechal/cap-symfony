@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}Cap{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('bundles/capcommercio/favicon.png') }}"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
-    <meta name="description" content="">
     <meta name="author" content="Cst">
-
-    {{ encore_entry_link_tags('app') }}
-    {{ encore_entry_script_tags('app') }}
-
-    {% block stylesheets %}{% endblock %}
-
     <meta name="theme-color" content="#563d7c">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    {% block stylesheets %}
+
+    {% endblock %}
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
+
     {% block head %}{% endblock %}
 </head>
 <body class="d-flex flex-column h-100 {% block body_class %}{% endblock %}">
@@ -156,7 +156,7 @@
         {% endblock %}
     </div>
 </footer>
-{% block javascripts %}{% endblock %}
+{% block scripts %}{% endblock %}
 
 </body>
 </html>

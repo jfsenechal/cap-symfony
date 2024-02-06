@@ -4,6 +4,7 @@ namespace Cap\Commercio\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\UX\Dropzone\Form\DropzoneType;
 
 class ImageDropZoneType extends AbstractType
@@ -12,7 +13,7 @@ class ImageDropZoneType extends AbstractType
     {
         $builder->add('file', DropzoneType::class, [
             'attr' => [
-                'placeholder' => 'Cliquez ici pour sélectioner les images',
+                'placeholder' => 'Cliquez ici pour sélectionner les images',
             ],
             'label' => false,
             'multiple' => true,

@@ -96,14 +96,6 @@
                     <td>{{ commercant.archived ? 'Yes' : 'No' }}</td>
                 </tr>
                 <tr>
-                    <th>InsertDate</th>
-                    <td>{{ commercant.insertDate ? commercant.insertDate|date('Y-m-d H:i:s') : '' }}</td>
-                </tr>
-                <tr>
-                    <th>ModifyDate</th>
-                    <td>{{ commercant.modifyDate ? commercant.modifyDate|date('Y-m-d H:i:s') : '' }}</td>
-                </tr>
-                <tr>
                     <th>Stripe</th>
                     <td>
                         {% if commercant.stripeUserRef %}
@@ -137,22 +129,22 @@
                     <th>MediaPath</th>
                     <td>{{ commercant.mediaPath }}</td>
                 </tr>
-                <tr>
-                    <th>Uuid</th>
-                    <td>{{ commercant.uuid }}</td>
-                </tr>
             </table>
             {% include '@CapCommercio/commercant/_address.html.twig' %}
             {% include '@CapCommercio/commercant/_opening_hours.html.twig' %}
             {% include '@CapCommercio/commercant/_holidays.html.twig' %}
             {% include '@CapCommercio/commercant/_gallery.html.twig' %}
         </div>
+        <div class="card-footer">
+            Ajouté le {{ commercant.insertDate|format_date('full') }} -
+            Modifié le {{ commercant.modifyDate|format_date('full') }}
+        </div>
     </div>
     {{ include('@CapCommercio/commercant/_delete_form.html.twig') }}
     {% include '@CapCommercio/hours/_delete_holiday_form.html.twig' %}
 {% endblock %}
 
-{% block javascripts %}
+{% block scripts %}
     <script type="text/javascript">
         document.querySelector('#holidayModal').addEventListener('show.bs.modal', function (event) {
             const button = event.relatedTarget;
