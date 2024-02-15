@@ -8,11 +8,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
     <meta name="description" content="">
     <meta name="author" content="Cst">
+    <meta name="view-transition" content="same-origin"/>
+    {% block stylesheets %}
 
-    {{ encore_entry_link_tags('app') }}
-    {{ encore_entry_script_tags('app') }}
-
-    {% block stylesheets %}{% endblock %}
+    {% endblock %}
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
 
     <meta name="theme-color" content="#563d7c">
     {% block head %}{% endblock %}
