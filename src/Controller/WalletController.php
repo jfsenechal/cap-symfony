@@ -93,7 +93,7 @@ class WalletController extends AbstractController
            );*/
         //}
 
-        $url = $this->generateUrl($this->walletApi->url.'/web/checkout?ref='.$walletCodeOrder.'&color=50afd2');
+        $url = $this->walletApi->url.'/web/checkout?ref='.$walletCodeOrder.'&color=50afd2';
 
         //  $response = new Response(null, $form->isSubmitted() ? Response::HTTP_ACCEPTED : Response::HTTP_OK);
 
