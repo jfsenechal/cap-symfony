@@ -58,44 +58,44 @@ class WalletController extends AbstractController
 
         $walletOrder = $this->wallHandler->createWalletOrderFromPaymentOrder($paymentOrder);
 
-        $form = $this->createForm(WalletOrderType::class, $walletOrder);
-        $form->handleRequest($request);
+        //$form = $this->createForm(WalletOrderType::class, $walletOrder);
+        //$form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid() && !$bill) {
-            $walletCodeOrder = null;
-            if ($paymentOrder->walletCodeOrder) {
-                try {
-                    $dataString = $this->walletApi->retrieveOrder($paymentOrder->walletCodeOrder);
-                    $data = json_decode($dataString);
-                    if ($this->wallHandler->checkPaymentOrderStillValid($data)) {
-                        $walletCodeOrder = $data->OrderCode;
-                    }
-                } catch (\Exception $exception) {
-                    $this->mailerJf->sendError('Error retrieve payment order on wallet', $exception->getMessage());
+        //if ($form->isSubmitted() && $form->isValid() && !$bill) {
+        $walletCodeOrder = null;
+        if ($paymentOrder->walletCodeOrder) {
+            try {
+                $dataString = $this->walletApi->retrieveOrder($paymentOrder->walletCodeOrder);
+                $data = json_decode($dataString);
+                if ($this->wallHandler->checkPaymentOrderStillValid($data)) {
+                    $walletCodeOrder = $data->OrderCode;
                 }
+            } catch (\Exception $exception) {
+                $this->mailerJf->sendError('Error retrieve payment order on wallet', $exception->getMessage());
             }
-
-            if (!$walletCodeOrder) {
-                try {
-                    $this->wallHandler->createOrderForOnlinePayment($paymentOrder, $walletOrder);
-                    $walletCodeOrder = $paymentOrder->walletCodeOrder;
-
-                } catch (\Exception $e) {
-                    $this->addFlash('danger', $e->getMessage());
-                    $this->mailerJf->sendError('Error create bill', $exception->getMessage());
-
-                    return $this->redirectToRoute('cap_wallet_order_new', ['uuid' => $paymentOrder->getUuid()]);
-                }
-            }
-
-            return $this->redirect(
-                $this->walletApi->url.'/web/checkout?ref='.$walletCodeOrder.'&color=50afd2'
-                ,
-                Response::HTTP_TEMPORARY_REDIRECT
-            );
         }
 
-        $response = new Response(null, $form->isSubmitted() ? Response::HTTP_ACCEPTED : Response::HTTP_OK);
+        if (!$walletCodeOrder) {
+            try {
+                $this->wallHandler->createOrderForOnlinePayment($paymentOrder, $walletOrder);
+                $walletCodeOrder = $paymentOrder->walletCodeOrder;
+
+            } catch (\Exception $e) {
+                $this->addFlash('danger', $e->getMessage());
+                $this->mailerJf->sendError('Error create bill', $exception->getMessage());
+
+                return $this->redirectToRoute('cap_wallet_order_new', ['uuid' => $paymentOrder->getUuid()]);
+            }
+        }
+
+        /*   return $this->redirect(
+               $this->walletApi->url.'/web/checkout?ref='.$walletCodeOrder.'&color=50afd2'
+           );*/
+        //}
+
+        $url = $this->generateUrl($this->walletApi->url.'/web/checkout?ref='.$walletCodeOrder.'&color=50afd2');
+
+        //  $response = new Response(null, $form->isSubmitted() ? Response::HTTP_ACCEPTED : Response::HTTP_OK);
 
         return $this->render(
             '@CapCommercio/wallet/new_order.html.twig',
@@ -103,10 +103,11 @@ class WalletController extends AbstractController
                 'paymentOrder' => $paymentOrder,
                 'orderCommercant' => $paymentOrder->getOrderCommercant(),
                 'walletOrder' => $walletOrder,
-                'form' => $form,
+                // 'form' => $form,
+                'url' => $url,
                 'bill' => $bill,
             ],
-            $response
+
         );
 
     }

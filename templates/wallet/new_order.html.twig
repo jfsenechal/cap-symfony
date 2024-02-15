@@ -9,10 +9,11 @@
             <h4 class="text-success">Rappel des informations</h4>
             {% include '@CapCommercio/order/_details.html.twig' %}
             {% if bill is null %}
-                {{ form_start(form) }}
+                {# {{ form_start(form) }}
                 {{ form_errors(form) }}
                 <button class="btn btn-primary"><i class="ti ti-currency-euro"></i> Payer ma facture en ligne</button>
-                {{ form_end(form) }}
+                {{ form_end(form) }} #}
+                <a href="{{ url }}"><i class="ti ti-currency-euro"></i> Payer ma facture en ligne</a>
             {% endif %}
 
             <br/><br/>
