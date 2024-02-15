@@ -81,6 +81,7 @@ class SynchroBottinCommand extends Command
                 $commercioBottin = new CommercioBottin();
                 $commercioBottin->setCommercantId($fiche->id);
                 $commercioBottin->setInsertDate(new \DateTime());
+                $this->commercioBottinRepository->persist($commercioBottin);
                 $io->writeln('new commercio bottin: '.$commercant->getLegalEntity());
             }
             $commercioBottin->setBottin($fiche);
