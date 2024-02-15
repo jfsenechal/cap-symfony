@@ -54,10 +54,12 @@ class CommercantController extends AbstractController
             $commercants = $this->commercantRepository->findAllOrdered();
         }
 
+        $response = new Response(null, $form->isSubmitted() ? Response::HTTP_ACCEPTED : Response::HTTP_OK);
+
         return $this->render('@CapCommercio/commercant/index.html.twig', [
             'commercants' => $commercants,
             'form' => $form,
-        ]);
+        ], $response);
     }
 
     #[Route('/new', name: 'cap_commercant_new', methods: ['GET', 'POST'])]

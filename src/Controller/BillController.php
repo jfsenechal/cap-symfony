@@ -33,12 +33,15 @@ class BillController extends AbstractController
             $bills = $this->paymentBillRepository->findAllOrdered();
         }
 
+        $response = new Response(null, $form->isSubmitted() ? Response::HTTP_ACCEPTED : Response::HTTP_OK);
+
         return $this->render(
             '@CapCommercio/bill/index.html.twig',
             [
                 'bills' => $bills,
                 'form' => $form,
             ]
+            , $response
         );
     }
 
@@ -60,7 +63,7 @@ class BillController extends AbstractController
     public function delete(Request $request, PaymentBill $paymentBill): Response
     {
         $order = $paymentBill->getOrder();
-        if ($this->isCsrfTokenValid('delete' . $paymentBill->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$paymentBill->getId(), $request->request->get('_token'))) {
             $this->paymentBillRepository->remove($paymentBill);
             $this->paymentBillRepository->flush();
 

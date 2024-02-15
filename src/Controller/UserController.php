@@ -43,12 +43,15 @@ class UserController extends AbstractController
             $users = $this->rightAccessRepository->findAll();
         }
 
+        $response = new Response(null, $form->isSubmitted() ? Response::HTTP_ACCEPTED : Response::HTTP_OK);
+
         return $this->render(
             '@CapCommercio/user/index.html.twig',
             [
                 'users' => $users,
                 'form' => $form,
             ]
+            , $response
         );
     }
 

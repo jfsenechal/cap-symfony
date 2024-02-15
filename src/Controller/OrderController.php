@@ -16,7 +16,6 @@ use Cap\Commercio\Repository\PaymentOrderLineRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
-use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,12 +67,15 @@ class OrderController extends AbstractController
             }
         }
 
+        $response = new Response(null, $form->isSubmitted() ? Response::HTTP_ACCEPTED : Response::HTTP_OK);
+
         return $this->render(
             '@CapCommercio/order/index.html.twig',
             [
                 'orders' => $orders,
                 'form' => $form,
             ]
+            , $response
         );
     }
 

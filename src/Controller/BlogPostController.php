@@ -38,10 +38,12 @@ class BlogPostController extends AbstractController
             $posts = $this->blog_postRepository->findAllOrdered();
         }
 
+        $response = new Response(null, $form->isSubmitted() ? Response::HTTP_ACCEPTED : Response::HTTP_OK);
+
         return $this->render('@CapCommercio/blog_post/index.html.twig', [
             'posts' => $posts,
             'form' => $form,
-        ]);
+        ], $response);
     }
 
     #[Route('/new', name: 'cap_blog_post_new', methods: ['GET', 'POST'])]

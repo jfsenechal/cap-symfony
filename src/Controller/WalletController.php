@@ -93,6 +93,8 @@ class WalletController extends AbstractController
             );
         }
 
+        $response = new Response(null, $form->isSubmitted() ? Response::HTTP_ACCEPTED : Response::HTTP_OK);
+
         return $this->render(
             '@CapCommercio/wallet/new_order.html.twig',
             [
@@ -101,7 +103,8 @@ class WalletController extends AbstractController
                 'walletOrder' => $walletOrder,
                 'form' => $form,
                 'bill' => $bill,
-            ]
+            ],
+            $response
         );
 
     }

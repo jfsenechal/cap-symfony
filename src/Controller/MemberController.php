@@ -54,10 +54,12 @@ class MemberController extends AbstractController
             $commercant->complete = $this->memberHandler->isMemberCompleted($commercant);
         }
 
+        $response = new Response(null, $form->isSubmitted() ? Response::HTTP_ACCEPTED : Response::HTTP_OK);
+
         return $this->render('@CapCommercio/member/index.html.twig', [
             'commercants' => $commercants,
             'form' => $form->createView(),
-        ]);
+        ], $response);
     }
 
     #[Route('/select', name: 'cap_member_select_from_bottin', methods: ['GET', 'POST'])]
