@@ -90,6 +90,8 @@ class WalletController extends AbstractController
 
             return $this->redirect(
                 $this->walletApi->url.'/web/checkout?ref='.$walletCodeOrder.'&color=50afd2'
+                ,
+                Response::HTTP_TEMPORARY_REDIRECT
             );
         }
 
