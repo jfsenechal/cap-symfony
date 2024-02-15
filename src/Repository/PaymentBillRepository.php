@@ -66,7 +66,7 @@ class PaymentBillRepository extends ServiceEntityRepository
         if ($name) {
             $qb
                 ->andWhere(
-                    'upper(commercant.firstname) LIKE upper(:name) OR upper(commercant.companyName) LIKE upper(:name)'
+                    'upper(orderCommercant.firstname) LIKE upper(:name) OR upper(orderCommercant.companyName) LIKE upper(:name)'
                 )
                 ->setParameter('name', '%'.$name.'%');
         }
