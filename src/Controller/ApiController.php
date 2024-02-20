@@ -9,7 +9,7 @@ use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Service\ImagesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/apijf')]
 class ApiController extends AbstractController
