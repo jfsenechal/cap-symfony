@@ -2,7 +2,6 @@
 
 namespace Cap\Commercio\Entity;
 
-use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -23,6 +22,15 @@ class CommercioBottin
 
     #[ORM\Column(name: 'commercant_id', type: 'bigint', nullable: false)]
     private ?string $commercantId = null;
+
+    #[ORM\Column(name: 'bottin_id', type: 'bigint', nullable: false)]
+    public ?string $bottinId = null;
+
+    public function __construct(string $commercantId, string $bottinId)
+    {
+        $this->commercantId = $commercantId;
+        $this->bottinId = $bottinId;
+    }
 
     public function getId(): ?string
     {
@@ -70,10 +78,4 @@ class CommercioBottin
         return $this->commercantId;
     }
 
-    public function setCommercantId(string $commercantId): self
-    {
-        $this->commercantId = $commercantId;
-
-        return $this;
-    }
 }

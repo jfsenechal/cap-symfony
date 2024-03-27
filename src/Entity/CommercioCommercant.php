@@ -120,6 +120,9 @@ class CommercioCommercant
     public ?string $urlBottin = null;
     public bool $generateOrder = false;
     public bool $complete = false;
+public function __construct()
+{
+}
 
     public function isMemberCapExpired(): bool
     {

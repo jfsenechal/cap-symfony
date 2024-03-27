@@ -78,8 +78,7 @@ class SynchroBottinCommand extends Command
                 continue;
             }
             if (!$commercioBottin = $this->commercioBottinRepository->findByFicheId($fiche->id)) {
-                $commercioBottin = new CommercioBottin();
-                $commercioBottin->setCommercantId($fiche->id);
+                $commercioBottin = new CommercioBottin($commercant->getId(), $fiche->id);
                 $commercioBottin->setInsertDate(new \DateTime());
                 $this->commercioBottinRepository->persist($commercioBottin);
                 $io->writeln('new commercio bottin: '.$commercant->getLegalEntity());
@@ -96,7 +95,7 @@ class SynchroBottinCommand extends Command
         if ($remove) {
             $io->section('Shop to delete. Add --fix to flush');
             foreach ($notFound as $commercant) {
-                if (!$this->commercioBottinRepository->findByFicheId($commercant->getId()) instanceof CommercioBottin) {
+                if (!$this->commercioBottinRepository->findByCommercantId($commercant->getId()) instanceof CommercioBottin) {
                     $io->writeln($commercant->getLegalEntity());
                     if ($fix) {
                         $this->shopHandler->removeCommercant($commercant);

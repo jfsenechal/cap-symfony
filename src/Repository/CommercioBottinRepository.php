@@ -35,6 +35,15 @@ class CommercioBottinRepository extends ServiceEntityRepository
     public function findByFicheId(int $id): ?CommercioBottin
     {
         return $this->createQueryBuilder('commercio_bottin')
+            ->andWhere('commercio_bottin.bottinId = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findByCommercantId(int $id): ?CommercioBottin
+    {
+        return $this->createQueryBuilder('commercio_bottin')
             ->andWhere('commercio_bottin.commercantId = :id')
             ->setParameter('id', $id)
             ->getQuery()

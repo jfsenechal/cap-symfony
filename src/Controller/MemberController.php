@@ -100,6 +100,7 @@ class MemberController extends AbstractController
 
             try {
                 $order = $this->memberHandler->newMember($commercant, $form->get('generateOrder')->getData());
+                $this->bottinUtils->createRelation($commercant, $fiche);
                 $this->addFlash('success', 'Le nouveau membre a bien été ajouté');
             } catch (\Exception $e) {
                 $this->addFlash('danger', 'Erreur: '.$e->getMessage());

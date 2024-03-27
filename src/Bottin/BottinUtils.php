@@ -24,7 +24,7 @@ class BottinUtils
 
     public function urlCap(CommercioCommercant $commercant): ?string
     {
-        if (($ficheBottin = $this->commercioBottinRepository->findByFicheId(
+        if (($ficheBottin = $this->commercioBottinRepository->findByCommercantId(
                 $commercant->getId()
             )) instanceof CommercioBottin) {
             $bottin = $ficheBottin->getBottin();
@@ -47,15 +47,6 @@ class BottinUtils
 
     public function newFromBottin(\stdClass $fiche): CommercioCommercant
     {
-        if (!$commercioBottin = $this->commercioBottinRepository->findByFicheId($fiche->id)) {
-            $commercioBottin = new CommercioBottin();
-            $commercioBottin->setBottin($fiche);
-            $commercioBottin->setCommercantId($fiche->id);
-            $commercioBottin->setInsertDate(new \DateTime());
-            $this->commercioBottinRepository->persist($commercioBottin);
-        }
-        $commercioBottin->setModifyDate(new \DateTime());
-
         if (!$commercioCommercant = $this->commercioCommercantRepository->findByIdCommercant($fiche->id)) {
             $commercioCommercant = new CommercioCommercant();
             $commercioCommercant->setUuid($commercioCommercant->generateUuid());
@@ -87,5 +78,19 @@ class BottinUtils
         $commercioCommercant->address = $address;
 
         return $commercioCommercant;
+    }
+
+    public function createRelation(CommercioCommercant $commercioCommercant, \stdClass $fiche)
+    {
+        if (!$commercioBottin = $this->commercioBottinRepository->findByFicheId($fiche->id)) {
+            $commercioBottin = new CommercioBottin($commercioCommercant->getId(), $fiche->id);
+            $commercioBottin->setBottin($fiche);
+            $commercioBottin->setInsertDate(new \DateTime());
+            $this->commercioBottinRepository->persist($commercioBottin);
+        }
+
+        $commercioBottin->setModifyDate(new \DateTime());
+        $this->commercioCommercantRepository->flush();
+
     }
 }

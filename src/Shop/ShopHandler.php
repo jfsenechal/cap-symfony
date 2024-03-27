@@ -45,7 +45,7 @@ class ShopHandler
 
     public function removeCommercant(CommercioCommercant $commercant): void
     {
-        if ($commercantBottin = $this->commercioBottinRepository->findByFicheId($commercant->getId())) {
+        if ($commercantBottin = $this->commercioBottinRepository->findByCommercantId($commercant->getId())) {
             $this->commercioBottinRepository->remove($commercantBottin);
         }
 
