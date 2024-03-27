@@ -26,7 +26,7 @@ class UserController extends AbstractController
         private readonly RightAccessRepository $rightAccessRepository,
         private readonly AdministratorRepository $administratorRepository,
         private readonly CommercioCommercantRepository $commercantRepository,
-        private readonly AccessDemandRepository $accessDemandRepository
+        private readonly AccessDemandRepository $accessDemandRepository,
     ) {
     }
 
@@ -210,6 +210,12 @@ class UserController extends AbstractController
     ): Response {
 
         if ($this->isCsrfTokenValid('delete'.$rightAccess->getId(), $request->request->get('_token'))) {
+            if ($commercioCommercant = $this->commercantRepository->findByRightAccess($rightAccess)) {
+                $commercioCommercant->setRightAccess(null);
+                if ($demand = $this->accessDemandRepository->findByRightAccess($rightAccess)) {
+                    $this->rightAccessRepository->remove($demand);
+                }
+            }
             $this->rightAccessRepository->remove($rightAccess);
             $this->rightAccessRepository->flush();
             $this->addFlash('success', 'L\'utilisateur a bien été supprimé');

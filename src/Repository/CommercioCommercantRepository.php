@@ -4,6 +4,7 @@ namespace Cap\Commercio\Repository;
 
 use Cap\Commercio\Doctrine\OrmCrudTrait;
 use Cap\Commercio\Entity\CommercioCommercant;
+use Cap\Commercio\Entity\RightAccess;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -29,6 +30,15 @@ class CommercioCommercantRepository extends ServiceEntityRepository
         return $this->createQb()
             ->andWhere('commercant.id = :id')
             ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findByRightAccess(RightAccess $rightAccess): ?CommercioCommercant
+    {
+        return $this->createQb()
+            ->andWhere('commercant.rightAccess = :right')
+            ->setParameter('right', $rightAccess)
             ->getQuery()
             ->getOneOrNullResult();
     }
