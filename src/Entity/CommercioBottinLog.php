@@ -13,7 +13,7 @@ class CommercioBottinLog
     use IdTrait;
     use UuidTrait;
 
-    #[ORM\Column(name: 'uuid', type: 'guid', nullable: false)]
+    #[ORM\Column(name: 'uuid', type: 'guid', nullable: true)]
     private string $uuid = '';
 
     #[ORM\Column(name: 'time', type: 'float', precision: 10, scale: 0, nullable: false)]
