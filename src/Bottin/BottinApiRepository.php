@@ -46,4 +46,30 @@ class BottinApiRepository
             throw new \Exception($exception->getMessage(), $exception->getCode(), $exception);
         }
     }
+
+    public function findCommerceBySociete(string $name)
+    {
+         $this->connect();
+        try {
+            $response = $this->executeRequest($this->base_uri.'/bottin/fichebyname/'.$name);
+            $this->response = $response;
+
+            return json_decode($response);
+        } catch (\Exception $exception) {
+            throw new \Exception($exception->getMessage(), $exception->getCode(), $exception);
+        }
+    }
+
+    public function findCommerceByEmail(string $email)
+    {
+         $this->connect();
+        try {
+            $response = $this->executeRequest($this->base_uri.'/bottin/fichebyemail/'.$email);
+            $this->response = $response;
+
+            return json_decode($response);
+        } catch (\Exception $exception) {
+            throw new \Exception($exception->getMessage(), $exception->getCode(), $exception);
+        }
+    }
 }
