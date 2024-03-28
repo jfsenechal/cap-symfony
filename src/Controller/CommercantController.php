@@ -54,6 +54,12 @@ class CommercantController extends AbstractController
             $commercants = $this->commercantRepository->findAllOrdered();
         }
 
+        array_map(function (CommercioCommercant $commercant) {
+            if ($address = $this->commercioCommercantAddressRepository->findOneByCommercant($commercant)) {
+                $commercant->address = $address->getAddress();
+            }
+        }, $commercants);
+
         $response = new Response(null, $form->isSubmitted() ? Response::HTTP_ACCEPTED : Response::HTTP_OK);
 
         return $this->render('@CapCommercio/commercant/index.html.twig', [

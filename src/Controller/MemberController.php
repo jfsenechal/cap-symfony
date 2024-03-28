@@ -9,6 +9,7 @@ use Cap\Commercio\Form\CheckMemberType;
 use Cap\Commercio\Form\MemberType;
 use Cap\Commercio\Form\NameSearchType;
 use Cap\Commercio\Mailer\MailerCap;
+use Cap\Commercio\Repository\CommercioCommercantAddressRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
 use Cap\Commercio\Shop\MemberHandler;
@@ -30,6 +31,7 @@ class MemberController extends AbstractController
     public function __construct(
         private readonly CommercioCommercantRepository $commercantRepository,
         private readonly PaymentOrderRepository $paymentOrderRepository,
+        public readonly CommercioCommercantAddressRepository $commercioCommercantAddressRepository,
         private readonly MailerCap $mailer,
         private readonly BottinApiRepository $bottinApiRepository,
         private readonly MemberHandler $memberHandler,
@@ -50,9 +52,12 @@ class MemberController extends AbstractController
             $commercants = $this->commercantRepository->findMembers();
         }
 
-        foreach ($commercants as $commercant) {
+        array_map(function (CommercioCommercant $commercant) {
+            if ($address = $this->commercioCommercantAddressRepository->findOneByCommercant($commercant)) {
+                $commercant->address = $address->getAddress();
+            }
             $commercant->complete = $this->memberHandler->isMemberCompleted($commercant);
-        }
+        }, $commercants);
 
         $response = new Response(null, $form->isSubmitted() ? Response::HTTP_ACCEPTED : Response::HTTP_OK);
 
