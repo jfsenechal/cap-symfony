@@ -77,7 +77,14 @@ class SynchroBottinCommand extends Command
                 $notFound[] = $commercant;
                 continue;
             }
-            if (!$commercioBottin = $this->commercioBottinRepository->findByFicheId($fiche->id)) {
+            try {
+                $commercioBottin = $this->commercioBottinRepository->findByFicheId($fiche->id);
+            } catch (\Exception $exception) {
+                $this->io->error($commercant->getLegalEntity().' '.$exception->getMessage());
+                continue;
+            }
+
+            if (!$commercioBottin) {
                 $commercioBottin = new CommercioBottin($commercant->getId(), $fiche->id);
                 $commercioBottin->setInsertDate(new \DateTime());
                 $this->commercioBottinRepository->persist($commercioBottin);
@@ -85,10 +92,9 @@ class SynchroBottinCommand extends Command
             }
             $commercioBottin->setBottin($fiche);
             $commercioBottin->setModifyDate(new \DateTime());
-        }
-
-        if ($fix) {
-            $this->commercioBottinRepository->flush();
+            if ($fix) {
+                $this->commercioBottinRepository->flush();
+            }
         }
 
         /**
