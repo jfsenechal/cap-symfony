@@ -4,6 +4,7 @@ namespace Cap\Commercio\Command;
 
 use Cap\Commercio\Bottin\BottinApiRepository;
 use Cap\Commercio\Entity\CommercioBottin;
+use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Repository\CommercioBottinRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Shop\ShopHandler;
@@ -26,6 +27,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class SynchroBottinCommand extends Command
 {
+    private SymfonyStyle $io;
+    private OutputInterface $outPut;
+
     public function __construct(
         private readonly CommercioBottinRepository $commercioBottinRepository,
         private readonly CommercioCommercantRepository $commercioCommercantRepository,
@@ -38,6 +42,7 @@ class SynchroBottinCommand extends Command
     protected function configure(): void
     {
         $this
+            ->addOption('refresh', null, InputOption::VALUE_NONE, 'Refresh from zero database')
             ->addOption('fix', null, InputOption::VALUE_NONE, 'Flush database')
             ->addOption('remove', null, InputOption::VALUE_NONE, 'Remove not in bottin')
             ->addOption('compare', null, InputOption::VALUE_NONE, 'Compare commercant/bottin');
@@ -45,9 +50,11 @@ class SynchroBottinCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
+        $this->io = new SymfonyStyle($input, $output);
+        $this->outPut = $output;
 
         $fix = $input->getOption('fix');
+        $refresh = $input->getOption('refresh');
         $compare = $input->getOption('compare');
         $remove = $input->getOption('remove');
         $notFound = [];
@@ -58,45 +65,41 @@ class SynchroBottinCommand extends Command
             return Command::SUCCESS;
         }
 
+        if ($refresh) {
+            $this->refresh();
+
+            return Command::SUCCESS;
+        }
+
         foreach ($this->commercioCommercantRepository->findAllOrdered() as $commercant) {
-            try {
-                $fiche = $this->bottinApiRepository->findCommerceById($commercant->getId());
-            } catch (\Exception $e) {
-                if ($e->getCode() === 404) {
-                    $notFound[] = $commercant;
-                } else {
-                    $io->error(
-                        'Error api: '.$commercant->getLegalEntity().' Error: '.$e->getMessage().' Code '.$e->getCode()
-                    );
-                }
-
-                continue;
-            }
-            if (isset($fiche->error)) {
-                $io->error('Error '.$fiche->error.' => '.$commercant->getLegalEntity());
-
-                continue;
+            $fiche = $this->findFiche($commercant);
+            if (!$fiche) {
+                $notFound[] = $commercant;
             }
             if (!$commercioBottin = $this->commercioBottinRepository->findByFicheId($fiche->id)) {
                 $commercioBottin = new CommercioBottin($commercant->getId(), $fiche->id);
                 $commercioBottin->setInsertDate(new \DateTime());
                 $this->commercioBottinRepository->persist($commercioBottin);
-                $io->writeln('new commercio bottin: '.$commercant->getLegalEntity());
+                $this->io->writeln('new commercio bottin: '.$commercant->getLegalEntity());
             }
             $commercioBottin->setBottin($fiche);
             $commercioBottin->setModifyDate(new \DateTime());
         }
+
         if ($fix) {
             $this->commercioBottinRepository->flush();
         }
+
         /**
          * Remove if no more in bottin
          */
         if ($remove) {
-            $io->section('Shop to delete. Add --fix to flush');
+            $this->io->section('Shop to delete. Add --fix to flush');
             foreach ($notFound as $commercant) {
-                if (!$this->commercioBottinRepository->findByCommercantId($commercant->getId()) instanceof CommercioBottin) {
-                    $io->writeln($commercant->getLegalEntity());
+                if (!$this->commercioBottinRepository->findByCommercantId(
+                        $commercant->getId()
+                    ) instanceof CommercioBottin) {
+                    $this->io->writeln($commercant->getLegalEntity());
                     if ($fix) {
                         $this->shopHandler->removeCommercant($commercant);
                     }
@@ -112,9 +115,6 @@ class SynchroBottinCommand extends Command
 
     private function compare(OutputInterface $output): void
     {
-        $table = new Table($output);
-        $table
-            ->setHeaders(['Cap', 'Bottin']);
         $rows = [];
         foreach ($this->commercioCommercantRepository->findAllOrdered() as $commercant) {
             $row = [];
@@ -127,11 +127,76 @@ class SynchroBottinCommand extends Command
             } else {
                 $row [] = 'not found';
             }
-
             $rows[] = $row;
         }
+        $this->displayTable($rows);
+    }
+
+    private function refresh(): void
+    {
+        $notFound = $rows = [];
+        foreach ($this->commercioCommercantRepository->findAllOrdered() as $commercant) {
+            $fiche = $this->findFiche($commercant);
+            if (!$fiche) {
+                $notFound[] = $commercant;
+                continue;
+            }
+            $rows[] = [$commercant->getLegalEntity(), $fiche->societe];
+            //$this->io->writeln($fiche->societe);
+        }
+        //$this->displayTable($rows);
+
+        foreach ($notFound as $commercant) {
+            $this->io->writeln($commercant->getLegalEntity());
+        }
+    }
+
+    private function findFiche(CommercioCommercant $commercant): ?\stdClass
+    {
+        try {
+            $fiches = $this->bottinApiRepository->findCommerceBySociete(
+                base64_encode($commercant->getLegalEntity())
+            );
+        } catch (\Exception $e) {
+            $this->io->error(
+                'Error api: '.$commercant->getLegalEntity().' Error: '.$e->getMessage().' Code '.$e->getCode()
+            );
+        }
+        if (count($fiches) > 1) {
+            //CARREFOUR MARKET
+            // $io->section(count($fiches).' '.$commercant->getLegalEntity());
+            return null;
+        }
+        if (count($fiches) == 1) {
+            return $fiches[0];
+        }
+
+        try {
+            $fiches = $this->bottinApiRepository->findCommerceByEmail($commercant->getLegalEmail());
+        } catch (\Exception $e) {
+            $this->io->error(
+                'Error api: '.$commercant->getLegalEntity().' Error: '.$e->getMessage().' Code '.$e->getCode()
+            );
+        }
+        if (count($fiches) > 1) {
+            //CARREFOUR MARKET
+            // $io->section(count($fiches).' '.$commercant->getLegalEntity());
+            return null;
+        }
+        if (count($fiches) == 1) {
+            return $fiches[0];
+        }
+
+        return null;
+    }
+
+    private function displayTable(array $rows)
+    {
+        $table = new Table($this->outPut);
+        $table
+            ->setHeaders(['Cap', 'Bottin']);
         $table->setRows($rows);
         $table->render();
-
     }
+
 }
