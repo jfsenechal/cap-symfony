@@ -60,7 +60,7 @@ class SynchroBottinCommand extends Command
         $notFound = [];
 
         if ($compare) {
-            $this->compare($output);
+            $this->compare();
 
             return Command::SUCCESS;
         }
@@ -75,6 +75,7 @@ class SynchroBottinCommand extends Command
             $fiche = $this->findFiche($commercant);
             if (!$fiche) {
                 $notFound[] = $commercant;
+                continue;
             }
             if (!$commercioBottin = $this->commercioBottinRepository->findByFicheId($fiche->id)) {
                 $commercioBottin = new CommercioBottin($commercant->getId(), $fiche->id);
@@ -113,13 +114,13 @@ class SynchroBottinCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function compare(OutputInterface $output): void
+    private function compare(): void
     {
         $rows = [];
         foreach ($this->commercioCommercantRepository->findAllOrdered() as $commercant) {
             $row = [];
             $row[] = $commercant->getLegalEntity();
-            $fiche = $this->commercioBottinRepository->findByFicheId(
+            $fiche = $this->commercioBottinRepository->findByCommercantId(
                 $commercant->getId()
             );
             if ($fiche) {
