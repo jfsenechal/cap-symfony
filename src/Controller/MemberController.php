@@ -230,7 +230,7 @@ class MemberController extends AbstractController
     public function linkBottin(
         Request $request,
         CommercioCommercant $commercant,
-        ?int $ficheId = 0
+        int $ficheId = 0
     ): Response {
 
         $bottin = $this->commercioBottinRepository->findByCommercantId($commercant->getId());
@@ -246,6 +246,14 @@ class MemberController extends AbstractController
         $urlBottin = null;
 
         if ($bottin) {
+            if ($ficheId > 0) {
+                $bottin->bottinId = $ficheId;
+                $this->commercioBottinRepository->flush();
+                $this->addFlash('success', 'Nouvelle liaison associée');
+
+                return $this->redirectToRoute('cap_commercant_show', ['id' => $commercant->getId()]);
+            }
+
             try {
                 $fiche = $this->bottinApiRepository->findByFicheId($bottin->bottinId);
                 $urlBottin = BottinUtils::urlBottin($bottin->bottinId);
