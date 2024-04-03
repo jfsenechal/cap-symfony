@@ -19,7 +19,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Validator\Constraints\Uuid;
 
 #[Route(path: '/wallet')]
 class WalletController extends AbstractController
@@ -49,7 +51,10 @@ class WalletController extends AbstractController
         );
     }
 
-    #[Route(path: '/new/order/{uuid}', name: 'cap_wallet_order_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/new/order/{uuid}', name: 'cap_wallet_order_new', methods: [
+        'GET',
+        'POST',
+    ], requirements: ['uuid' => Requirement::UUID_V4])]
     public function new(Request $request, PaymentOrder $paymentOrder): Response
     {
         if ($bill = $this->paymentBillRepository->findOneByOrder($paymentOrder)) {
