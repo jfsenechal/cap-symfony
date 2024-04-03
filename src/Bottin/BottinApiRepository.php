@@ -34,7 +34,7 @@ class BottinApiRepository
      * @return mixed
      * @throws \Exception
      */
-    public function findCommerceById(int $id)
+    public function findByFicheId(int $id)
     {
         $this->connect();
         try {

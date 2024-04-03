@@ -6,6 +6,7 @@ use Cap\Commercio\Bottin\BottinApiRepository;
 use Cap\Commercio\Bottin\BottinUtils;
 use Cap\Commercio\Entity\PaymentBill;
 use Cap\Commercio\Entity\PaymentOrder;
+use Cap\Commercio\Repository\CommercioBottinRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Repository\PaymentBillRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
@@ -24,6 +25,7 @@ class CheckupController extends AbstractController
         private readonly PaymentBillRepository $paymentBillRepository,
         private readonly CommercioCommercantRepository $commercantRepository,
         private readonly BottinApiRepository $bottinApiRepository,
+        private readonly CommercioBottinRepository $commercioBottinRepository,
         private readonly CommercioCommercantRepository $commercioCommercantRepository
     ) {
     }
@@ -110,25 +112,29 @@ class CheckupController extends AbstractController
     {
         $commercants = [];
         foreach ($this->commercioCommercantRepository->findAllOrdered() as $commercant) {
-            try {
-                $fiche = $this->bottinApiRepository->findCommerceById($commercant->getId());
-            } catch (\Exception $e) {
 
-                if ($e->getCode() === 404) {
-                    $commercants[] = $commercant;
-                } else {
-                    $this->addFlash(
-                        'danger',
-                        'Impossible d\'obtenir le detail du commerce: '.$commercant->getLegalEntity(
-                        ).' Erreur '.$e->getMessage()
-                    );
+            $bottin = $this->commercioBottinRepository->findByCommercantId($commercant->getId());
+            if ($bottin) {
+                try {
+                    $fiche = $this->bottinApiRepository->findByFicheId($bottin->bottinId);
+                } catch (\Exception $e) {
+
+                    if ($e->getCode() === 404) {
+                        $commercants[] = $commercant;
+                    } else {
+                        $this->addFlash(
+                            'danger',
+                            'Impossible d\'obtenir le detail du commerce: '.$commercant->getLegalEntity(
+                            ).' Erreur '.$e->getMessage()
+                        );
+                    }
+
+                    continue;
                 }
-
-                continue;
-            }
-            if (isset($fiche->error)) {
-                $commercant->urlBottin = BottinUtils::urlBottin($commercant->getId());
-                $commercants[] = $commercant;
+                if (isset($fiche->error)) {
+                    $commercant->urlBottin = BottinUtils::urlBottin($bottin->bottinId);
+                    $commercants[] = $commercant;
+                }
             }
         }
 

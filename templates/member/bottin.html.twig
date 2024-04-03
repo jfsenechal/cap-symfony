@@ -1,0 +1,39 @@
+{% extends '@CapCommercio/base.html.twig' %}
+
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">Nouveau membre</h3>
+
+        <div class="card-body">
+
+            {% if fiche %}
+                <div class="alert alert-warning">
+                    Actuellement lié à la fiche <a href="{{ urlBottin }}" target="_blank">{{ fiche.societe }}</a>
+                </div>
+            {% endif %}
+
+            <div class="alert alert-info">
+                Sélectionnez une fiche depuis le bottin
+            </div>
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>Nom</th>
+                    <th>Localité</th>
+                </tr>
+                {% for fiche in fiches %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('cap_link_bottin', {'id':commercant.id,'ficheid': fiche.id}) }}">{{ fiche.societe }}</a>
+                        </td>
+                        <td>
+                            {{ fiche.localite }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+        </div>
+    </div>
+
+{% endblock %}

@@ -47,14 +47,12 @@
             </a>
         </div>
     {% endif %}
-    {% if urlBottin %}
-        <div class="col-auto">
-            <a href="{{ urlBottin }}" class="btn btn-primary" role='button' title="Bottin Marchois" target="_blank">
-                <i class="ti ti-book"></i>
-                Bottin
-            </a>
-        </div>
-    {% endif %}
+    <div class="col-auto">
+        <a href="{{ path('cap_link_bottin', {'id': commercant.id, 'ficheid': 0}) }}" class="btn btn-primary" role='button' title="Bottin Marchois">
+            <i class="ti ti-book"></i>
+            Liaison Bottin
+        </a>
+    </div>
     <div class="col-auto">
         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
             <i class="ti ti-trash"></i> Supprimer

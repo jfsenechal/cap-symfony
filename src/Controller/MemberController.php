@@ -9,6 +9,7 @@ use Cap\Commercio\Form\CheckMemberType;
 use Cap\Commercio\Form\MemberType;
 use Cap\Commercio\Form\NameSearchType;
 use Cap\Commercio\Mailer\MailerCap;
+use Cap\Commercio\Repository\CommercioBottinRepository;
 use Cap\Commercio\Repository\CommercioCommercantAddressRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
 use Cap\Commercio\Repository\PaymentOrderRepository;
@@ -30,6 +31,7 @@ class MemberController extends AbstractController
 {
     public function __construct(
         private readonly CommercioCommercantRepository $commercantRepository,
+        private readonly CommercioBottinRepository $commercioBottinRepository,
         private readonly PaymentOrderRepository $paymentOrderRepository,
         public readonly CommercioCommercantAddressRepository $commercioCommercantAddressRepository,
         private readonly MailerCap $mailer,
@@ -87,7 +89,7 @@ class MemberController extends AbstractController
     public function new(Request $request, int $id): Response
     {
         try {
-            $fiche = $this->bottinApiRepository->findCommerceById($id);
+            $fiche = $this->bottinApiRepository->findByFicheId($id);
         } catch (\Exception $e) {
             $this->addFlash('danger', 'Impossible d\'obtenir la liste des commerces');
 
@@ -221,6 +223,45 @@ class MemberController extends AbstractController
             'paymentOrder' => $order,
             'orderCommercant' => $orderCommercant,
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}/{ficheid}/link', name: 'cap_link_bottin', methods: ['GET', 'POST'])]
+    public function linkBottin(
+        Request $request,
+        CommercioCommercant $commercant,
+        ?int $ficheId = 0
+    ): Response {
+
+        $bottin = $this->commercioBottinRepository->findByCommercantId($commercant->getId());
+
+        try {
+            $fiches = $this->bottinApiRepository->getCommerces();
+        } catch (\Exception $e) {
+            $this->addFlash('danger', 'Impossible d\'obtenir la liste des commerces '.$e->getMessage());
+
+            return $this->redirectToRoute('cap_home');
+        }
+
+        $urlBottin = null;
+
+        if ($bottin) {
+            try {
+                $fiche = $this->bottinApiRepository->findByFicheId($bottin->bottinId);
+                $urlBottin = BottinUtils::urlBottin($bottin->bottinId);
+            } catch (\Exception $e) {
+                $this->addFlash('danger', 'Impossible d\'obtenir la fiche '.$e->getMessage());
+
+                return $this->redirectToRoute('cap_home');
+            }
+        }
+
+        return $this->render('@CapCommercio/member/bottin.html.twig', [
+            'commercant' => $commercant,
+            'bottin' => $bottin,
+            'urlBottin' => $urlBottin,
+            'fiche' => $fiche,
+            'fiches' => $fiches,
         ]);
     }
 }

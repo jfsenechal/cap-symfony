@@ -8,6 +8,7 @@ use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Form\CommercantSearchType;
 use Cap\Commercio\Form\CommercantType;
 use Cap\Commercio\Repository\CommercantGalleryRepository;
+use Cap\Commercio\Repository\CommercioBottinRepository;
 use Cap\Commercio\Repository\CommercioCommercantAddressRepository;
 use Cap\Commercio\Repository\CommercioCommercantHolidayRepository;
 use Cap\Commercio\Repository\CommercioCommercantHoursRepository;
@@ -28,6 +29,7 @@ class CommercantController extends AbstractController
 {
     public function __construct(
         private readonly CommercioCommercantRepository $commercantRepository,
+        private readonly CommercioBottinRepository $commercioBottinRepository,
         private readonly BottinUtils $bottinUtils,
         private readonly CommercantGalleryRepository $commercantGalleryRepository,
         private readonly PaymentOrderRepository $paymentOrderRepository,
@@ -103,13 +105,17 @@ class CommercantController extends AbstractController
         }
         $urlCap = $this->bottinUtils->urlCap($commercant);
         $isMemberComplete = $this->memberHandler->isMemberCompleted($commercant);
+        $urlBottin = $bottin = null;
         try {
-            $fiche = $this->bottinApiRepository->findCommerceById($commercant->getId());
-            if (!isset($fiche->error)) {
-                $urlBottin = BottinUtils::urlBottin($commercant->getId());
+            $bottin = $this->commercioBottinRepository->findByCommercantId($commercant->getId());
+            if ($bottin) {
+                $fiche = $this->bottinApiRepository->findByFicheId($bottin->bottinId);
+                if (!isset($fiche->error)) {
+                    $urlBottin = BottinUtils::urlBottin($bottin->bottinId);
+                }
             }
+
         } catch (\Exception $e) {
-            $urlBottin = null;
         }
 
         return $this->render('@CapCommercio/commercant/show.html.twig', [
@@ -122,6 +128,7 @@ class CommercantController extends AbstractController
             'holidays' => $holidays,
             'urlCap' => $urlCap,
             'isMemberComplete' => $isMemberComplete,
+            'bottin' => $bottin,
             'urlBottin' => $urlBottin,
         ]);
     }
