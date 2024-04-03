@@ -4,6 +4,7 @@ namespace Cap\Commercio\Controller;
 
 use Cap\Commercio\Bottin\BottinApiRepository;
 use Cap\Commercio\Bottin\BottinUtils;
+use Cap\Commercio\Entity\CommercioBottin;
 use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Form\CheckMemberType;
 use Cap\Commercio\Form\MemberType;
@@ -261,6 +262,16 @@ class MemberController extends AbstractController
                 $this->addFlash('danger', 'Impossible d\'obtenir la fiche '.$e->getMessage());
 
                 return $this->redirectToRoute('cap_home');
+            }
+        } else {
+            if ($ficheId > 0) {
+                $bottin = new CommercioBottin($commercant->getId(), $ficheId);
+                $bottin->setInsertDate(new \DateTime());
+                $this->commercioBottinRepository->persist($bottin);
+                $this->commercioBottinRepository->flush();
+                $this->addFlash('success', 'Nouvelle liaison associée');
+
+                return $this->redirectToRoute('cap_commercant_show', ['id' => $commercant->getId()]);
             }
         }
 
