@@ -245,6 +245,7 @@ class MemberController extends AbstractController
         }
 
         $urlBottin = null;
+        $fiche = null;
 
         if ($bottin) {
             if ($ficheId > 0) {
@@ -273,6 +274,12 @@ class MemberController extends AbstractController
 
                 return $this->redirectToRoute('cap_commercant_show', ['id' => $commercant->getId()]);
             }
+        }
+
+        if (!$fiche) {
+            $this->addFlash('danger', 'Impossible d\'obtenir la fiche ');
+
+            return $this->redirectToRoute('cap_home');
         }
 
         return $this->render('@CapCommercio/member/bottin.html.twig', [
