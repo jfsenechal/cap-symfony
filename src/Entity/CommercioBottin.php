@@ -23,7 +23,7 @@ class CommercioBottin
     #[ORM\Column(name: 'commercant_id', type: 'bigint', nullable: false)]
     private ?string $commercantId = null;
 
-    #[ORM\Column(name: 'bottin_id', type: 'bigint', nullable: false)]
+    #[ORM\Column(name: 'bottin_id', type: 'bigint', nullable: false, unique: true)]
     public ?string $bottinId = null;
 
     public function __construct(string $commercantId, string $bottinId)
