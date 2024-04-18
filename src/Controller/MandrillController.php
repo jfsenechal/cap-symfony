@@ -23,6 +23,9 @@ use Twig\Error\SyntaxError;
 //http://localhost/commerciosf/vendor/mandrill/mandrill/docs/
 #[Route(path: '/mandrill')]
 #[IsGranted('ROLE_CAP')]
+/**
+ * @deprecated
+ */
 class MandrillController extends AbstractController
 {
     final public const templates = [
@@ -52,7 +55,7 @@ class MandrillController extends AbstractController
     ];
 
     public function __construct(
-        private readonly MailerCap $mailer,
+        private readonly MailerCap $mailerCap,
         private readonly MandrillTemplateHandler $mandrillTemplateHandler,
         private readonly CommercioCommercantRepository $commercantRepository,
         private readonly PaymentOrderRepository $paymentOrderRepository,
@@ -64,8 +67,6 @@ class MandrillController extends AbstractController
     #[Route(path: '/', name: 'cap_mandrill_index', methods: ['GET'])]
     public function index(): Response
     {
-        //$this->mailer->infos();
-
         return $this->render(
             '@CapCommercio/mandrill/index.html.twig',
             [
@@ -91,13 +92,13 @@ class MandrillController extends AbstractController
         }
 
         try {
-            $this->mailer->sendAffiliationExpired($commercant, $order);
+            $this->mailerCap->sendAffiliationExpired($commercant, $order);
         } catch (Exception $e) {
             $this->addFlash('danger', $e->getMessage());
         }
 
         try {
-         //   $this->mailer->sendNewAffiliation($commercant, $order);
+            //   $this->mailer->sendNewAffiliation($commercant, $order);
             $this->addFlash('success', 'Le bon a bien été envoyé par mail');
         } catch (\Exception $e) {
             $this->addFlash('danger', 'Erreur lors de l\'envoie du mail: '.$e->getMessage());

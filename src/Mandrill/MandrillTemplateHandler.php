@@ -9,6 +9,7 @@ use Mandrill_Subaccounts;
 use Mandrill_Templates;
 use Mandrill_Users;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Filesystem\Filesystem;
 
 class MandrillTemplateHandler
 {
@@ -99,5 +100,14 @@ class MandrillTemplateHandler
         dump($mailchimp);
         dump($account->info('commercio'));
         //   dump($message->render());
+    }
+
+    public function saveAll(string $path)
+    {
+        $filesystem = new Filesystem();
+        foreach ($this->getTemplates() as $template) {
+            $templateDetails = $this->templateShow($template['name']);
+            $filesystem->dumpFile($path.$template['slug'].'.html', $templateDetails['code']);
+        }
     }
 }

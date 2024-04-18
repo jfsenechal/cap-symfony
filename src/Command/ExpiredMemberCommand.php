@@ -22,7 +22,7 @@ class ExpiredMemberCommand extends Command
     private array $rows = [];
 
     public function __construct(
-        private CommercioCommercantRepository $commercantRepository,
+        private readonly CommercioCommercantRepository $commercantRepository,
         private readonly MemberHandler $memberHandler
     ) {
         parent::__construct();

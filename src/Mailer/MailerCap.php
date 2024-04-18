@@ -13,6 +13,9 @@ use Mandrill_Templates;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Mime\Email;
 
+/**
+ * @deprecated
+ */
 class MailerCap
 {
     private string $senderEmail = 'info@capsurmarche.com';

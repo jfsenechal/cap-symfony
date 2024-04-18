@@ -9,7 +9,7 @@ use Cap\Commercio\Entity\CommercioCommercant;
 use Cap\Commercio\Form\CheckMemberType;
 use Cap\Commercio\Form\MemberType;
 use Cap\Commercio\Form\NameSearchType;
-use Cap\Commercio\Mailer\MailerCap;
+use Cap\Commercio\Mailer\MailerJf;
 use Cap\Commercio\Repository\CommercioBottinRepository;
 use Cap\Commercio\Repository\CommercioCommercantAddressRepository;
 use Cap\Commercio\Repository\CommercioCommercantRepository;
@@ -20,6 +20,7 @@ use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Twig\Error\LoaderError;
@@ -35,7 +36,7 @@ class MemberController extends AbstractController
         private readonly CommercioBottinRepository $commercioBottinRepository,
         private readonly PaymentOrderRepository $paymentOrderRepository,
         public readonly CommercioCommercantAddressRepository $commercioCommercantAddressRepository,
-        private readonly MailerCap $mailer,
+        private readonly MailerJf $mailerJf,
         private readonly BottinApiRepository $bottinApiRepository,
         private readonly MemberHandler $memberHandler,
         private readonly BottinUtils $bottinUtils
@@ -124,9 +125,9 @@ class MemberController extends AbstractController
                 }
 
                 try {
-                    $this->mailer->sendNewAffiliation($commercant, $order);
+                    $this->mailerJf->sendNewAffiliation($commercant, $order);
                     $this->addFlash('success', 'Le bon a bien été envoyé par mail');
-                } catch (\Exception $e) {
+                } catch (\Exception|TransportExceptionInterface $e) {
                     $this->addFlash('danger', 'Erreur lors de l\'envoie du mail: '.$e->getMessage());
                 }
             }
@@ -205,9 +206,9 @@ class MemberController extends AbstractController
                     $this->addFlash('danger', 'Erreur pour la création du pdf '.$e->getMessage());
                 }
                 try {
-                    $this->mailer->sendAffiliationExpired($commercant, $order);
+                    $this->mailerJf->sendAffiliationExpired($commercant, $order);
                     $this->addFlash('success', 'Le mail a bien été envoyé');
-                } catch (\Exception $e) {
+                } catch (\Exception|TransportExceptionInterface $e) {
                     $this->addFlash('danger', 'Erreur lors de l\'envoie du mail: '.$e->getMessage());
                 }
             }
